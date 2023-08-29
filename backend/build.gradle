@@ -20,7 +20,7 @@ configurations {
 
 sonar {
 	properties {
-		property "sonar.projectKey", "FettucciniESP_fettuccini_AYpAOGsowKUID-dBH2AK"
+		property "sonar.projectKey", "FettucciniESP_fettuccini_AYpAzCn3wKUID-dBH2Ah"
 		property "sonar.projectName", "fettuccini"
 	}
 }
