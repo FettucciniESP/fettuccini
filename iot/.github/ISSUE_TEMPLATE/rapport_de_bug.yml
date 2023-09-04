@@ -1,0 +1,31 @@
+name: Rapport de bug
+description: Un problème dans le logiciel
+title: "bug: "
+labels: [type/bug]
+body:
+  - type: checkboxes
+    id: needs
+    attributes:
+      label: Localisation du bug
+      description: Dans quel environement le bug a été vu
+      options:
+        - label: Production
+        - label: Développement
+        - label: Figma/Design
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: Details
+      description: Détaillez le bug qui a été vu
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Comment reproduire le bug
+      placeholder: "1. démarrer l'application\n2. Cliquer ...\n3. Faire ..."
+    validations:
+      required: true
