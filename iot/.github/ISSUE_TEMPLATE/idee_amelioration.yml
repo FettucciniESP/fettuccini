@@ -1,0 +1,21 @@
+name: Fonctionalité
+description: Une nouvelle fonctionalité ou amélioration d'un élément du logiciel
+title: "amélioration: "
+labels: []
+body:
+  - type: checkboxes
+    id: needs
+    attributes:
+      label: Besoins de la fonctionalité
+      description: Indiquez quelle sont les besoins pour la fonctionalité
+      options:
+        - label: Code
+        - label: Design
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: Details
+      description: Détaillez la fonctionnalité voulu
+    validations:
+      required: false

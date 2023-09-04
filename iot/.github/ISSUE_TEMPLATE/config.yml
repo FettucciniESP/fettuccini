@@ -1,0 +1,6 @@
+# fichier non pris en compte pour le moment :(
+blank_issues_enabled: false
+contact_links:
+  - name: Discussions sur Git & Discord
+    url: https://discord.gg/TWKy76TptD
+    about: Pour discuter du projet on priorise le direct si possible :D

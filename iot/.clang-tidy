@@ -1,0 +1,7 @@
+# Clangtidy configuration file (not used until PIO 6)
+---
+Checks: 'abseil-*,boost-*,bugprone-*,cert-*,cppcoreguidelines-*,clang-analyzer-*,google-*,hicpp-*,modernize-*,performance-*,portability-*,readability-*,-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-modernize-use-trailing-return-type,-cppcoreguidelines-init-variables'
+WarningsAsErrors: false
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+FormatStyle: google
