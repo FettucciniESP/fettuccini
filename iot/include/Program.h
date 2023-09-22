@@ -6,6 +6,7 @@
 #include <SPI.h>
 
 #include "OledScreen.h"
+#include "NfcReader.h"
 
 class Program {
 public:
@@ -22,6 +23,7 @@ public:
 
 private:
     OledScreen *screen;
+    NfcReader* NFC;
 };
 
 #endif

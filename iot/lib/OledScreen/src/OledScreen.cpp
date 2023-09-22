@@ -75,3 +75,15 @@ void OledScreen::wifiWaiting() {
 void OledScreen::clear() {
     this->display->clearDisplay();
 }
+
+
+void OledScreen::setTagNB(int nb){
+    this->display->clearDisplay();
+    this->display->setCursor(0, 0);
+    this->display->setTextSize(2);
+    this->display->setTextColor(WHITE);
+    this->display->println(F("NB Jeuton:\n"));
+    this->display->println(nb);
+
+    this->display->display();
+}

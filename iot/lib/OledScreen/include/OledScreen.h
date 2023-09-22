@@ -45,6 +45,13 @@ public:
      */
     void refresh();
 
+    /**
+     * @brief Set the number of Tag
+     *
+     * @param nb of tag
+     */
+    void setTagNB(int nb);
+
 
 private:
 

@@ -6,10 +6,18 @@ Program::Program() {
 
     this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
 
-    this->screen->welcome();
+    //this->screen->welcome();
+
+    this->NFC = new NfcReader();
+    this->NFC->init();
 
 }
 
 void Program::loop() {
-    // Loop
+    NFC->refresh();
+    NFC->printTrame();
+    Serial.println();
+    Serial.println(NFC->getNbTags());
+    this->screen->setTagNB(NFC->getNbTags());
+    delay(200);
 }
