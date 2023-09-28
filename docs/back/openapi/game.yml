@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Poker Game API
+  version: 1.0.0
+
+paths:
+  /game:
+    post:
+      summary: Start a new game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                players:
+                  type: array
+                  items:
+                    type: string
+                schema:
+                  type: object
+                  additionalProperties:
+                    type: integer
+                pot:
+                  type: integer
+      responses:
+        "201":
+          description: Game successfully started
+
+  /game/round:
+    get:
+      summary: Get current round information
+      responses:
+        "200":
+          description: Current round information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  round:
+                    type: integer
+                  dateRoundStarted:
+                    type: string
+                  players:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Player"
+    post:
+      summary: Start a new round
+      responses:
+        "201":
+          description: Round successfully started
+
+  /game/round/end:
+    post:
+      summary: End the current round
+      responses:
+        "200":
+          description: Round successfully ended
+
+  /game/end:
+    post:
+      summary: End the game
+      responses:
+        "200":
+          description: Game successfully ended
+
+  /game/player/{playerName}:
+    parameters:
+      - name: playerName
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get player information
+      responses:
+        "200":
+          description: Player information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+    put:
+      summary: Update player information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Player"
+      responses:
+        "200":
+          description: Player information successfully updated
+
+  /game/deck/shuffle:
+    post:
+      summary: Shuffle the deck
+      responses:
+        "200":
+          description: Deck successfully shuffled
+
+  /game/player/{playerName}/hand:
+    parameters:
+      - name: playerName
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Get the cards in a player's hand
+      responses:
+        "200":
+          description: Player's hand information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hand"
+    post:
+      summary: Deal a card to a player's hand
+      responses:
+        "201":
+          description: Card successfully dealt to player's hand
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        name:
+          type: string
+        seat:
+          type: integer
+        hand:
+          $ref: "#/components/schemas/Hand"
+        bet:
+          type: integer
+        status:
+          type: string
+          enum: [FOLD, CHECK, RAISE, BET]
+
+    Hand:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/Card"
+
+    Card:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [TWO_HEARTS, ..., ACE_SPADES]
+        value:
+          type: integer
