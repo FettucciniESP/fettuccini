@@ -1,10 +1,10 @@
 import styles from './page.module.css'
-import { Flex, Image } from '@chakra-ui/react'
+import Croupier from '@/View/Croupier/Croupier'
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      
+      <Croupier />
     </main>
   )
 }
