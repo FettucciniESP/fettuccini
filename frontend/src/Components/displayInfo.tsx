@@ -1,6 +1,6 @@
 import { Box, Text } from '@chakra-ui/react'
 
-export default function DisplayInfo() {
+export default function DisplayInfo(Title: string, info: any) {
   return (
     <Box
       w={230}
@@ -10,14 +10,14 @@ export default function DisplayInfo() {
       paddingInline={2}
       paddingBlock={2}
     >
-      <Text fontSize={12}>Niveau en cours :</Text>
+      <Text fontSize={12}>{Title}</Text>
       <Text
         paddingTop={10}
         display={'flex'}
         justifyContent={'center'}
         fontSize={20}
       >
-        2
+        {info}
       </Text>
     </Box>
   )
