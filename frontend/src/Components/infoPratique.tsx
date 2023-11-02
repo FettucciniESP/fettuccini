@@ -1,8 +1,8 @@
-import { Level } from '@/app/models/level'
+import { LevelInfos } from '@/app/models/level'
 import { Box } from '@chakra-ui/react'
 import { Text, Stack } from '@chakra-ui/react'
 
-export default function InfoPratique(infolevel: Level) {
+export default function InfoPratique(infolevel: LevelInfos) {
   return (
     <Box
       w={'26%'}
@@ -14,12 +14,15 @@ export default function InfoPratique(infolevel: Level) {
       {/* Niveau suivant */}
       <Stack spacing={2} direction="row">
         <Text as={'b'}>Niveau suivant : </Text>
-        <Text>{infolevel.nextLevel}</Text>
+        <Text>{infolevel.index}</Text>
       </Stack>
       {/* Blinds */}
       <Stack spacing={2} direction="row" paddingBlock={20}>
         <Text as={'b'}>small Blind / Big blind / ante : </Text>
-        <Text>{infolevel.sb} / {infolevel.bb} / {infolevel.ante}</Text>
+        <Text>
+          {infolevel.smallBlindValue} / {infolevel.bingBlindValue} /{' '}
+          {infolevel.anteValue}
+        </Text>
       </Stack>
       {/* Temps du niveau */}
       <Stack spacing={2} direction="row">
