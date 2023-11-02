@@ -1,7 +1,7 @@
-export class Level {
-    sb: number;
-    bb: number;
-    ante: number;
-    time: number;
-    nextLevel: number;
+export class LevelInfos {
+  smallBlindValue: number
+  bingBlindValue: number
+  anteValue: number
+  time: number
+  index: number
 }
