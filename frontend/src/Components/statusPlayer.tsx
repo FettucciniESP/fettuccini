@@ -1,8 +1,8 @@
 import { GameAction } from '@/app/models/Game'
-import { GameInfo } from '@/app/models/Player'
+import { PlayersInfo } from '@/app/models/Player'
 import { Box, Text } from '@chakra-ui/react'
 
-export default function StatusPlayer(gameInfo: GameInfo) {
+export default function StatusPlayer(playersInfo: PlayersInfo) {
   return (
     <Box
       w={'30%'}
@@ -31,11 +31,13 @@ export default function StatusPlayer(gameInfo: GameInfo) {
         paddingBlock={30}
         borderBottomRadius={5}
         paddingLeft={30}
+        h={400}
+        maxH={400}
       >
-        {gameInfo.players.map((value, index) => (
+        {playersInfo.players.map((value, index) => (
           <Box
             key={index}
-            paddingBottom={10}
+            paddingBottom={20}
             display={'flex'}
             flexDirection={'row'}
           >

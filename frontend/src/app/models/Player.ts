@@ -1,12 +1,11 @@
-import { GameAction } from "./Game";
-
+import { GameAction } from './Game'
 
 export class PlayerInfo {
-    lastAction: GameAction;
-    siege: number;
-    LastBet: number;
+  lastAction: GameAction
+  siege: number
+  LastBet: number
 }
 
 export class PlayersInfo {
-    Game: PlayerInfo[];
+  players: PlayerInfo[]
 }
