@@ -2,7 +2,7 @@ import { LevelInfos } from '@/app/models/level'
 import { Box } from '@chakra-ui/react'
 import { Text, Stack } from '@chakra-ui/react'
 
-export default function TournamentInfo(infolevel: LevelInfos) {
+export default function NextLevelInfos(levelInfos: LevelInfos) {
   return (
     <Box
       w={'26%'}
@@ -14,20 +14,20 @@ export default function TournamentInfo(infolevel: LevelInfos) {
       {/* Niveau suivant */}
       <Stack spacing={2} direction="row">
         <Text as={'b'}>Niveau suivant : </Text>
-        <Text>{infolevel.index}</Text>
+        <Text>{levelInfos.index}</Text>
       </Stack>
       {/* Blinds */}
       <Stack spacing={2} direction="row" paddingBlock={20}>
         <Text as={'b'}>small Blind / Big blind / ante : </Text>
         <Text>
-          {infolevel.smallBlindValue} / {infolevel.bingBlindValue} /{' '}
-          {infolevel.anteValue}
+          {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /{' '}
+          {levelInfos.anteValue}
         </Text>
       </Stack>
       {/* Temps du niveau */}
       <Stack spacing={2} direction="row">
         <Text as={'b'}>Temps du niveau : </Text>
-        <Text>{infolevel.time} minutes </Text>
+        <Text>{levelInfos.time} minutes </Text>
       </Stack>
     </Box>
   )
