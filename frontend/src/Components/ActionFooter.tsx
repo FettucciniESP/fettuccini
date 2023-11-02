@@ -6,7 +6,7 @@ import Image from 'next/image'
 export default function ActionFooter() {
   return (
     <ChakraProvider>
-      <Box bg="#142530" borderTop={20} borderColor="#F7F0E1" height="auto">
+      <Box bg="#142530" borderTopWidth={2} borderColor="#F7F0E1" height="auto">
         <Box display="flex">
           <Box
             w={1 / 4}
