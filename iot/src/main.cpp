@@ -14,7 +14,7 @@
 
 #include <Arduino.h>
 /****************************************************************************************************************************
-  UDPSendReceive.ino - Simple Arduino web server sample for ESP8266/ESP32 AT-command shield
+  BasicHttpClient.ino - Simple Arduino web server sample for Ethernet shield
 
   For Ethernet shields using WT32_ETH01 (ESP32 + LAN8720)
 
@@ -31,33 +31,26 @@
 #define _ETHERNET_WEBSERVER_LOGLEVEL_       3
 
 #include <WebServer_WT32_ETH01.h>
+#include <HTTPClient.h>
 
 // Select the IP address according to your local network
 IPAddress myIP(192, 168, 0, 2);
-IPAddress myGW(192, 168, 0, 254);
+IPAddress myGW(192, 168, 0, 255);
 IPAddress mySN(255, 255, 255, 0);
 
 // Google DNS Server IP
-IPAddress myDNS(8, 8, 8, 8);
-
-unsigned int localPort = 8080;    //10002;  // local port to listen on
-
-char packetBuffer[255];          // buffer to hold incoming packet
-byte ReplyBuffer[] = "ACK";      // a string to send back
-
-// A UDP instance to let us send and receive packets over UDP
-WiFiUDP Udp;
+//IPAddress myDNS(8, 8, 8, 8);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(MONITOR_SPEED);
 
   while (!Serial);
 
   // Using this if Serial debugging is not necessary or not using Serial port
   //while (!Serial && (millis() < 3000));
 
-  Serial.print("\nStarting UDPSendReceive on " + String(ARDUINO_BOARD));
+  Serial.print("\nStarting BasicHttpClient on " + String(ARDUINO_BOARD));
   Serial.println(" with " + String(SHIELD_TYPE));
   Serial.println(WEBSERVER_WT32_ETH01_VERSION);
 
@@ -71,47 +64,46 @@ void setup()
 
   // Static IP, leave without this line to get IP via DHCP
   //bool config(IPAddress local_ip, IPAddress gateway, IPAddress subnet, IPAddress dns1 = 0, IPAddress dns2 = 0);
-  ETH.config(myIP, myGW, mySN, myDNS);
+  ETH.config(myIP, myGW, mySN);
 
   WT32_ETH01_waitForConnect();
-
-  Serial.println(F("\nStarting connection to server..."));
-  // if you get a connection, report back via serial:
-  Udp.begin(localPort);
-
-  Serial.print(F("Listening on port "));
-  Serial.println(localPort);
 }
 
 void loop()
 {
-  // if there's data available, read a packet
-  int packetSize = Udp.parsePacket();
-
-  if (packetSize)
+  if (WT32_ETH01_isConnected())
   {
-    Serial.print(F("Received packet of size "));
-    Serial.println(packetSize);
-    Serial.print(F("From "));
-    IPAddress remoteIp = Udp.remoteIP();
-    Serial.print(remoteIp);
-    Serial.print(F(", port "));
-    Serial.println(Udp.remotePort());
+    HTTPClient http;
 
-    // read the packet into packetBufffer
-    int len = Udp.read(packetBuffer, 255);
+    Serial.print("[HTTP] begin...\n");
+    // configure traged server and url
+    //http.begin("https://www.howsmyssl.com/a/check", ca); //HTTPS
+    http.begin("http://example.com/index.html"); //HTTP
 
-    if (len > 0)
+    Serial.print("[HTTP] GET...\n");
+    // start connection and send HTTP header
+    int httpCode = http.GET();
+
+    // httpCode will be negative on error
+    if (httpCode > 0)
     {
-      packetBuffer[len] = 0;
+      // HTTP header has been send and Server response header has been handled
+      Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+
+      // file found at server
+      if (httpCode == HTTP_CODE_OK)
+      {
+        String payload = http.getString();
+        Serial.println(payload);
+      }
+    }
+    else
+    {
+      Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
     }
 
-    Serial.println(F("Contents:"));
-    Serial.println(packetBuffer);
-
-    // send a reply, to the IP address and port that sent us the packet we received
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-    Udp.write(ReplyBuffer, sizeof(ReplyBuffer));
-    Udp.endPacket();
+    http.end();
   }
+
+  delay(5000);
 }
