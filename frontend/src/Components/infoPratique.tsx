@@ -2,7 +2,7 @@ import { LevelInfos } from '@/app/models/level'
 import { Box } from '@chakra-ui/react'
 import { Text, Stack } from '@chakra-ui/react'
 
-export default function InfoPratique(infolevel: LevelInfos) {
+export default function TournamentInfo(infolevel: LevelInfos) {
   return (
     <Box
       w={'26%'}
