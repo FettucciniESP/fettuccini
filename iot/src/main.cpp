@@ -14,7 +14,7 @@
 
 #include <Arduino.h>
 /****************************************************************************************************************************
-  BasicHttpClient.ino - Simple Arduino web server sample for Ethernet shield
+  WebClient.ino - Simple Arduino web server sample for Ethernet shield
 
   For Ethernet shields using WT32_ETH01 (ESP32 + LAN8720)
 
@@ -31,26 +31,30 @@
 #define _ETHERNET_WEBSERVER_LOGLEVEL_       3
 
 #include <WebServer_WT32_ETH01.h>
-#include <HTTPClient.h>
 
 // Select the IP address according to your local network
 IPAddress myIP(192, 168, 0, 2);
-IPAddress myGW(192, 168, 0, 255);
+IPAddress myGW(192, 168, 0, 254);
 IPAddress mySN(255, 255, 255, 0);
 
-// Google DNS Server IP
-//IPAddress myDNS(8, 8, 8, 8);
+
+
+IPAddress server(192, 168, 0, 1);
+
+
+// Initialize the Ethernet client object
+WiFiClient client;
 
 void setup()
 {
-  Serial.begin(MONITOR_SPEED);
+  Serial.begin(115200);
 
   while (!Serial);
 
   // Using this if Serial debugging is not necessary or not using Serial port
   //while (!Serial && (millis() < 3000));
 
-  Serial.print("\nStarting BasicHttpClient on " + String(ARDUINO_BOARD));
+  Serial.print("\nStarting WebClient on " + String(ARDUINO_BOARD));
   Serial.println(" with " + String(SHIELD_TYPE));
   Serial.println(WEBSERVER_WT32_ETH01_VERSION);
 
@@ -67,43 +71,47 @@ void setup()
   ETH.config(myIP, myGW, mySN);
 
   WT32_ETH01_waitForConnect();
+
+  Serial.println();
+  Serial.println(F("Starting connection to server..."));
+
+  // if you get a connection, report back via serial
+  if (client.connect(server, 8090))
+  {
+    Serial.println(F("Connected to server"));
+    // Make a HTTP request
+    client.println(F("GET /api/collections/card_log/records HTTP/1.1"));
+    client.println(F("Host: 192.168.0.1"));
+    client.println(F("Connection: close"));
+    client.println();
+  }
+}
+
+void printoutData()
+{
+  // if there are incoming bytes available
+  // from the server, read them and print them
+  while (client.available())
+  {
+    char c = client.read();
+    Serial.write(c);
+    Serial.flush();
+  }
 }
 
 void loop()
 {
-  if (WT32_ETH01_isConnected())
+  printoutData();
+
+  // if the server's disconnected, stop the client
+  if (!client.connected())
   {
-    HTTPClient http;
+    Serial.println();
+    Serial.println(F("Disconnecting from server..."));
+    client.stop();
 
-    Serial.print("[HTTP] begin...\n");
-    // configure traged server and url
-    //http.begin("https://www.howsmyssl.com/a/check", ca); //HTTPS
-    http.begin("http://example.com/index.html"); //HTTP
-
-    Serial.print("[HTTP] GET...\n");
-    // start connection and send HTTP header
-    int httpCode = http.GET();
-
-    // httpCode will be negative on error
-    if (httpCode > 0)
-    {
-      // HTTP header has been send and Server response header has been handled
-      Serial.printf("[HTTP] GET... code: %d\n", httpCode);
-
-      // file found at server
-      if (httpCode == HTTP_CODE_OK)
-      {
-        String payload = http.getString();
-        Serial.println(payload);
-      }
-    }
-    else
-    {
-      Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-    }
-
-    http.end();
+    // do nothing forevermore
+    while (true)
+      yield();
   }
-
-  delay(5000);
 }
