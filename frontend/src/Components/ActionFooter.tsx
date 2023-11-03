@@ -2,7 +2,7 @@ import { Box, Button, ChakraProvider, Stack } from '@chakra-ui/react'
 
 import imageJeton from '@/images/jeton_poker_v3_Blanc.png'
 import Image from 'next/image'
-import { PlayerInfos } from '@/app/models/player'
+import { PlayerInfos } from '@/app/models/playerInfos'
 
 export default function ActionFooter(playerInfos: PlayerInfos) {
   return (
