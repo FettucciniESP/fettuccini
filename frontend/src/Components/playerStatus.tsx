@@ -1,5 +1,5 @@
 import { GameAction } from '@/app/Enums/GameAction'
-import { PlayersHandInfos } from '@/app/models/PlayerHandInfos'
+import { PlayersHandInfos } from '@/app/models/playerHandInfos'
 import { Box, Text } from '@chakra-ui/react'
 
 export default function PlayerStatus(playersHandInfos: PlayersHandInfos) {
