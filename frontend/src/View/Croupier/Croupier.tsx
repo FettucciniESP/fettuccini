@@ -1,5 +1,5 @@
 import ActionFooter from '../../components/ActionFooter'
-import { PlayerInfos } from '@/app/models/player'
+import { PlayerInfos } from '@/app/models/playerInfos'
 import { Box } from '@chakra-ui/react'
 
 const playerInfos: PlayerInfos = {
