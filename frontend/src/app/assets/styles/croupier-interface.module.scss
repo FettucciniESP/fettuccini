@@ -1,6 +1,7 @@
+@import "variables";
 .main {
   min-height: 100vh;
-  background-color: #182E3B;
+  background-color: $blue-color;
   background-image: url(../images/jeton_poker_v3_Bleu.png);
   background-size: 40vh;
   background-repeat: no-repeat;

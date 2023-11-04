@@ -1,6 +1,6 @@
-export enum GameAction {
+export enum GameActionEnum {
     FOLD="fold",
     CHECK="check",
     BET="bet",
-    ALLIN='all-in',
+    ALL_IN='all-in',
 }

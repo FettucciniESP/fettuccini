@@ -1,0 +1,54 @@
+@import '../../assets/styles/variables.scss';
+.actionFooter {
+  position: absolute;
+  width: 100vw;
+  bottom: 0;
+}
+
+.footerContent {
+  background-color: $dark-blue-color;
+  border-top-width: 2px;
+  border-color: $white-color;
+  height: 20vh;
+}
+
+.titleBox {
+  display: flex;
+}
+
+.title {
+  width: 25%;
+  padding: 2px;
+  text-align: center;
+  color: $blue-color;
+  font-size: 1.5em;
+  background-color: $white-color;
+  border-radius: 0px;
+  border-bottom-right-radius: 20px;
+}
+
+.playerInfos {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 16.666%;
+}
+
+.playerStack {
+  color: $white-color;
+  font-size: 1.5em;
+}
+
+.buttonStack {
+  align-items: center;
+  justify-content: space-evenly;
+  padding-top: 5vh;
+}
+
+.button {
+  width: 16.666%;
+  background-color: $white-color;
+  color: $blue-color;
+  font-size: large;
+  font-weight: 500;
+}
