@@ -1,17 +1,8 @@
 @import '../../assets/styles/variables.scss';
-.container {
-  width: 30%;
-  background-color: $white-color;
-  border-radius: 5px;
-  padding-inline: 2px;
-  padding-block: 2px;
-}
 
 .header,
 .playerList {
-  background-color: $white-color;
   display: flex;
-  padding-block: 30px;
   border-bottom-radius: 5px;
   padding-left: 30px;
   height: 400px;

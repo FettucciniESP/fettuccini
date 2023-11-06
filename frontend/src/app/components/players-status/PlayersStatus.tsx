@@ -2,12 +2,13 @@ import { Box, Text } from '@chakra-ui/react';
 import { PlayerHandInfosModel } from "@/app/models/PlayerHandInfos.model";
 import styles from './PlayersStatus.module.scss';
 import usePlayersStatus from './usePlayersStatus';
+import InformationContainer from "@/app/components/information-container/InformationContainer";
 
 export default function PlayersStatus({ playersHandInfos }: { playersHandInfos: PlayerHandInfosModel[] }) {
   const { getActionIcon } = usePlayersStatus(playersHandInfos);
 
   return (
-      <Box className={styles.container}>
+      <InformationContainer >
         <Box className={styles.header}>
           <Text as={'b'} fontSize={22}>
             Joueurs
@@ -24,6 +25,6 @@ export default function PlayersStatus({ playersHandInfos }: { playersHandInfos: 
               </Box>
           ))}
         </Box>
-      </Box>
+      </InformationContainer>
   );
 }
