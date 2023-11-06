@@ -1,0 +1,15 @@
+@import '../../assets/styles/variables.scss';
+
+.stack {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.paddingBlock {
+  padding-block: 20px;
+}

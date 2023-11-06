@@ -1,0 +1,31 @@
+@import '../../assets/styles/variables.scss';
+
+.header,
+.playerList {
+  display: flex;
+  border-bottom-radius: 5px;
+  padding-left: 30px;
+  height: 400px;
+  max-height: 400px;
+}
+
+.header {
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  border-top-radius: 5px;
+}
+
+.playerList {
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 30px;
+}
+
+.playerItem {
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
