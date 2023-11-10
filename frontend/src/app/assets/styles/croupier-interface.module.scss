@@ -1,8 +1,8 @@
-@import "variables";
+@import 'variables';
 .main {
   min-height: 100vh;
   background-color: $blue-color;
-  background-image: url(../images/jeton_poker_v3_Bleu.png);
+  background-image: $gradient-blue-color, url(../images/jeton_poker_v3_Bleu.png);
   background-size: 40vh;
   background-repeat: no-repeat;
   background-position: center;
