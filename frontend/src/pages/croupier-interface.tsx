@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider, SimpleGrid } from '@chakra-ui/react'
 import styles from '../app/assets/styles/croupier-interface.module.scss'
 import PlayersStatus from '@/app/components/players-status/PlayersStatus'
 import ActionFooter from '@/app/components/action-footer/ActionFooter'
@@ -44,9 +44,18 @@ export default function CroupierInterface() {
   return (
     <ChakraProvider>
       <main className={styles.main}>
-        <PlayersStatus playersHandInfos={mockPlayersHandInfos} />
-        <NextLevelInfos levelInfos={mockLevelInfos} />
-        <ActionFooter playerInfos={mockPlayerInfos} />
+        <Box className={styles.body}>
+          <Box className={styles.firstColumn}></Box>
+          <Box className={styles.secondColumn}>
+            <NextLevelInfos levelInfos={mockLevelInfos} />
+          </Box>
+          <Box className={styles.thirdColumn}>
+            <PlayersStatus playersHandInfos={mockPlayersHandInfos} />
+          </Box>
+        </Box>
+        <Box className={styles.footer}>
+          <ActionFooter playerInfos={mockPlayerInfos} />
+        </Box>
       </main>
     </ChakraProvider>
   )

@@ -1,5 +1,5 @@
 import { Box, Button, Stack } from '@chakra-ui/react'
-import imageJeton from '@/app/assets/images/jeton_poker_v3_Blanc.png'
+import imgPokerChip from '@/app/assets/images/jeton_poker_v3_Blanc.png'
 import Image from 'next/image'
 import { PlayerInfosModel } from '@/app/models/PlayerInfos.model'
 import styles from './ActionFooter.module.scss'
@@ -19,7 +19,7 @@ export default function ActionFooter({ playerInfos }: { playerInfos: PlayerInfos
                   {playerInfos.stack}
                 </Box>
                 <Image
-                  src={imageJeton}
+                  src={imgPokerChip}
                   alt="Jeton"
                   style={{ width: '24px', height: 'auto' }}
                 />
