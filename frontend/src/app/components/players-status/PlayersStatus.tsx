@@ -1,4 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
+import Image from 'next/image'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
 import styles from './PlayersStatus.module.scss'
 import usePlayersStatus from './usePlayersStatus'
@@ -20,7 +21,11 @@ export default function PlayersStatus({
         {playersHandInfos.map((value, index) => (
           <Box key={index} className={styles.playerItem}>
             <Text>Siège {value.siege}</Text>
-            <Text paddingInline={20}>{getActionIcon(value.lastAction)}</Text>
+            <Image
+              src={getActionIcon(value.lastAction)}
+              alt="icone action"
+              style={{ width: 24, height: 'auto' }}
+            />
             <Text> {value.lastAction}</Text>
           </Box>
         ))}
