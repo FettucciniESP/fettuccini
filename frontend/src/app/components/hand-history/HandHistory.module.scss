@@ -1,0 +1,33 @@
+@import '../../assets/styles/variables.scss';
+
+.header,
+.playerList {
+  display: flex;
+  border-bottom-radius: 5px;
+  padding-left: 30px;
+  height: 400px;
+  max-height: 400px;
+  border-color: #f7f0e1;
+}
+
+.header {
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  border-top-radius: 5px;
+  border-color: #f7f0e1;
+}
+
+.historyList {
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 30px;
+}
+
+.historyItem {
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
