@@ -10,36 +10,3 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-
-.body {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 100%;
-  margin: 20px;
-}
-
-.firstColumn,
-.secondColumn,
-.thirdColumn {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  height: 100%;
-}
-
-.firstColumn {
-  width: 30%;
-}
-
-.secondColumn {
-  width: 40%;
-}
-
-.thirdColumn {
-  width: 30%;
-}
-
-.footer {
-}
