@@ -5,6 +5,7 @@ export default function useHandHistory(HandHistoryInfos: HandHistoryModel[]) {
   return {
     getActionIcon: (action: any) => {
       switch (action) {
+        case GameActionEnum.CALL:
         case GameActionEnum.BET:
           return 'IMG_JETON'
         case GameActionEnum.CHECK:

@@ -45,28 +45,28 @@ export default function CroupierInterface() {
   const mockHandHistory: HandHistoryModel[] = [
     {
       siege: 3,
-      action: GameActionEnum.FOLD,
+      action: GameActionEnum.CHECK,
       betValue: 0,
     },
     {
       siege: 4,
       action: GameActionEnum.BET,
-      betValue: 400,
+      betValue: 300,
     },
     {
       siege: 6,
-      action: GameActionEnum.CHECK,
-      betValue: 400,
+      action: GameActionEnum.CALL,
+      betValue: 300,
     },
     {
       siege: 1,
-      action: GameActionEnum.CHECK,
-      betValue: 400,
+      action: GameActionEnum.FOLD,
+      betValue: 0,
     },
     {
       siege: 2,
-      action: GameActionEnum.CHECK,
-      betValue: 400,
+      action: GameActionEnum.CALL,
+      betValue: 300,
     },
   ]
   return (
