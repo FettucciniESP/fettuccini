@@ -1,7 +1,7 @@
 import { GameActionEnum } from '../enums/GameAction.enum'
 
 export interface HandHistoryModel {
-  siege: number
+  seat: number
   action: GameActionEnum
   betValue: number
 }
