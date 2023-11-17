@@ -8,13 +8,9 @@ export default function usePlayersStatus(playersHandInfos: PlayerHandInfosModel[
         const playersListSubscription = playersService.playersList$.subscribe(playersList => {
 
         });
-        const playersListInHandSubscription = playersService.playersListInHand$.subscribe(playersListInHand => {
-
-        });
 
         return () => {
             playersListSubscription.unsubscribe();
-            playersListInHandSubscription.unsubscribe();
         }
     }, []);
 
