@@ -1,0 +1,30 @@
+@import '../../assets/styles/variables.scss';
+.informationPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+  margin: 20px;
+}
+
+.leftInformationPanel,
+.middleInformationPanel,
+.rightInformationPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  height: 100%;
+}
+
+.leftInformationPanel {
+  width: 30%;
+}
+
+.middleInformationPanel {
+  width: 40%;
+}
+
+.rightInformationPanel {
+  width: 30%;
+}

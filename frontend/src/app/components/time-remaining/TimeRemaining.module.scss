@@ -3,6 +3,8 @@
 .container {
   display: 'flex';
   flex-direction: 'column';
+  border: 1px solid $white-color;
+  border-radius: 5px;
 }
 
 .TimerZone {
@@ -18,6 +20,8 @@
 }
 
 .InfoZone {
+  display: flex;
+  flex-direction: row;
   margin: 2px;
   padding: 5px;
   border-bottom: 1px solid $blue-color;

@@ -1,15 +1,12 @@
 @import '../../assets/styles/variables.scss';
 .actionFooter {
-  position: absolute;
   width: 100vw;
-  bottom: 0;
 }
 
 .footerContent {
   background-color: $dark-blue-color;
   border-top-width: 2px;
   border-color: $white-color;
-  height: 20vh;
 }
 
 .titleBox {
@@ -31,7 +28,6 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  width: 16.666%;
 }
 
 .playerStack {
@@ -40,9 +36,9 @@
 }
 
 .buttonStack {
-  align-items: center;
-  justify-content: space-evenly;
-  padding-top: 5vh;
+  align-content: center;
+  justify-content: space-around;
+  padding: 5vh;
 }
 
 .button {
