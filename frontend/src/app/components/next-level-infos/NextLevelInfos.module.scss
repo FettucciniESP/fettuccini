@@ -1,5 +1,10 @@
 @import '../../assets/styles/variables.scss';
 
+.container {
+  border: 1px solid $white-color;
+  border-radius: 5px;
+}
+
 .stack {
   display: flex;
   flex-direction: row;
