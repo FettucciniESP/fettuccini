@@ -22,11 +22,11 @@ export default function usePlayersStatus(playersHandInfos: PlayerHandInfosModel[
     getActionIcon: (action) => {
       switch (action) {
         case GameActionEnum.BET:
-          return require('../../assets/images/jeton_poker_v3_Blanc.png')
+          return require('../../../assets/images/jeton_poker_v3_Blanc.png')
         case GameActionEnum.CHECK:
-          return require('../../assets/images/check.png')
+          return require('../../../assets/images/check.png')
         case GameActionEnum.FOLD:
-          return require('../../assets/images/fold.png')
+          return require('../../../assets/images/fold.png')
         default:
           return ' '
       }
