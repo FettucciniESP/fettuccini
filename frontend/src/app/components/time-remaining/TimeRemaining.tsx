@@ -1,14 +1,21 @@
-import { Box, Text, flexbox } from '@chakra-ui/react'
+import { Box, Center, Text } from '@chakra-ui/react'
 import styles from './TimeRemaining.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
+import { Timer } from './Timer'
+import { useState } from 'react'
 
 export default function TimeRemaining({}: {}) {
+  const [time, setTime] = useState(3605)
+
+  const handleTimeUp = () => {
+    setTime(time + 5)
+  }
+
   return (
     <InformationContainer>
-      {/* Timer */}
       <Box className={styles.container}>
         <Text>Temps restant : </Text>
-        <Text className={styles.Timer}>5:50</Text>
+        <Timer initialTime={time} onTimeUp={handleTimeUp} />
         <Box className={styles.TimerZone}>
           <Box className={styles.InfoZone}>
             <Text className={styles.InfoText}>
