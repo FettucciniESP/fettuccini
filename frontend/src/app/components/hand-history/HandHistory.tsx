@@ -1,4 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
+import Image from 'next/image'
 import styles from './HandHistory.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 import { HandHistoryModel } from '@/app/models/HandHistory.model'
@@ -20,8 +21,12 @@ export default function HandHistory({
       <Box className={styles.historyList}>
         {HandHistoryInfos.map((value, index) => (
           <Box key={index} className={styles.historyItem}>
-            <Text>Siège {value.siege}</Text>
-            <Text paddingInline={20}>{getActionIcon(value.action)}</Text>
+            <Text>Siège {value.seat}</Text>
+            <Image
+              src={getActionIcon(value.action)}
+              alt="icone action"
+              style={{ width: 24, height: 'auto' }}
+            />
             <Text paddingInline={1}>{value.action} </Text>
             <Text> {value.betValue}</Text>
           </Box>

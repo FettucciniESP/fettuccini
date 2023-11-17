@@ -3,7 +3,6 @@
 .header,
 .playerList {
   display: flex;
-  padding-left: 30px;
   border: 1px solid $white-color;
 }
 
@@ -18,6 +17,8 @@
 }
 
 .playerList {
+  padding-left: 30px;
+  padding-block: 30px;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;

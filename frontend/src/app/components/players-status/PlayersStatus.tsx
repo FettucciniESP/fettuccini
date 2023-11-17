@@ -26,7 +26,7 @@ export default function PlayersStatus({
               alt="icone action"
               style={{ width: 24, height: 'auto' }}
             />
-            <Text> {value.lastAction}</Text>
+            <Text paddingInline={1}> {value.lastAction}</Text>
           </Box>
         ))}
       </Box>

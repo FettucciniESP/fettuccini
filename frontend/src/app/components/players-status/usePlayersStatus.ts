@@ -5,7 +5,7 @@ export default function usePlayersStatus(
   playersHandInfos: PlayerHandInfosModel[]
 ) {
   return {
-    getActionIcon: (action) => {
+    getActionIcon: (action: any) => {
       switch (action) {
         case GameActionEnum.BET:
           return require('../../assets/images/jeton_poker_v3_Blanc.png')

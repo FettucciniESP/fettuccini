@@ -7,11 +7,11 @@ export default function useHandHistory(HandHistoryInfos: HandHistoryModel[]) {
       switch (action) {
         case GameActionEnum.CALL:
         case GameActionEnum.BET:
-          return 'IMG_JETON'
+          return require('../../assets/images/jeton_poker_v3_Blanc.png')
         case GameActionEnum.CHECK:
-          return 'IMG_OK'
+          return require('../../assets/images/check.png')
         case GameActionEnum.FOLD:
-          return 'IMG_NOTOK'
+          return require('../../assets/images/fold.png')
         default:
           return ' '
       }
