@@ -21,13 +21,13 @@ export default function HandHistory({
       <Box className={styles.historyList}>
         {HandHistoryInfos.map((value, index) => (
           <Box key={index} className={styles.historyItem}>
-            <Text>Siège {value.seat}</Text>
+            <Text className={styles.historySubItem}>Siège {value.seat}</Text>
             <Image
               src={getActionIcon(value.action)}
               alt="icone action"
-              style={{ width: 24, height: 'auto' }}
+              style={{ width: 24, height: 'auto', marginInlineEnd: 10 }}
             />
-            <Text paddingInline={1}>{value.action} </Text>
+            <Text paddingInlineEnd={1}>{value.action} </Text>
             <Text> {value.betValue}</Text>
           </Box>
         ))}
