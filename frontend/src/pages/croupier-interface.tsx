@@ -11,7 +11,7 @@ import InformationPanel from '@/app/components/information-panel/InformationPane
 
 export default function CroupierInterface() {
   const mockPlayerInfos: PlayerInfosModel = {
-    index: 1,
+    seatIndex: 1,
     stack: 1000,
   }
 

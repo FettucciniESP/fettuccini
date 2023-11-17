@@ -16,7 +16,7 @@ export default function PlayersStatus({playersHandInfos}: { playersHandInfos: Pl
             <Box className={styles.playerList}>
                 {playersHandInfos.map((value, index) => (
                     <Box key={index} className={styles.playerItem}>
-                        <Text>Siège {value.seat}</Text>
+                        <Text>Siège {value.seatIndex}</Text>
                         <Image
                             src={getActionIcon(value.lastAction)}
                             alt="icone action"

@@ -10,7 +10,7 @@ export default function ActionFooter({ playerInfos }: { playerInfos: PlayerInfos
         <Box className={styles.footerContent}>
           <Box className={styles.titleBox}>
             <Box className={styles.title}>
-              Action siege {playerInfos.index}
+              Action siege {playerInfos.seatIndex}
             </Box>
             {playerInfos && (
               <Box className={styles.playerInfos}

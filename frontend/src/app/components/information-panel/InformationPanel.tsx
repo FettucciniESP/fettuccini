@@ -16,19 +16,19 @@ export default function InformationPanel() {
   }
   const mockPlayersHandInfos: PlayerHandInfosModel[] = [
     {
-      seat: 1,
+      seatIndex: 1,
       lastAction: GameActionEnum.BET,
       betValue: 100,
       betIsValid: true,
     },
     {
-      seat: 2,
+      seatIndex: 2,
       lastAction: GameActionEnum.CHECK,
       betValue: 0,
       betIsValid: true,
     },
     {
-      seat: 3,
+      seatIndex: 3,
       lastAction: GameActionEnum.FOLD,
       betValue: 0,
       betIsValid: true,
