@@ -1,9 +1,23 @@
-import { GameActionEnum } from '@/app/enums/GameAction.enum'
-import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
+import { GameActionEnum } from '@/app/enums/GameAction.enum';
+import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
+import { useEffect } from 'react';
+import { playersService } from '@/app/services/Players.service';
 
-export default function usePlayersStatus(
-  playersHandInfos: PlayerHandInfosModel[]
-) {
+export default function usePlayersStatus(playersHandInfos: PlayerHandInfosModel[]) {
+    useEffect(() => {
+        const playersListSubscription = playersService.playersList$.subscribe(playersList => {
+
+        });
+        const playersListInHandSubscription = playersService.playersListInHand$.subscribe(playersListInHand => {
+
+        });
+
+        return () => {
+            playersListSubscription.unsubscribe();
+            playersListInHandSubscription.unsubscribe();
+        }
+    }, []);
+
   return {
     getActionIcon: (action) => {
       switch (action) {
