@@ -3,12 +3,15 @@
 .container {
   border: 1px solid $white-color;
   border-radius: 5px;
+  padding: 5px !important;
 }
 
 .title {
-  font-size: 12;
+  font-size: 12px;
 }
 
 .levelIndex {
   text-align: center;
+  font-size: 40px;
+  font-weight: bold;
 }
