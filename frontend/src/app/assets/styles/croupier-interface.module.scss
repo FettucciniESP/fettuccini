@@ -1,0 +1,12 @@
+@import 'variables';
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $blue-color;
+  background-image: $gradient-blue-color, url(../images/jeton_poker_v3_Bleu.png);
+  background-size: 40vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}

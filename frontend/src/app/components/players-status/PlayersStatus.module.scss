@@ -1,0 +1,35 @@
+@import '../../assets/styles/variables.scss';
+
+.header,
+.playerList {
+  display: flex;
+  padding-left: 30px;
+  border: 1px solid $white-color;
+}
+
+.header {
+  font-size: $font-size-header;
+  font-weight: bold;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.playerList {
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 50vh;
+  overflow: auto;
+  padding-right: 30px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.playerItem {
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
