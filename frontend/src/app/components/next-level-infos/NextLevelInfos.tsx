@@ -1,12 +1,12 @@
 import { Box, Text } from '@chakra-ui/react'
 import styles from './NextLevelInfos.module.scss'
-import { NextLevelInfosModel } from '@/app/models/LevelInfos.model'
+import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 
 export default function NextLevelInfos({
   levelInfos,
 }: {
-  levelInfos: NextLevelInfosModel
+  levelInfos: LevelInfosModel
 }) {
   return (
     <InformationContainer>
