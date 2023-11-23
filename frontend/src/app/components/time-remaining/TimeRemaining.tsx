@@ -4,13 +4,14 @@ import InformationContainer from '@/app/components/information-container/Informa
 import { Timer } from './timer/Timer'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import useTimeRemaining from '@/app/components/time-remaining/useTimeRemaining'
+import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 
 export default function TimeRemaining({
   currentLevelInfos,
-  roundLevelInfo,
+  roundInfos,
 }: {
   currentLevelInfos: LevelInfosModel
-  roundLevelInfo: any //TODO
+  roundInfos: RoundInfosModel
 }) {
   const { time, handleTimeUp } = useTimeRemaining()
 
@@ -31,12 +32,12 @@ export default function TimeRemaining({
           </Box>
           <Box className={styles.infoZone}>
             <Text className={styles.infoText}>BTN : </Text>
-            <Text>{roundLevelInfo.btn}</Text>
+            <Text>Siège {roundInfos.buttonSeatIndex}</Text>
           </Box>
         </Box>
         <Box className={styles.potTotal}>
           <Text>Pot Total :</Text>
-          <Text className={styles.total}> {roundLevelInfo.totalPot}</Text>
+          <Text className={styles.total}>{roundInfos.potAmount}</Text>
         </Box>
       </Box>
     </InformationContainer>
