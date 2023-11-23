@@ -6,10 +6,20 @@ import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import LevelIndex from '../level-index/LevelIndex'
+import TimeRemaining from '../time-remaining/TimeRemaining'
+import {RoundInfosModel} from "@/app/models/RoundInfos.model";
+import {BoardInfosModel} from "@/app/models/BoardInfos.model";
 
 export default function InformationPanel() {
-  const mockLevelInfos: LevelInfosModel = {
+  const mockCurrentLevelInfos: LevelInfosModel = {
     index: 1,
+    smallBlindValue: 5,
+    bingBlindValue: 10,
+    anteValue: 0,
+    time: 10,
+  }
+  const mockNextLevelInfos: LevelInfosModel = {
+    index: 2,
     smallBlindValue: 10,
     bingBlindValue: 20,
     anteValue: 0,
@@ -35,14 +45,26 @@ export default function InformationPanel() {
       betIsValid: true,
     },
   ]
-
+  const mockRoundLInfos: RoundInfosModel = {
+    id: 1,
+    gameId: "string",
+    roundIndex: 1,
+    actions: [],
+    board: [],
+    buttonSeatIndex: 1,
+    potAmount: 10000,
+  }
   return (
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}>
-        <LevelIndex levelInfos={mockLevelInfos} />
+        <LevelIndex levelInfos={mockCurrentLevelInfos} />
       </Box>
       <Box className={styles.middleInformationPanel}>
-        <NextLevelInfos levelInfos={mockLevelInfos} />
+        <TimeRemaining
+          currentLevelInfos={mockCurrentLevelInfos}
+          roundInfos={mockRoundLInfos}
+        />
+        <NextLevelInfos levelInfos={mockNextLevelInfos} />
       </Box>
       <Box className={styles.rightInformationPanel}>
         <PlayersStatus playersHandInfos={mockPlayersHandInfos} />

@@ -1,0 +1,44 @@
+@import '../../assets/styles/variables.scss';
+
+.container {
+  border: 1px solid $white-color;
+  border-radius: 5px;
+}
+
+.timer {
+  display: flex;
+  font-weight: bold;
+  font-size: 10ch;
+  text-align: center;
+  justify-content: center;
+}
+
+.infoZone {
+  display: flex;
+  flex-direction: row;
+  margin: 2px;
+  padding: 5px;
+  border-bottom: 1px solid $blue-color;
+  color: $blue-color;
+}
+
+.infoText {
+  font-weight: bold;
+}
+
+.potTotal {
+  background-color: $blue-color;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  margin: 5px;
+}
+
+.total {
+  padding-left: 2px;
+  font-weight: bold;
+  font-size: xx-large;
+}

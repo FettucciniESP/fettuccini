@@ -22,7 +22,7 @@ export default function NextLevelInfos({
             small Blind / Big blind / ante :{' '}
           </Text>
           <Text>
-            {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /{' '}
+            {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /
             {levelInfos.anteValue}
           </Text>
         </Box>
