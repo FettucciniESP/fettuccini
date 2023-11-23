@@ -1,11 +1,13 @@
 import axios from 'axios'
-import { GameActionEnum } from '../enums/GameAction.enum'
+import { PlayerActionModel } from '../models/PlayerAction.model'
+import { RoundStepEnum } from '../enums/RoundStep.enum'
 
 export default function CroupierLoadingService() {
   async function setPlayerAction(
     idSeat: number,
-    action: GameActionEnum,
-    sessionId: number
+    action: PlayerActionModel,
+    sessionId: number,
+    roundStep: RoundStepEnum
   ) {
     try {
       const response = await axios({
@@ -13,8 +15,10 @@ export default function CroupierLoadingService() {
         url:
           process.env.NEXT_PUBLIC_BASE_API_URL + `/poker/action/${sessionId}`,
         data: {
-          id: idSeat,
-          playerAction: action,
+          roundId: sessionId,
+          seatIndex: idSeat,
+          action: action,
+          roundStep: roundStep,
         },
       })
       return response.data
