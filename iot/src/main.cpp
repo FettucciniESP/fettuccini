@@ -25,20 +25,23 @@
   Licensed under MIT license
  *****************************************************************************************************************************/
 
-#define DEBUG_ETHERNET_WEBSERVER_PORT       Serial
+//#define DEBUG_ETHERNET_WEBSERVER_PORT       Serial
 
 // Debug Level from 0 to 4
-#define _ETHERNET_WEBSERVER_LOGLEVEL_       3
+//#define _ETHERNET_WEBSERVER_LOGLEVEL_       3
 
 #include <WebServer_WT32_ETH01.h>
 #include <HTTPClient.h>
 
 // Select the IP address according to your local network
-IPAddress myIP(192, 168, 0, 2);
+//IPAddress myIP(192, 168, 0, 2);
+IPAddress* myIP;
 IPAddress myGW(192, 168, 0, 254);
 IPAddress mySN(255, 255, 255, 0);
 
 void setup(){
+    myIP = new IPAddress();
+    myIP->fromString(MY_IP);
     Serial.begin(115200);
 
     while (!Serial);
@@ -61,7 +64,7 @@ void setup(){
 
     // Static IP, leave without this line to get IP via DHCP
     //bool config(IPAddress local_ip, IPAddress gateway, IPAddress subnet, IPAddress dns1 = 0, IPAddress dns2 = 0);
-    ETH.config(myIP, myGW, mySN);
+    ETH.config(*myIP, myGW, mySN);
 
     WT32_ETH01_waitForConnect();
 

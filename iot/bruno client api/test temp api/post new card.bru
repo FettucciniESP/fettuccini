@@ -1,0 +1,17 @@
+meta {
+  name: post new card
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://192.168.0.1:8090/api/collections/card_log/records
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "card_id": "16"
+  }
+}

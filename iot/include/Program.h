@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
+//#include <WebServer_WT32_ETH01.h>
+//#include <HTTPClient.h>
 
 #include "OledScreen.h"
 
