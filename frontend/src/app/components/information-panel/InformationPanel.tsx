@@ -5,6 +5,7 @@ import PlayersStatus from '../players-status/PlayersStatus'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
+import LevelIndex from '../level-index/LevelIndex'
 
 export default function InformationPanel() {
   const mockLevelInfos: LevelInfosModel = {
@@ -37,7 +38,9 @@ export default function InformationPanel() {
 
   return (
     <Box className={styles.informationPanel}>
-      <Box className={styles.leftInformationPanel}></Box>
+      <Box className={styles.leftInformationPanel}>
+        <LevelIndex levelInfos={mockLevelInfos} />
+      </Box>
       <Box className={styles.middleInformationPanel}>
         <NextLevelInfos levelInfos={mockLevelInfos} />
       </Box>

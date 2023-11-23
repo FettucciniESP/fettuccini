@@ -1,0 +1,14 @@
+@import '../../assets/styles/variables.scss';
+
+.container {
+  border: 1px solid $white-color;
+  border-radius: 5px;
+}
+
+.title {
+  font-size: 12;
+}
+
+.levelIndex {
+  text-align: center;
+}
