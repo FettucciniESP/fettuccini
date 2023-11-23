@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import Countdown, { zeroPad } from 'react-countdown'
-import styles from './TimeRemaining.module.scss'
+import styles from '../TimeRemaining.module.scss'
 
 export const Timer = ({ initialTime, onTimeUp }) => {
   const [timerKey, setTimerKey] = useState(0)
@@ -16,7 +16,7 @@ export const Timer = ({ initialTime, onTimeUp }) => {
       return null
     } else {
       return (
-        <span className={styles.Timer}>
+        <span className={styles.timer}>
           {hours === 0 ? null : zeroPad(hours) + ':'}
           {zeroPad(minutes)}:{zeroPad(seconds)}
         </span>

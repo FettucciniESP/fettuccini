@@ -1,17 +1,11 @@
 @import '../../assets/styles/variables.scss';
 
 .container {
-  display: 'flex';
-  flex-direction: 'column';
   border: 1px solid $white-color;
   border-radius: 5px;
 }
 
-.TimerZone {
-  display: 'flex';
-}
-
-.Timer {
+.timer {
   display: flex;
   font-weight: bold;
   font-size: 10ch;
@@ -19,7 +13,7 @@
   justify-content: center;
 }
 
-.InfoZone {
+.infoZone {
   display: flex;
   flex-direction: row;
   margin: 2px;
@@ -28,11 +22,11 @@
   color: $blue-color;
 }
 
-.InfoText {
+.infoText {
   font-weight: bold;
 }
 
-.PotTotal {
+.potTotal {
   background-color: $blue-color;
   justify-content: center;
   display: flex;
@@ -43,7 +37,7 @@
   margin: 5px;
 }
 
-.Total {
+.total {
   padding-left: 2px;
   font-weight: bold;
   font-size: xx-large;

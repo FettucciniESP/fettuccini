@@ -51,7 +51,7 @@ export default function InformationPanel() {
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}></Box>
       <Box className={styles.middleInformationPanel}>
-        <TimeRemaining levelInfos={mockCurrentLevelInfo} />
+        <TimeRemaining currentLevelInfos={mockCurrentLevelInfo} />
         <NextLevelInfos levelInfos={mockNextLevelInfos} />
       </Box>
       <Box className={styles.rightInformationPanel}>
