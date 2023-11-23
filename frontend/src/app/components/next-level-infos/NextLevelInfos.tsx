@@ -1,12 +1,12 @@
 import { Box, Text } from '@chakra-ui/react'
 import styles from './NextLevelInfos.module.scss'
-import { LevelInfosModel } from '@/app/models/LevelInfos.model'
+import { NextLevelInfosModel } from '@/app/models/LevelInfos.model'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 
 export default function NextLevelInfos({
   levelInfos,
 }: {
-  levelInfos: LevelInfosModel
+  levelInfos: NextLevelInfosModel
 }) {
   return (
     <InformationContainer>
@@ -22,7 +22,7 @@ export default function NextLevelInfos({
             small Blind / Big blind / ante :{' '}
           </Text>
           <Text>
-            {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /{' '}
+            {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /
             {levelInfos.anteValue}
           </Text>
         </Box>
