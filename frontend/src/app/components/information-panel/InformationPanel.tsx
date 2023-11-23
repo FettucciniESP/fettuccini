@@ -16,14 +16,14 @@ export default function InformationPanel() {
     smallBlindValue: 5,
     bingBlindValue: 10,
     anteValue: 0,
-    time: 10,
+    duration: 10,
   }
   const mockNextLevelInfos: LevelInfosModel = {
     index: 2,
     smallBlindValue: 10,
     bingBlindValue: 20,
     anteValue: 0,
-    time: 10,
+    duration: 10,
   }
   const mockPlayersHandInfos: PlayerHandInfosModel[] = [
     {
