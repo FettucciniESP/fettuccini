@@ -30,7 +30,7 @@ export default function NextLevelInfos({
           <Text as={'b'} className={styles.bold}>
             Temps du niveau :{' '}
           </Text>
-          <Text>{levelInfos.time} minutes </Text>
+          <Text>{levelInfos.duration} minutes </Text>
         </Box>
       </Box>
     </InformationContainer>
