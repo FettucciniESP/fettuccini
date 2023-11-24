@@ -1,6 +1,6 @@
 import {PlayerActionModel} from "@/app/models/PlayerAction.model";
 
-export interface HandPlayersActionsHistoryModel {
+export interface RoundPlayersActionsHistoryModel {
   preflop: PlayerActionModel[] | null
   flop: PlayerActionModel[] | null
   turn: PlayerActionModel[] | null
