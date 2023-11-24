@@ -23,6 +23,8 @@ Program::Program() {
 
     initWiFi();
 
+    this->api = new PokerApi(IP, PORT);
+
 
 //    this->screen->welcome();
 }
@@ -34,5 +36,7 @@ void Program::loop() {
     if(val !="" && val != oldVal){
         Serial.println(val);
         oldVal = val;
+        String cards[] = {val,"4269"};
+        this->api->sendCard("1",cards);
     }
 }
