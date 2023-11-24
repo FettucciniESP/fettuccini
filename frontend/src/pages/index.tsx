@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const Index = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
-    router.replace('/croupier-interface');
-  }, []);
+    router.replace('/home')
+    router.replace('/croupier-interface')
+  }, [])
 
-  return null;
-};
+  return null
+}
 
-export default Index;
+export default Index

@@ -20,8 +20,8 @@ export default function ActionFooter({
           <Box className={styles.title}>Action siege {playerInfos.index}</Box>
           {playerInfos && (
             <Box className={styles.playerInfos}>
-              <Box className={styles.playerStack} paddingInline={1}>
-                {playerInfos.stack}
+              <Box className={styles.playerStack}>
+                Stack : {playerInfos.stack}
               </Box>
               <Image
                 src={imgPokerChip}

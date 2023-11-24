@@ -1,7 +1,7 @@
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
-import { HandHistoryModel } from '@/app/models/HandHistory.model'
+import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
 
-export default function useHandHistory(HandHistoryInfos: HandHistoryModel[]) {
+export default function useHandHistory() {
   return {
     getActionIcon: (action: any) => {
       switch (action) {

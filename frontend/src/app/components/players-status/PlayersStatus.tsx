@@ -24,9 +24,14 @@ export default function PlayersStatus({
             <Image
               src={getActionIcon(value.lastAction)}
               alt="icone action"
-              style={{ width: 24, height: 'auto', marginInlineEnd: 10 }}
+              style={{
+                width: 24,
+                height: 'auto',
+                marginLeft: 10,
+                marginRight: 10,
+              }}
             />
-            <Text paddingInlineEnd={1}> {value.lastAction}</Text>
+            <Text className={styles.lastActionText}> {value.lastAction}</Text>
           </Box>
         ))}
       </Box>
