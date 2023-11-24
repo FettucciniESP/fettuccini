@@ -108,6 +108,12 @@ export default function InformationPanel() {
       cardStatus: '',
     },
     {
+      seat: 0,
+      action: GameActionEnum.NOTHING,
+      betValue: 0,
+      cardStatus: 'FLOP',
+    },
+    {
       seat: 3,
       action: GameActionEnum.CHECK,
       betValue: 0,
