@@ -3,7 +3,7 @@ import styles from './TimeRemaining.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 import { Timer } from './timer/Timer'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
-import useTimeRemaining from '@/app/components/time-remaining/useTimeRemaining'
+import useTimeRemaining from '@/app/components/information-panel/time-remaining/useTimeRemaining'
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 
 export default function TimeRemaining({
