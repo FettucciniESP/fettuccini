@@ -1,5 +1,5 @@
 import { Box, Center, Text } from '@chakra-ui/react'
-import InformationContainer from '../information-container/InformationContainer'
+import InformationContainer from '../../information-container/InformationContainer'
 import styles from './LevelIndex.module.scss'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 

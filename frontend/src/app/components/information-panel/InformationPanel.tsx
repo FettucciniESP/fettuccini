@@ -1,14 +1,14 @@
 import { Box, Text } from '@chakra-ui/react'
 import styles from './InformationPanel.module.scss'
-import NextLevelInfos from '../next-level-infos/NextLevelInfos'
-import PlayersStatus from '../players-status/PlayersStatus'
+import NextLevelInfos from './next-level-infos/NextLevelInfos'
+import PlayersStatus from './players-status/PlayersStatus'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
-import HandHistory from '@/app/components/hand-history/HandHistory'
+import HandHistory from '@/app/components/information-panel/hand-history/HandHistory'
 import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
-import LevelIndex from '../level-index/LevelIndex'
-import TimeRemaining from '../time-remaining/TimeRemaining'
+import LevelIndex from './level-index/LevelIndex'
+import TimeRemaining from './time-remaining/TimeRemaining'
 import { RoundInfosModel } from '@/app/models/RoundInfos.model'
 
 export default function InformationPanel() {
@@ -28,19 +28,19 @@ export default function InformationPanel() {
   }
   const mockPlayersHandInfos: PlayerHandInfosModel[] = [
     {
-      seat: 1,
+      seatIndex: 1,
       lastAction: GameActionEnum.BET,
       betValue: 100,
       betIsValid: true,
     },
     {
-      seat: 2,
+      seatIndex: 2,
       lastAction: GameActionEnum.CHECK,
       betValue: 0,
       betIsValid: true,
     },
     {
-      seat: 3,
+      seatIndex: 3,
       lastAction: GameActionEnum.FOLD,
       betValue: 0,
       betIsValid: true,
