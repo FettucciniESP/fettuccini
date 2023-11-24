@@ -2,9 +2,12 @@
 #define PROGRAM_H
 
 #include <Arduino.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
 #include <Wire.h>
 #include <SPI.h>
 
+#include "NfcModule.h"
 #include "OledScreen.h"
 
 class Program {
@@ -22,6 +25,7 @@ public:
 
 private:
     OledScreen *screen;
+    NfcModule* nfc;
 };
 
 #endif
