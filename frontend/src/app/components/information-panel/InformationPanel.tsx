@@ -10,7 +10,6 @@ import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import LevelIndex from '../level-index/LevelIndex'
 import TimeRemaining from '../time-remaining/TimeRemaining'
 import { RoundInfosModel } from '@/app/models/RoundInfos.model'
-import { BoardInfosModel } from '@/app/models/BoardInfos.model'
 
 export default function InformationPanel() {
   const mockCurrentLevelInfos: LevelInfosModel = {

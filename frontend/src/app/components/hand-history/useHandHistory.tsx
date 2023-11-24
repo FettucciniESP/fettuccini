@@ -1,5 +1,4 @@
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
-import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
 
 export default function useHandHistory() {
   return {

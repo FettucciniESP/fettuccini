@@ -1,9 +1,7 @@
 import { Box, Text } from '@chakra-ui/react'
-import Image from 'next/image'
 import styles from './HandHistory.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
-import useHandHistory from './useHandHistory'
 import HandStepHistory from "@/app/components/hand-history/hand-step-history/HandStepHistory";
 
 export default function HandHistory({
