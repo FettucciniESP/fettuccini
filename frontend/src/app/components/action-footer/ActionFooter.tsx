@@ -3,12 +3,16 @@ import imgPokerChip from '@/app/assets/images/jeton_poker_v3_Blanc.png'
 import Image from 'next/image'
 import { PlayerInfosModel } from '@/app/models/PlayerInfos.model'
 import styles from './ActionFooter.module.scss'
+import useActionFooter from './useActionFooter'
+import { GameActionEnum } from '@/app/enums/GameAction.enum'
 
 export default function ActionFooter({
   playerInfos,
 }: {
   playerInfos: PlayerInfosModel
 }) {
+  const { handleActionButtonClick } = useActionFooter()
+
   return (
     <Box className={styles.actionFooter}>
       <Box className={styles.footerContent}>
@@ -29,10 +33,38 @@ export default function ActionFooter({
         </Box>
 
         <Stack direction="row" className={styles.buttonStack}>
-          <Button className={styles.button}>FOLD</Button>
-          <Button className={styles.button}>CHECK / CALL</Button>
-          <Button className={styles.button}>BET</Button>
-          <Button className={styles.button}>ALL-IN</Button>
+          <Button
+            className={styles.button}
+            onClick={() =>
+              handleActionButtonClick(playerInfos.index, GameActionEnum.FOLD)
+            }
+          >
+            FOLD
+          </Button>
+          <Button
+            className={styles.button}
+            onClick={() =>
+              handleActionButtonClick(playerInfos.index, GameActionEnum.CHECK)
+            }
+          >
+            CHECK / CALL
+          </Button>
+          <Button
+            className={styles.button}
+            onClick={() =>
+              handleActionButtonClick(playerInfos.index, GameActionEnum.BET)
+            }
+          >
+            BET
+          </Button>
+          <Button
+            className={styles.button}
+            onClick={() =>
+              handleActionButtonClick(playerInfos.index, GameActionEnum.ALL_IN)
+            }
+          >
+            ALL-IN
+          </Button>
         </Stack>
       </Box>
     </Box>

@@ -1,15 +1,7 @@
-export interface NextLevelInfosModel {
+export interface LevelInfosModel {
   smallBlindValue: number
   bingBlindValue: number
   anteValue: number
-  time: number
+  duration: number
   index: number
-}
-
-export interface CurrentLevelInfosModel {
-  smallBlindValue: number
-  bingBlindValue: number
-  anteValue: number
-  btn: number
-  totalPot: number
 }
