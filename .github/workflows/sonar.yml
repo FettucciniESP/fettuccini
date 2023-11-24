@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -11,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./backend/backend
     steps:
       - uses: actions/checkout@v3
         with:
@@ -19,7 +22,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       - name: Cache SonarQube packages
         uses: actions/cache@v3
         with:
