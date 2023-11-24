@@ -4,4 +4,5 @@ export enum GameActionEnum {
   BET = 'bet',
   ALL_IN = 'all-in',
   CALL = 'call',
+  NOTHING = '',
 }

@@ -12,7 +12,7 @@ export default function HandHistory({
 }) {
   const { getActionIcon } = useHandHistory(HandHistoryInfos)
   return (
-    <InformationContainer>
+    <InformationContainer children={undefined}>
       <Box className={styles.header}>
         <Text as={'b'} fontSize={22}>
           Historique de la main
@@ -20,15 +20,27 @@ export default function HandHistory({
       </Box>
       <Box className={styles.historyList}>
         {HandHistoryInfos.map((value, index) => (
-          <Box key={index} className={styles.historyItem}>
-            <Text className={styles.historySubItem}>Siège {value.seat}</Text>
-            <Image
-              src={getActionIcon(value.action)}
-              alt="icone action"
-              style={{ width: 24, height: 'auto', marginInlineEnd: 10 }}
-            />
-            <Text paddingInlineEnd={1}>{value.action} </Text>
-            <Text> {value.betValue}</Text>
+          <Box>
+            {value.cardStatus ? (
+              <Box key={index} className={styles.historyItem}>
+                <Text className={styles.historySubItem}>
+                  Siège {value.seat}
+                </Text>
+                <Image
+                  src={getActionIcon(value.action)}
+                  alt="icone action"
+                  style={{ width: 24, height: 'auto', marginInlineEnd: 10 }}
+                />
+                <Text paddingInlineEnd={1}>{value.action} </Text>
+                <Text> {value.betValue}</Text>
+              </Box>
+            ) : (
+              <Box key={index} className={styles.historyItem}>
+                <Text className={styles.historyStatusItem}>
+                  {value.cardStatus}
+                </Text>
+              </Box>
+            )}
           </Box>
         ))}
       </Box>

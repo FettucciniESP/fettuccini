@@ -42,79 +42,100 @@ export default function InformationPanel() {
   ]
   const mockHandHistory: HandHistoryModel[] = [
     {
-      seat: 3,
-      action: GameActionEnum.CHECK,
+      seat: 0,
+      action: GameActionEnum.NOTHING,
       betValue: 0,
-    },
-    {
-      seat: 4,
-      action: GameActionEnum.BET,
-      betValue: 300,
-    },
-    {
-      seat: 6,
-      action: GameActionEnum.CALL,
-      betValue: 300,
-    },
-    {
-      seat: 1,
-      action: GameActionEnum.FOLD,
-      betValue: 0,
-    },
-    {
-      seat: 2,
-      action: GameActionEnum.CALL,
-      betValue: 300,
+      cardStatus: 'PRE-FLOP',
     },
     {
       seat: 3,
       action: GameActionEnum.CHECK,
       betValue: 0,
+      cardStatus: '',
     },
     {
       seat: 4,
       action: GameActionEnum.BET,
       betValue: 300,
+      cardStatus: '',
     },
     {
       seat: 6,
       action: GameActionEnum.CALL,
       betValue: 300,
+      cardStatus: '',
     },
     {
       seat: 1,
       action: GameActionEnum.FOLD,
       betValue: 0,
+      cardStatus: '',
     },
     {
       seat: 2,
       action: GameActionEnum.CALL,
       betValue: 300,
+      cardStatus: '',
     },
     {
       seat: 3,
       action: GameActionEnum.CHECK,
       betValue: 0,
+      cardStatus: '',
     },
     {
       seat: 4,
       action: GameActionEnum.BET,
       betValue: 300,
+      cardStatus: '',
     },
     {
       seat: 6,
       action: GameActionEnum.CALL,
       betValue: 300,
+      cardStatus: '',
     },
     {
       seat: 1,
       action: GameActionEnum.FOLD,
       betValue: 0,
+      cardStatus: '',
     },
     {
       seat: 2,
       action: GameActionEnum.CALL,
       betValue: 300,
+      cardStatus: '',
+    },
+    {
+      seat: 3,
+      action: GameActionEnum.CHECK,
+      betValue: 0,
+      cardStatus: '',
+    },
+    {
+      seat: 4,
+      action: GameActionEnum.BET,
+      betValue: 300,
+      cardStatus: '',
+    },
+    {
+      seat: 6,
+      action: GameActionEnum.CALL,
+      betValue: 300,
+      cardStatus: '',
+    },
+    {
+      seat: 1,
+      action: GameActionEnum.FOLD,
+      betValue: 0,
+      cardStatus: '',
+    },
+    {
+      seat: 2,
+      action: GameActionEnum.CALL,
+      betValue: 300,
+      cardStatus: '',
     },
   ]
 
