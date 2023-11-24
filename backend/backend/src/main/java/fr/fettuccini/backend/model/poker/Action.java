@@ -1,5 +1,6 @@
-package fr.fettuccini.backend.model;
+package fr.fettuccini.backend.model.poker;
 
+import fr.fettuccini.backend.enums.RoundStep;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,7 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class Action {
     private ActionType actionType;
-    private Integer amount; // Amount of money for actions like BET, RAISE. Ignored for FOLD.
+    private Integer amount;
+    private Integer seatIndex;
+    private RoundStep roundStep;
 
     public enum ActionType {
         BET, RAISE, CALL, FOLD, CHECK

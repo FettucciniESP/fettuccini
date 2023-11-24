@@ -1,39 +1,52 @@
-package fr.fettuccini.backend.model;
+package fr.fettuccini.backend.model.poker;
 
+import fr.fettuccini.backend.enums.HandType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @Document
 public class GameSession {
 
     @Id
     private String id;
-
-    private Player player;
+    private LocalDateTime dateGameStarted;
+    private List<Player> players;
     private Deck deck;
     private Board board;
     private List<Round> rounds = new ArrayList<>();
     private GameState gameState;
     private List<HandType> roundResults = new ArrayList<>();
+    private LevelsStructure levelsStructure;
 
-    // Constructor to initialize a new game session
-    public GameSession(Player player) {
-        this.player = player;
+    public GameSession() {
+        this.players = new ArrayList<>();
         this.deck = new Deck(true);
         this.deck.shuffle();
         this.board = new Board();
         this.gameState = GameState.NOT_STARTED;
     }
 
-    public void startGame() {
+    public void startGame() throws IOException {
         this.gameState = GameState.IN_PROGRESS;
+        this.dateGameStarted = LocalDateTime.now();
+
+        List<Player> players = new ArrayList<>();
+         for (int i = 1; i <= 6; i++) {
+             Player player = new Player();
+             player.setName("Seat " + i);
+             player.setSeatIndex(i);
+             player.setBalance(1000);
+             players.add(player);
+         }
+         this.players = players;
         // Further initialization logic if needed
     }
 

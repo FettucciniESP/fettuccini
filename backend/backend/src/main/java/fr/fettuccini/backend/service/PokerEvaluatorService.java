@@ -1,7 +1,7 @@
 package fr.fettuccini.backend.service;
 
-import fr.fettuccini.backend.model.Card;
-import fr.fettuccini.backend.model.HandType;
+import fr.fettuccini.backend.model.poker.Card;
+import fr.fettuccini.backend.enums.HandType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
