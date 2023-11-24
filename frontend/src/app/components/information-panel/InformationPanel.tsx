@@ -2,23 +2,30 @@ import { Box, Text } from '@chakra-ui/react'
 import styles from './InformationPanel.module.scss'
 import NextLevelInfos from '../next-level-infos/NextLevelInfos'
 import PlayersStatus from '../players-status/PlayersStatus'
-import {
-  CurrentLevelInfosModel,
-  NextLevelInfosModel,
-} from '@/app/models/LevelInfos.model'
+import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
 import HandHistory from '@/app/components/hand-history/HandHistory'
 import { HandHistoryModel } from '@/app/models/HandHistory.model'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
+import LevelIndex from '../level-index/LevelIndex'
 import TimeRemaining from '../time-remaining/TimeRemaining'
+import { RoundInfosModel } from '@/app/models/RoundInfos.model'
+import { BoardInfosModel } from '@/app/models/BoardInfos.model'
 
 export default function InformationPanel() {
-  const mockNextLevelInfos: NextLevelInfosModel = {
+  const mockCurrentLevelInfos: LevelInfosModel = {
     index: 1,
+    smallBlindValue: 5,
+    bingBlindValue: 10,
+    anteValue: 0,
+    duration: 10,
+  }
+  const mockNextLevelInfos: LevelInfosModel = {
+    index: 2,
     smallBlindValue: 10,
     bingBlindValue: 20,
     anteValue: 0,
-    time: 10,
+    duration: 10,
   }
   const mockPlayersHandInfos: PlayerHandInfosModel[] = [
     {
@@ -145,21 +152,26 @@ export default function InformationPanel() {
     },
   ]
 
-  const mockCurrentLevelInfo: CurrentLevelInfosModel = {
-    smallBlindValue: 10,
-    bingBlindValue: 20,
-    anteValue: 30,
-    btn: 3,
-    totalPot: 100000,
+  const mockRoundLInfos: RoundInfosModel = {
+    id: 1,
+    gameId: 'string',
+    roundIndex: 1,
+    actions: [],
+    board: [],
+    buttonSeatIndex: 1,
+    potAmount: 10000,
   }
-
   return (
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}>
+        <LevelIndex levelInfos={mockCurrentLevelInfos} />
         <HandHistory HandHistoryInfos={mockHandHistory} />
       </Box>
       <Box className={styles.middleInformationPanel}>
-        <TimeRemaining currentLevelInfos={mockCurrentLevelInfo} />
+        <TimeRemaining
+          currentLevelInfos={mockCurrentLevelInfos}
+          roundInfos={mockRoundLInfos}
+        />
         <NextLevelInfos levelInfos={mockNextLevelInfos} />
       </Box>
       <Box className={styles.rightInformationPanel}>
