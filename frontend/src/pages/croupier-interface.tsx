@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, SimpleGrid } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import styles from '../app/assets/styles/croupier-interface.module.scss'
 import PlayersStatus from '@/app/components/information-panel/players-status/PlayersStatus'
 import ActionFooter from '@/app/components/action-footer/ActionFooter'
