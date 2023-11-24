@@ -20,7 +20,9 @@ export default function ActionFooter({
           <Box className={styles.title}>Action siege {playerInfos.index}</Box>
           {playerInfos && (
             <Box className={styles.playerInfos}>
-              <Box className={styles.playerStack}>{playerInfos.stack}</Box>
+              <Box className={styles.playerStack}>
+                Stack : {playerInfos.stack}
+              </Box>
               <Image
                 src={imgPokerChip}
                 alt="Jeton"
