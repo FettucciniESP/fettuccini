@@ -4,11 +4,12 @@ import NextLevelInfos from '../next-level-infos/NextLevelInfos'
 import PlayersStatus from '../players-status/PlayersStatus'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
+import HandHistory from '@/app/components/hand-history/HandHistory'
+import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import LevelIndex from '../level-index/LevelIndex'
 import TimeRemaining from '../time-remaining/TimeRemaining'
-import {RoundInfosModel} from "@/app/models/RoundInfos.model";
-import {BoardInfosModel} from "@/app/models/BoardInfos.model";
+import { RoundInfosModel } from '@/app/models/RoundInfos.model'
 
 export default function InformationPanel() {
   const mockCurrentLevelInfos: LevelInfosModel = {
@@ -45,9 +46,54 @@ export default function InformationPanel() {
       betIsValid: true,
     },
   ]
+  const mockHandHistory: HandPlayersActionsHistoryModel = {
+    preflop: [
+        {
+            seatIndex: 1,
+            actionType: GameActionEnum.BET,
+            amount: 100,
+        },
+        {
+            seatIndex: 2,
+            actionType: GameActionEnum.CHECK,
+            amount: 0,
+        },
+        {
+            seatIndex: 3,
+            actionType: GameActionEnum.FOLD,
+            amount: 0,
+        },
+    ],
+    flop: [
+        {
+            seatIndex: 1,
+            actionType: GameActionEnum.BET,
+            amount: 100,
+        },
+        {
+            seatIndex: 2,
+            actionType: GameActionEnum.CALL,
+            amount: 100,
+        },
+    ],
+    turn: [
+        {
+            seatIndex: 1,
+            actionType: GameActionEnum.BET,
+            amount: 100,
+        },
+        {
+            seatIndex: 2,
+            actionType: GameActionEnum.FOLD,
+            amount: 0,
+        }
+    ],
+    river: null,
+  }
+
   const mockRoundLInfos: RoundInfosModel = {
     id: 1,
-    gameId: "string",
+    gameId: 'string',
     roundIndex: 1,
     actions: [],
     board: [],
@@ -58,6 +104,7 @@ export default function InformationPanel() {
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}>
         <LevelIndex levelInfos={mockCurrentLevelInfos} />
+        <HandHistory handHistoryInfos={mockHandHistory} />
       </Box>
       <Box className={styles.middleInformationPanel}>
         <TimeRemaining
