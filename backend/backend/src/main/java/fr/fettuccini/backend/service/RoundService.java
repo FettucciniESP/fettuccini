@@ -1,16 +1,21 @@
 package fr.fettuccini.backend.service;
 
+import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
+import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
+import fr.fettuccini.backend.utils.PokerUtils;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class RoundService {
+    @Resource
+    private RoundValidationService roundValidationService;
 
     /**
      * Initializes a new round for a given game session.
@@ -21,12 +26,17 @@ public class RoundService {
     public PlayerActionResponse initializeRoundForGame(GameSession currentGame) {
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
-        Integer buttonSeatIndex = getButtonSeatIndex(currentGame);
+        Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
         Round newRound = new Round().startRound(id, gameId, buttonSeatIndex);
 
-        newRound.setRoundIndex(getRoundIndex(currentGame));
-        newRound.setCurrentLevel(getCurrentLevelByTime(currentGame));
+        newRound.setRoundIndex(PokerUtils.getRoundIndex(currentGame));
+        newRound.setCurrentLevel(PokerUtils.getCurrentLevelByTime(currentGame));
         Action bigBlindAction = applyBlindsToRound(currentGame, newRound);
+        newRound.setNextPlayerToPlaySeatIndex(PokerUtils.getNextPlayerIndex(
+                currentGame.getPlayers().stream().map(Player::getSeatIndex).toList(),
+                bigBlindAction.getSeatIndex())
+        );
+
         currentGame.addRound(newRound);
         return buildPlayerActionResponse(currentGame, newRound, bigBlindAction);
     }
@@ -44,10 +54,11 @@ public class RoundService {
         playerActionResponse.setRoundId(round.getId());
         playerActionResponse.setSessionId(currentGame.getId());
         playerActionResponse.setCurrentPotAmount(round.getPotAmount());
+        playerActionResponse.setRoundStep(round.getRoundStep());
         playerActionResponse.setRoundPlayersActionsHistory(ActionsByRoundStep.buildActionByRoundStepFromActionList(round.getActions()));
 
-        Optional<Player> nextPlayerToPlay = getNextPlayerToPlay(action, currentGame, round);
-        nextPlayerToPlay.ifPresent(playerActionResponse::setCurrentPlayingUserSeatIndex);
+        Optional<Player> nextPlayerToPlay = PokerUtils.getNextPlayerToPlay(action, currentGame, round);
+        nextPlayerToPlay.ifPresent(playerActionResponse::setCurrentPlayingUser);
 
         return playerActionResponse;
     }
@@ -59,28 +70,40 @@ public class RoundService {
      * @param gameSession         The game session in which the action is to be set.
      * @return PlayerActionResponse after setting the player's action.
      */
-    public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession){
+    public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
         Round currentRound = gameSession.getRounds()
                 .stream()
                 .filter(round -> round.getId().equals(playerActionRequest.getRoundId()))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.ROUND_NOT_FOUND,
+                                String.format(PokerExceptionType.ROUND_NOT_FOUND.getMessage(), playerActionRequest.getRoundId())));
+
+        roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
 
         if(playerActionRequest.getAction().getActionType().equals(Action.ActionType.BET)){
             playerMakeABet(
-                    getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
+                    PokerUtils.getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
                     playerActionRequest.getAction(),
                     currentRound
             );
         } else if (playerActionRequest.getAction().getActionType().equals(Action.ActionType.CALL)){
             playerMakeACall(
-                    getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
+                    PokerUtils.getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
                     playerActionRequest.getAction(),
                     currentRound
             );
         } else {
             currentRound.addAction(playerActionRequest.getAction());
         }
+
+        currentRound.setNextPlayerToPlaySeatIndex(
+                PokerUtils.getNextPlayerIndex(
+                gameSession.getPlayers().stream().map(Player::getSeatIndex).toList(),
+                playerActionRequest.getAction().getSeatIndex())
+        );
+
+        manageRoundStepProgression(gameSession, currentRound);
 
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
     }
@@ -95,7 +118,7 @@ public class RoundService {
     public Action applyBlindsToRound(GameSession currentGame, Round currentRound){
         List<Player> players = currentGame.getPlayers();
 
-        Optional<Player> smallBlindPlayer = getSmallBlindPlayer(players, currentRound);
+        Optional<Player> smallBlindPlayer = PokerUtils.getSmallBlindPlayer(players, currentRound);
 
         if(smallBlindPlayer.isPresent()){
             Action smallBlindAction = new Action(Action.ActionType.BET,
@@ -106,7 +129,7 @@ public class RoundService {
             playerMakeABet(smallBlindPlayer.get(), smallBlindAction, currentRound);
         }
 
-        Player bigBlindPlayer = getBigBlindPlayer(players, currentRound).orElseThrow();
+        Player bigBlindPlayer = PokerUtils.getBigBlindPlayer(players, currentRound).orElseThrow();
 
         Integer bigBlindAndAnteAmount = currentRound.getCurrentLevel().getBigBlindAmount() + currentRound.getCurrentLevel().getAnteAmount();
         Action bigBlindAction = new Action(Action.ActionType.BET,
@@ -131,9 +154,30 @@ public class RoundService {
         if(player.getBalance() < betAmount){
             action.setAmount(player.getBalance());
         }
-        player.setBalance(player.getBalance() - action.getAmount());
+        Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
+        player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
         round.addAction(action);
-        round.setPotAmount(round.getPotAmount() + action.getAmount());
+        round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
+    }
+
+    /**
+     * Calculates the amount to decrease from a player's balance based on their action and the current round.
+     * This method considers the amount the player has already put in the pot during the current round step
+     * and subtracts it from the action amount to find the net amount to be deducted from the player's balance.
+     *
+     * @param round  The current round of the game.
+     * @param action The action taken by the player.
+     * @return The net amount to decrease from the player's balance.
+     */
+    private Integer getValueToDecreaseFromPlayerBalance(Round round, Action action){
+        Integer alreadyPutInPotByPlayer = round.getActions()
+                .stream()
+                .filter(action1 -> round.getRoundStep().equals(action1.getRoundStep()))
+                .filter(action1 -> action1.getSeatIndex().equals(action.getSeatIndex()))
+                .mapToInt(Action::getAmount)
+                .sum();
+
+        return action.getAmount() - alreadyPutInPotByPlayer;
     }
 
     /**
@@ -154,228 +198,49 @@ public class RoundService {
         if(player.getBalance() < callAmount){
             action.setAmount(player.getBalance());
         }
-        player.setBalance(player.getBalance() - action.getAmount());
+        Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
+        player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
         round.addAction(action);
-        round.setPotAmount(round.getPotAmount() + action.getAmount());
+        round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
     }
 
     /**
-     * Determines the next player to play based on the current action and game state.
+     * Manages the progression of the round step based on the current state of the game.
+     * It progresses the round through the different stages (Pre-flop, Flop, Turn, River, Showdown)
+     * based on the actions taken by the players.
      *
-     * @param action       The last action taken in the game.
-     * @param currentGame  The current game session.
-     * @param currentRound The current round of the game.
-     * @return An Optional containing the next player to play, if present.
+     * @param currentGame The current game session.
+     * @param round The round whose progression is to be managed.
      */
-    public Optional<Player> getNextPlayerToPlay(Action action, GameSession currentGame, Round currentRound){
-        List<Player> playersWhoDidntFold = getPlayersWithoutFoldThisRound(currentGame, currentRound);
-        Integer nextPlayerIndex = getNextPlayerIndex(getPlayersIndexListFromPlayersList(playersWhoDidntFold),
-                action.getSeatIndex());
-
-        return currentGame
-                .getPlayers()
-                .stream()
-                .filter(player -> player.getSeatIndex().equals(nextPlayerIndex))
-                .findFirst();
-    }
-
-    /**
-     * Retrieves a list of players who haven't folded in the current round.
-     *
-     * @param currentGame  The current game session.
-     * @param currentRound The current round of the game.
-     * @return A list of players who haven't folded.
-     */
-    public List<Player> getPlayersWithoutFoldThisRound(GameSession currentGame, Round currentRound){
-        List<Player> players = currentGame.getPlayers();
-        List<Integer> playersIndex = getPlayersIndexListFromPlayersList(players);
-        List<Player> playersWhoDidntFold = new ArrayList<>();
-
-        for(Action action : currentRound.getActions()){
-            if(action.getActionType().equals(Action.ActionType.FOLD)){
-                playersIndex.remove(action.getSeatIndex());
+    public void manageRoundStepProgression(GameSession currentGame, Round round){
+        if(PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame)){
+            if(round.getRoundStep().equals(RoundStep.PREFLOP)){
+                round.setRoundStep(RoundStep.FLOP);
+            } else if(round.getRoundStep().equals(RoundStep.FLOP)){
+                round.setRoundStep(RoundStep.TURN);
+            } else if(round.getRoundStep().equals(RoundStep.TURN)){
+                round.setRoundStep(RoundStep.RIVER);
+            } else if(round.getRoundStep().equals(RoundStep.RIVER)){
+                round.setRoundStep(RoundStep.SHOWDOWN);
             }
         }
 
-        for(Player player : players){
-            if(playersIndex.contains(player.getSeatIndex())){
-                playersWhoDidntFold.add(player);
-            }
+        if(isRoundFinished(currentGame, round)){
+            round.setRoundStep(RoundStep.FINISHED);
         }
-        return playersWhoDidntFold;
     }
 
     /**
-     * Converts a list of players into a list of their seat indexes.
-     *
-     * @param players The list of players.
-     * @return A list of seat indexes corresponding to the given players.
-     */
-    public List<Integer> getPlayersIndexListFromPlayersList(List<Player> players){
-        return players
-                .stream()
-                .map(Player::getSeatIndex)
-                .toList();
-    }
-
-
-    /**
-     * Determines the seat index for the button (dealer) for the current game.
+     * Determines whether the current round is finished.
+     * A round is considered finished if it reaches the Showdown step or if only one player hasn't folded.
      *
      * @param currentGame The current game session.
-     * @return The seat index where the button should be placed.
+     * @param round The round to be checked for completion.
+     * @return {@code true} if the round is finished, {@code false} otherwise.
      */
-    public Integer getButtonSeatIndex(GameSession currentGame) {
-        List<Integer> playersSeatIndex = getPlayersIndexListFromPlayersList(currentGame.getPlayers());
-
-        Optional<Round> lastRound = currentGame
-                .getRounds()
-                .stream()
-                .max(Comparator.comparingInt(Round::getRoundIndex));
-
-        if(lastRound.isEmpty()) {
-            return getRandomIndexInList(playersSeatIndex);
-        }
-        Integer lastPlayerIndex = lastRound.get().getButtonSeatIndex();
-        return getNextPlayerIndex(playersSeatIndex, lastPlayerIndex);
+    public boolean isRoundFinished(GameSession currentGame, Round round){
+        return round.getRoundStep().equals(RoundStep.SHOWDOWN) ||
+                PokerUtils.getPlayersWithoutFoldThisRound(currentGame, round).size() == 1;
     }
 
-    /**
-     * Selects a random index from a list of integers.
-     *
-     * @param list The list of integers.
-     * @return A randomly selected index from the list.
-     */
-    public Integer getRandomIndexInList(List<Integer> list){
-        Random random = new Random();
-        int randomIndex = random.nextInt(list.size());
-        return list.get(randomIndex);
-    }
-
-    /**
-     * Determines the next player's seat index in a sequential order.
-     *
-     * @param playersSeatIndex A list of seat indexes.
-     * @param lastPlayerIndex  The seat index of the last player.
-     * @return The seat index of the next player.
-     */
-    public static Integer getNextPlayerIndex(List<Integer> playersSeatIndex, Integer lastPlayerIndex){
-        Optional<Integer> maxPlayerIndex = playersSeatIndex
-                .stream()
-                .max(Comparator.comparingInt(Integer::intValue));
-
-        if(maxPlayerIndex.isPresent() && maxPlayerIndex.get().equals(lastPlayerIndex)){
-            return playersSeatIndex
-                    .stream()
-                    .min(Comparator.comparingInt(Integer::intValue))
-                    .orElse(1);
-        }
-
-        return playersSeatIndex
-                .stream()
-                .filter(seatIndex -> seatIndex > lastPlayerIndex)
-                .min(Comparator.comparingInt(Integer::intValue))
-                .orElse(1);
-    }
-
-    /**
-     * Retrieves the player who is assigned to post the small blind in the current round.
-     *
-     * @param players The list of players in the game.
-     * @param round   The current round.
-     * @return An Optional containing the player assigned the small blind, if present.
-     */
-    public Optional<Player> getSmallBlindPlayer(List<Player> players, Round round){
-        return players
-                .stream()
-                .map(Player::getSeatIndex)
-                .filter(seatIndex -> seatIndex.equals(getNextPlayerIndex(getPlayersIndexListFromPlayersList(players), round.getButtonSeatIndex())))
-                .flatMap(seatIndex -> players.stream().filter(player -> player.getSeatIndex().equals(seatIndex)))
-                .findFirst();
-    }
-
-    /**
-     * Retrieves the player who is assigned to post the big blind in the current round.
-     *
-     * @param players The list of players in the game.
-     * @param round   The current round.
-     * @return An Optional containing the player assigned the big blind, if present.
-     */
-    public Optional<Player> getBigBlindPlayer(List<Player> players, Round round){
-        Integer lastPlayerIndex = getSmallBlindPlayer(players, round).isEmpty() ?
-                round.getButtonSeatIndex() : getSmallBlindPlayer(players, round).get().getSeatIndex();
-
-        return players.stream()
-                .map(Player::getSeatIndex)
-                .filter(seatIndex -> seatIndex.equals(getNextPlayerIndex(getPlayersIndexListFromPlayersList(players), lastPlayerIndex)))
-                .flatMap(seatIndex -> players.stream().filter(player -> player.getSeatIndex().equals(seatIndex)))
-                .findFirst();
-    }
-
-    /**
-     * Retrieves the last round of the current game session.
-     *
-     * @param currentGame The current game session.
-     * @return An Optional containing the last round, if it exists.
-     */
-    public Optional<Round> getLastRound(GameSession currentGame) {
-        return currentGame
-                .getRounds()
-                .stream()
-                .max(Comparator.comparingInt(Round::getRoundIndex));
-    }
-
-    /**
-     * Determines the index of the next round in the current game session.
-     *
-     * @param currentGame The current game session.
-     * @return The index of the next round.
-     */
-    public Integer getRoundIndex(GameSession currentGame) {
-        Optional<Round> lastRound = getLastRound(currentGame);
-
-        return lastRound.map(round -> round.getRoundIndex() + 1).orElse(1);
-    }
-
-    /**
-     * Retrieves a player based on their seat index in the current game session.
-     *
-     * @param currentGame The current game session.
-     * @param seatIndex   The seat index of the player.
-     * @return The player with the specified seat index.
-     */
-    public Player getPlayerBySeatIndex(GameSession currentGame, Integer seatIndex){
-        return currentGame
-                .getPlayers()
-                .stream()
-                .filter(player -> player.getSeatIndex().equals(seatIndex))
-                .findFirst()
-                .orElseThrow();
-    }
-
-    /**
-     * Determines the current level of play based on the elapsed time since the start of the game.
-     *
-     * @param currentGame The current game session.
-     * @return The current level of the game.
-     */
-    public Level getCurrentLevelByTime(GameSession currentGame){
-        LocalDateTime now = LocalDateTime.now();
-        Integer totalDuration = 0;
-
-        List<Level> levels = currentGame
-                .getLevelsStructure()
-                .getLevels()
-                .stream()
-                .sorted(Comparator.comparingInt(Level::getRoundIndex))
-                .toList();
-
-        for (Level level : levels) {
-            totalDuration += level.getDuration();
-            if (now.isBefore(currentGame.getDateGameStarted().plusMinutes(totalDuration))) {
-                return level;
-            }
-        }
-        return null;
-    }
 }

@@ -2,6 +2,8 @@ package fr.fettuccini.backend.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.fettuccini.backend.enums.PokerExceptionType;
+import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
 import fr.fettuccini.backend.model.poker.LevelsStructure;
@@ -45,21 +47,25 @@ public class PokerService {
     }
 
 
-    public GameSession endGame(String sessionId) {
+    public GameSession endGame(String sessionId) throws PokerException {
         var gameSession = gameSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("No game session found for the given sessionId"));
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
 
         gameSession.endGame();
 
         return gameSessionRepository.save(gameSession);
     }
 
-    public PlayerActionResponse setPlayerAction(String sessionId, PlayerActionRequest playerActionRequest) {
+    public PlayerActionResponse setPlayerAction(String sessionId, PlayerActionRequest playerActionRequest) throws PokerException {
         var gameSession = gameSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("No game session found for the given sessionId"));
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
 
+        PlayerActionResponse playerActionResponse = roundService.setPlayerAction(playerActionRequest, gameSession);
 
-        return roundService.setPlayerAction(playerActionRequest, gameSession);
+        gameSessionRepository.save(gameSession);
+        return playerActionResponse;
     }
 
     public LevelsStructure initializeLevelsStructureFromJson() throws IOException {

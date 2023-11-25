@@ -19,6 +19,7 @@ public class Round {
     private Integer potAmount;
     private Level currentLevel;
     private RoundStep roundStep;
+    private Integer nextPlayerToPlaySeatIndex;
     public void addAction(Action action) {
         actions.add(action);
     }

@@ -1,5 +1,7 @@
 package fr.fettuccini.backend.controller;
 
+import fr.fettuccini.backend.enums.PokerExceptionType;
+import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
@@ -23,7 +25,7 @@ public class PokerController {
     }
 
     @PostMapping("/start")
-    public GameSession startGame() throws IOException {
+    public GameSession startGame() throws IOException, PokerException {
         return pokerService.startGame();
     }
 
@@ -33,12 +35,12 @@ public class PokerController {
     }
 
     @PostMapping("/end/{sessionId}")
-    public GameSession endGame(@PathVariable String sessionId) {
+    public GameSession endGame(@PathVariable String sessionId) throws PokerException {
         return pokerService.endGame(sessionId);
     }
 
     @PostMapping("/action/{sessionId}")
-    public PlayerActionResponse setPlayerAction(@PathVariable String sessionId, @RequestBody PlayerActionRequest playerActionRequest){
+    public PlayerActionResponse setPlayerAction(@PathVariable String sessionId, @RequestBody PlayerActionRequest playerActionRequest) throws PokerException {
         return pokerService.setPlayerAction(sessionId, playerActionRequest);
     }
     @PostMapping("/card")
