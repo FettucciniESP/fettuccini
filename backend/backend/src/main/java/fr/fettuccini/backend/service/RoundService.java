@@ -81,7 +81,8 @@ public class RoundService {
 
         roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
 
-        if(playerActionRequest.getAction().getActionType().equals(Action.ActionType.BET)){
+        if(playerActionRequest.getAction().getActionType().equals(Action.ActionType.BET) ||
+                playerActionRequest.getAction().getActionType().equals(Action.ActionType.RAISE)){
             playerMakeABet(
                     PokerUtils.getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
                     playerActionRequest.getAction(),
@@ -94,16 +95,21 @@ public class RoundService {
                     currentRound
             );
         } else {
+            Action action = playerActionRequest.getAction();
+            action.setAmount(0);
             currentRound.addAction(playerActionRequest.getAction());
         }
 
+        manageRoundStepProgression(gameSession, currentRound);
+
         currentRound.setNextPlayerToPlaySeatIndex(
                 PokerUtils.getNextPlayerIndex(
-                gameSession.getPlayers().stream().map(Player::getSeatIndex).toList(),
-                playerActionRequest.getAction().getSeatIndex())
+                    PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)
+                        .stream()
+                        .map(Player::getSeatIndex).toList(),
+                        playerActionRequest.getAction().getSeatIndex()
+                )
         );
-
-        manageRoundStepProgression(gameSession, currentRound);
 
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
     }

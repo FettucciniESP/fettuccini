@@ -301,4 +301,21 @@ public class PokerUtils {
                 .max()
                 .orElse(0);
     }
+
+    /**
+     * Calculates the highest bet value placed by a specific player in the current round step.
+     *
+     * @param round The current round of the game.
+     * @param seatIndex The seat index of the player.
+     * @return The highest bet value placed by the player in the current round step.
+     */
+    public static Integer getHighestBetValueForPlayerInCurrentRoundStep(Round round, Integer seatIndex) {
+        return round.getActions()
+                .stream()
+                .filter(action -> action.getRoundStep().equals(round.getRoundStep()))
+                .filter(action -> action.getSeatIndex().equals(seatIndex))
+                .mapToInt(Action::getAmount)
+                .max()
+                .orElse(0);
+    }
 }

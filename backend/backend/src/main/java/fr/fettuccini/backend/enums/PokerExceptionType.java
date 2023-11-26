@@ -11,6 +11,7 @@ public enum PokerExceptionType {
     BAD_ROUND("Round with id %s is not the current round"),
     BAD_ROUND_STEP("Round with id %s is not in step %s"),
     BAD_BET_AMOUNT("Minimum bet amount is %s"),
+    BAD_ACTION_TYPE("Action type %s is not valid"),
     PLAYER_ALREADY_FOLD("Player seat %s already fold"),
     EXPECTED_OTHER_PLAYER_ACTION("Expected player seat %s to make action"),
     ;

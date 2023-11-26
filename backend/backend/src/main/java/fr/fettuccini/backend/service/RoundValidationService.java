@@ -27,6 +27,7 @@ public class RoundValidationService {
         isPlayerActionSamePlayerThanExpected(playerActionRequest, round);
         isPlayerActionSameRoundStepThanExpected(playerActionRequest, round);
         isPlayerStillInTheRound(playerActionRequest, round, currentGame);
+        isPlayerActionTypeValid(playerActionRequest, round);
         isPlayerActionAmountValid(playerActionRequest, round);
     }
 
@@ -40,7 +41,7 @@ public class RoundValidationService {
     private void isPlayerActionSameRoundStepThanExpected(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         if(!playerActionRequest.getAction().getRoundStep().equals(round.getRoundStep())){
             throw new PokerException(PokerExceptionType.BAD_ROUND_STEP,
-                    String.format(PokerExceptionType.BAD_ROUND_STEP.getMessage(), playerActionRequest.getRoundId()));
+                    String.format(PokerExceptionType.BAD_ROUND_STEP.getMessage(), playerActionRequest.getRoundId(), playerActionRequest.getAction().getRoundStep()));
         }
     }
 
@@ -90,6 +91,30 @@ public class RoundValidationService {
     }
 
     /**
+     * Validates if the player's action type is valid for the current state of the round.
+     * This method checks the action type against the round's betting rules to ensure it's a valid move.
+     *
+     * @param playerActionRequest The player action request being validated.
+     * @param round The current round of the game.
+     * @throws PokerException If the player's action type is not valid.
+     */
+    private void isPlayerActionTypeValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
+        Integer highestBetValue = PokerUtils.getHighestBetValueForCurrentRoundStep(round);
+        Integer highestPlayerBetValue = PokerUtils.getHighestBetValueForPlayerInCurrentRoundStep(round, playerActionRequest.getAction().getSeatIndex());
+
+        boolean isValid = switch (playerActionRequest.getAction().getActionType()) {
+            case FOLD, BET, RAISE -> true;
+            case CHECK -> highestBetValue.equals(highestPlayerBetValue);
+            case CALL -> !highestBetValue.equals(highestPlayerBetValue);
+        };
+
+        if(!isValid){
+            throw new PokerException(PokerExceptionType.BAD_ACTION_TYPE,
+                    String.format(PokerExceptionType.BAD_ACTION_TYPE.getMessage(), playerActionRequest.getAction().getActionType()));
+        }
+    }
+
+    /**
      * Validates that the player's action amount is valid.
      *
      * @param playerActionRequest The player action request being validated.
@@ -113,7 +138,9 @@ public class RoundValidationService {
      */
     private void isBetAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         Integer highestBetValue = PokerUtils.getHighestBetValueForCurrentRoundStep(round);
-        if(playerActionRequest.getAction().getAmount() - highestBetValue >= highestBetValue){
+
+        if((playerActionRequest.getAction().getAmount() - highestBetValue >= highestBetValue && !highestBetValue.equals(0)) ||
+                highestBetValue.equals(0) && playerActionRequest.getAction().getAmount() < round.getCurrentLevel().getBigBlindAmount()){
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
                     String.format(PokerExceptionType.BAD_BET_AMOUNT.getMessage(), highestBetValue));
         }
