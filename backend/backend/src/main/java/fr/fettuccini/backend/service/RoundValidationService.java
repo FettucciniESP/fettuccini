@@ -27,7 +27,7 @@ public class RoundValidationService {
         isPlayerActionSamePlayerThanExpected(playerActionRequest, round);
         isPlayerActionSameRoundStepThanExpected(playerActionRequest, round);
         isPlayerStillInTheRound(playerActionRequest, round, currentGame);
-        isPlayerActionAmountValid(playerActionRequest, round, currentGame);
+        isPlayerActionAmountValid(playerActionRequest, round);
     }
 
     /**
@@ -94,10 +94,9 @@ public class RoundValidationService {
      *
      * @param playerActionRequest The player action request being validated.
      * @param round The current round in which the action is being made.
-     * @param currentGame The current game session.
      * @throws PokerException Thrown if the player's action amount is not valid.
      */
-    private void isPlayerActionAmountValid(PlayerActionRequest playerActionRequest, Round round, GameSession currentGame) throws PokerException {
+    private void isPlayerActionAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         switch (playerActionRequest.getAction().getActionType()) {
             case FOLD, CHECK -> playerActionRequest.getAction().getAmount().equals(0);
             case BET, RAISE -> isBetAmountValid(playerActionRequest, round);

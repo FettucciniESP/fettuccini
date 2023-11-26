@@ -13,8 +13,6 @@ public class PokerUtils {
     private PokerUtils() {
     }
 
-    Random random = new Random();
-
     /**
      * Determines the current level of play based on the elapsed time since the start of the game.
      *
