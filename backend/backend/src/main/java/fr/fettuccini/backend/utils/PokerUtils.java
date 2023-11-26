@@ -10,6 +10,11 @@ import java.util.*;
 @Component
 public class PokerUtils {
 
+    private PokerUtils() {
+    }
+
+    Random random = new Random();
+
     /**
      * Determines the current level of play based on the elapsed time since the start of the game.
      *
@@ -126,9 +131,7 @@ public class PokerUtils {
      * @return A randomly selected index from the list.
      */
     public static Integer getRandomIndexInList(List<Integer> list){
-        Random random = new Random();
-        int randomIndex = random.nextInt(list.size());
-        return list.get(randomIndex);
+        return list.stream().unordered().findAny().orElseThrow();
     }
 
     /**
@@ -181,8 +184,14 @@ public class PokerUtils {
      * @return An Optional containing the player assigned the big blind, if present.
      */
     public static Optional<Player> getBigBlindPlayer(List<Player> players, Round round){
-        Integer lastPlayerIndex = getSmallBlindPlayer(players, round).isEmpty() ?
-                round.getButtonSeatIndex() : getSmallBlindPlayer(players, round).get().getSeatIndex();
+        Optional<Player> smallBlindPlayer = getSmallBlindPlayer(players, round);
+        Integer lastPlayerIndex;
+
+        if(smallBlindPlayer.isPresent()){
+            lastPlayerIndex = smallBlindPlayer.get().getSeatIndex();
+        } else {
+            lastPlayerIndex = round.getButtonSeatIndex();
+        }
 
         return players.stream()
                 .map(Player::getSeatIndex)

@@ -1,6 +1,5 @@
 package fr.fettuccini.backend.model.poker;
 
-import fr.fettuccini.backend.model.poker.Card;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

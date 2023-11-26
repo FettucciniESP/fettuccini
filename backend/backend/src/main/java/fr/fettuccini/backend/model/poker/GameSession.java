@@ -34,11 +34,9 @@ public class GameSession {
         this.gameState = GameState.NOT_STARTED;
     }
 
-    public void startGame() throws IOException {
+    public void startGame() {
         this.gameState = GameState.IN_PROGRESS;
         this.dateGameStarted = LocalDateTime.now();
-
-        List<Player> players = new ArrayList<>();
          for (int i = 1; i <= 6; i++) {
              Player player = new Player();
              player.setName("Seat " + i);
@@ -46,8 +44,6 @@ public class GameSession {
              player.setBalance(1000);
              players.add(player);
          }
-         this.players = players;
-        // Further initialization logic if needed
     }
 
     public void endGame() {

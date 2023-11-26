@@ -4,9 +4,11 @@ import fr.fettuccini.backend.enums.RoundStep;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
-public class Action {
+public class Action implements Serializable {
     private ActionType actionType;
     private Integer amount;
     private Integer seatIndex;

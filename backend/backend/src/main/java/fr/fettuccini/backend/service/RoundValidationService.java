@@ -100,9 +100,9 @@ public class RoundValidationService {
     private void isPlayerActionAmountValid(PlayerActionRequest playerActionRequest, Round round, GameSession currentGame) throws PokerException {
         switch (playerActionRequest.getAction().getActionType()) {
             case FOLD, CHECK -> playerActionRequest.getAction().getAmount().equals(0);
-            case BET, RAISE -> isBetAmountValid(playerActionRequest, round, currentGame);
-            case CALL -> isCallAmountValid(playerActionRequest, round, currentGame);
-        };
+            case BET, RAISE -> isBetAmountValid(playerActionRequest, round);
+            case CALL -> isCallAmountValid(playerActionRequest, round);
+        }
     }
 
     /**
@@ -110,10 +110,9 @@ public class RoundValidationService {
      *
      * @param playerActionRequest The player action request being validated.
      * @param round The current round in which the action is being made.
-     * @param currentGame The current game session.
      * @throws PokerException Thrown if the bet amount is not valid.
      */
-    private void isBetAmountValid(PlayerActionRequest playerActionRequest, Round round, GameSession currentGame) throws PokerException {
+    private void isBetAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         Integer highestBetValue = PokerUtils.getHighestBetValueForCurrentRoundStep(round);
         if(playerActionRequest.getAction().getAmount() - highestBetValue >= highestBetValue){
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
@@ -126,10 +125,9 @@ public class RoundValidationService {
      *
      * @param playerActionRequest The player action request being validated.
      * @param round The current round in which the action is being made.
-     * @param currentGame The current game session.
      * @throws PokerException Thrown if the call amount is not valid.
      */
-    private void isCallAmountValid(PlayerActionRequest playerActionRequest, Round round, GameSession currentGame) throws PokerException {
+    private void isCallAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         Integer amountToCall = PokerUtils.getHighestBetValueForCurrentRoundStep(round);
         if(!playerActionRequest.getAction().getAmount().equals(amountToCall)){
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
