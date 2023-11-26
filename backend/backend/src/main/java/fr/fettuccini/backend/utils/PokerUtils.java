@@ -1,5 +1,6 @@
 package fr.fettuccini.backend.utils;
 
+import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.poker.*;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,6 @@ public class PokerUtils {
 
         List<Level> levels = currentGame
                 .getLevelsStructure()
-                .getLevels()
                 .stream()
                 .sorted(Comparator.comparingInt(Level::getRoundIndex))
                 .toList();
@@ -317,5 +317,9 @@ public class PokerUtils {
                 .mapToInt(Action::getAmount)
                 .max()
                 .orElse(0);
+    }
+
+    public static String formatPokerExceptionMessage(PokerExceptionType pokerExceptionType, String message) {
+        return pokerExceptionType.toString() + " : " + message;
     }
 }

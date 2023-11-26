@@ -6,7 +6,6 @@ import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
-import fr.fettuccini.backend.model.poker.LevelsStructure;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
@@ -36,7 +35,7 @@ public class PokerService {
         gameSessionRepository.save(gameSession);
 
         return new StartGameResponse(
-                roundService.initializeRoundForGame(gameSession),
+                playRound(gameSession.getId()),
                 gameSession.getPlayers(),
                 gameSession.getLevelsStructure()
         );
@@ -75,15 +74,13 @@ public class PokerService {
         return playerActionResponse;
     }
 
-    public LevelsStructure initializeLevelsStructureFromJson() throws IOException {
-        LevelsStructure levelsStructure = new LevelsStructure();
+    public List<Level> initializeLevelsStructureFromJson() throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(defaultLevelsStructureFilePath);
         if (inputStream == null) {
             throw new IOException("Le fichier de structure de niveau par défaut est introuvable");
         }
-        levelsStructure.setLevels(mapper.readValue(inputStream, new TypeReference<List<Level>>() {}));
-        return levelsStructure;
+        return (mapper.readValue(inputStream, new TypeReference<List<Level>>() {}));
     }
 }

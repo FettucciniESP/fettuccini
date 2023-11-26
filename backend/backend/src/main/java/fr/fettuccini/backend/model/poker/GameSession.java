@@ -24,7 +24,7 @@ public class GameSession {
     private List<Round> rounds = new ArrayList<>();
     private GameState gameState;
     private List<HandType> roundResults = new ArrayList<>();
-    private LevelsStructure levelsStructure;
+    private List<Level> levelsStructure;
 
     public GameSession() {
         this.players = new ArrayList<>();

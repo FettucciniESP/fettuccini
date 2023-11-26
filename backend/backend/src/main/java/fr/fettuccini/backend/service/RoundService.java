@@ -120,9 +120,8 @@ public class RoundService {
      * @param gameSession The current game session.
      * @param currentRound The current round of the game.
      * @param playerActionRequest The request containing the player's action.
-     * @throws PokerException if the next player cannot be determined.
      */
-    private void updateNextPlayerToPlay(GameSession gameSession, Round currentRound, PlayerActionRequest playerActionRequest) throws PokerException {
+    private void updateNextPlayerToPlay(GameSession gameSession, Round currentRound, PlayerActionRequest playerActionRequest){
         if (hasRoundStepProgressed(currentRound, playerActionRequest)) {
             Integer nextPlayerSeatIndex = findNextActivePlayerFromButton(gameSession, currentRound);
             currentRound.setNextPlayerToPlaySeatIndex(nextPlayerSeatIndex);
@@ -142,7 +141,7 @@ public class RoundService {
      * @return {@code true} if the round step has progressed, {@code false} otherwise.
      */
     private boolean hasRoundStepProgressed(Round currentRound, PlayerActionRequest playerActionRequest) {
-        return currentRound.getRoundStep().equals(playerActionRequest.getAction().getRoundStep());
+        return !currentRound.getRoundStep().equals(playerActionRequest.getAction().getRoundStep());
     }
 
     /**
@@ -151,9 +150,8 @@ public class RoundService {
      * @param gameSession The current game session.
      * @param currentRound The current round of the game.
      * @return The seat index of the next active player.
-     * @throws PokerException if no active player can be found.
      */
-    private Integer findNextActivePlayerFromButton(GameSession gameSession, Round currentRound) throws PokerException {
+    private Integer findNextActivePlayerFromButton(GameSession gameSession, Round currentRound) {
         Integer buttonSeatIndex = currentRound.getButtonSeatIndex();
         List<Integer> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)
                 .stream()

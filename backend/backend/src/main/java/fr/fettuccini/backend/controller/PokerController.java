@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/poker")
-@CrossOrigin
+@CrossOrigin("localhost")
 public class PokerController {
 
     private final PokerService pokerService;
