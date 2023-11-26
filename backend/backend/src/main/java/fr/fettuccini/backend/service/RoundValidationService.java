@@ -123,8 +123,8 @@ public class RoundValidationService {
      */
     private void isPlayerActionAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         switch (playerActionRequest.getAction().getActionType()) {
-            case FOLD, CHECK -> playerActionRequest.getAction().getAmount().equals(0);
             case BET, RAISE -> isBetAmountValid(playerActionRequest, round);
+            case CHECK, FOLD -> playerActionRequest.getAction().setAmount(0);
             case CALL -> isCallAmountValid(playerActionRequest, round);
         }
     }

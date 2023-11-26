@@ -64,54 +64,101 @@ public class RoundService {
     }
 
     /**
-     * Sets a player's action for a given round.
+     * Sets a player's action for a given round in the game session.
      *
      * @param playerActionRequest The request containing the player's action.
-     * @param gameSession         The game session in which the action is to be set.
-     * @return PlayerActionResponse after setting the player's action.
+     * @param gameSession The game session in which the action is to be set.
+     * @return PlayerActionResponse after processing the player's action.
+     * @throws PokerException if any validation fails or the round is not found.
      */
     public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
-        Round currentRound = gameSession.getRounds()
-                .stream()
-                .filter(round -> round.getId().equals(playerActionRequest.getRoundId()))
-                .findFirst()
-                .orElseThrow(() ->
-                        new PokerException(PokerExceptionType.ROUND_NOT_FOUND,
-                                String.format(PokerExceptionType.ROUND_NOT_FOUND.getMessage(), playerActionRequest.getRoundId())));
-
+        Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
         roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
-
-        if(playerActionRequest.getAction().getActionType().equals(Action.ActionType.BET) ||
-                playerActionRequest.getAction().getActionType().equals(Action.ActionType.RAISE)){
-            playerMakeABet(
-                    PokerUtils.getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
-                    playerActionRequest.getAction(),
-                    currentRound
-            );
-        } else if (playerActionRequest.getAction().getActionType().equals(Action.ActionType.CALL)){
-            playerMakeACall(
-                    PokerUtils.getPlayerBySeatIndex(gameSession, playerActionRequest.getAction().getSeatIndex()),
-                    playerActionRequest.getAction(),
-                    currentRound
-            );
-        } else {
-            Action action = playerActionRequest.getAction();
-            action.setAmount(0);
-            currentRound.addAction(playerActionRequest.getAction());
-        }
-
+        processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
-
-        currentRound.setNextPlayerToPlaySeatIndex(
-                PokerUtils.getNextPlayerIndex(
-                    PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)
-                        .stream()
-                        .map(Player::getSeatIndex).toList(),
-                        playerActionRequest.getAction().getSeatIndex()
-                )
-        );
-
+        updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
+    }
+
+    /**
+     * Finds a round by its ID in the given game session.
+     *
+     * @param roundId The ID of the round to find.
+     * @param gameSession The game session containing the round.
+     * @return The found round.
+     * @throws PokerException if the round is not found.
+     */
+    private Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
+        return gameSession.getRounds().stream()
+                .filter(round -> round.getId().equals(roundId))
+                .findFirst()
+                .orElseThrow(() -> new PokerException(PokerExceptionType.ROUND_NOT_FOUND,
+                        String.format(PokerExceptionType.ROUND_NOT_FOUND.getMessage(), roundId)));
+    }
+
+    /**
+     * Processes the player's action based on its type within the current round.
+     *
+     * @param playerActionRequest The request containing the player's action.
+     * @param gameSession The game session in which the action is to be processed.
+     * @param currentRound The current round of the game.
+     */
+    private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
+        Action action = playerActionRequest.getAction();
+        switch (action.getActionType()) {
+            case BET, RAISE -> playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+            case CALL -> playerMakeACall(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+            default -> currentRound.addAction(action);
+        }
+    }
+
+    /**
+     * Updates the next player to play based on the current round step.
+     * If the round has progressed to a new step, the next player is determined from the small blind
+     * or the first player to the left who has not folded.
+     *
+     * @param gameSession The current game session.
+     * @param currentRound The current round of the game.
+     * @param playerActionRequest The request containing the player's action.
+     * @throws PokerException if the next player cannot be determined.
+     */
+    private void updateNextPlayerToPlay(GameSession gameSession, Round currentRound, PlayerActionRequest playerActionRequest) throws PokerException {
+        if (hasRoundStepProgressed(currentRound, playerActionRequest)) {
+            Integer nextPlayerSeatIndex = findNextActivePlayerFromButton(gameSession, currentRound);
+            currentRound.setNextPlayerToPlaySeatIndex(nextPlayerSeatIndex);
+        } else {
+            List<Integer> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)
+                    .stream()
+                    .map(Player::getSeatIndex).toList();
+            currentRound.setNextPlayerToPlaySeatIndex(PokerUtils.getNextPlayerIndex(playersWithoutFold, playerActionRequest.getAction().getSeatIndex()));
+        }
+    }
+
+    /**
+     * Determines if the round step has progressed based on the player's action.
+     *
+     * @param currentRound The current round of the game.
+     * @param playerActionRequest The request containing the player's action.
+     * @return {@code true} if the round step has progressed, {@code false} otherwise.
+     */
+    private boolean hasRoundStepProgressed(Round currentRound, PlayerActionRequest playerActionRequest) {
+        return currentRound.getRoundStep().equals(playerActionRequest.getAction().getRoundStep());
+    }
+
+    /**
+     * Finds the next active player starting from the small blind position.
+     *
+     * @param gameSession The current game session.
+     * @param currentRound The current round of the game.
+     * @return The seat index of the next active player.
+     * @throws PokerException if no active player can be found.
+     */
+    private Integer findNextActivePlayerFromButton(GameSession gameSession, Round currentRound) throws PokerException {
+        Integer buttonSeatIndex = currentRound.getButtonSeatIndex();
+        List<Integer> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)
+                .stream()
+                .map(Player::getSeatIndex).toList();
+        return PokerUtils.getNextPlayerIndex(playersWithoutFold, buttonSeatIndex);
     }
 
     /**
