@@ -9,6 +9,7 @@ import fr.fettuccini.backend.model.poker.Level;
 import fr.fettuccini.backend.model.poker.LevelsStructure;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
+import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,12 +28,18 @@ public class PokerService {
     private final PokerEvaluatorService pokerEvaluatorService;
     private final RoundService roundService;
 
-    public GameSession startGame() throws IOException {
+    public StartGameResponse startGame() throws IOException {
         var gameSession = new GameSession();
         gameSession.startGame();
         gameSession.setLevelsStructure(initializeLevelsStructureFromJson());
 
-        return gameSessionRepository.save(gameSession);
+        gameSessionRepository.save(gameSession);
+
+        return new StartGameResponse(
+                roundService.initializeRoundForGame(gameSession),
+                gameSession.getPlayers(),
+                gameSession.getLevelsStructure()
+        );
     }
 
     public PlayerActionResponse playRound(String sessionId) {

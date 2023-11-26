@@ -7,6 +7,7 @@ import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.request.PlayerCardsRequest;
 import fr.fettuccini.backend.model.request.PlayerChipsRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
+import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.service.PokerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class PokerController {
     }
 
     @PostMapping("/start")
-    public GameSession startGame() throws IOException {
+    public StartGameResponse startGame() throws IOException {
         return pokerService.startGame();
     }
 
