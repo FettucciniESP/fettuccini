@@ -14,7 +14,7 @@ export default function usePlayersStatus(
         case GameActionEnum.FOLD:
           return require('../../../assets/images/fold.png')
         default:
-          return ' '
+          return require('../../../assets/images/check.png')
       }
     },
   }

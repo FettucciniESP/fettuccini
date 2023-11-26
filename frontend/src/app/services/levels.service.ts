@@ -2,8 +2,20 @@ import {BehaviorSubject} from "rxjs";
 import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 
 class LevelsService {
-    private currentLevel = new BehaviorSubject<LevelInfosModel|undefined>(undefined);
-    private nextLevel = new BehaviorSubject<LevelInfosModel|undefined>(undefined);
+    private currentLevel = new BehaviorSubject<LevelInfosModel>({
+        smallBlindValue: 0,
+        bingBlindValue: 0,
+        anteValue: 0,
+        duration: 0,
+        index: 0
+    });
+    private nextLevel = new BehaviorSubject<LevelInfosModel>({
+        smallBlindValue: 0,
+        bingBlindValue: 0,
+        anteValue: 0,
+        duration: 0,
+        index: 0
+    });
 
     currentLevel$ = this.currentLevel.asObservable();
     nextLevel$ = this.nextLevel.asObservable();

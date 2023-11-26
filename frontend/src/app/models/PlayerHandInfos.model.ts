@@ -1,8 +1,8 @@
 import { GameActionEnum } from '../enums/GameAction.enum'
+import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
 
-export interface PlayerHandInfosModel {
+export interface PlayerHandInfosModel extends PlayerInfosModel{
   lastAction: GameActionEnum
-  seatIndex: number
   betValue: number
   betIsValid: boolean
 }

@@ -14,68 +14,48 @@ import {RoundStepEnum} from "@/app/enums/RoundStep.enum";
 import {levelsService} from "@/app/services/levels.service";
 import {playersService} from "@/app/services/players.service";
 import {roundService} from "@/app/services/roundService";
+import {useEffect, useState} from "react";
 
 export default function InformationPanel() {
-    let currentLevelInfos: LevelInfosModel;
-    let nextLevelInfos: LevelInfosModel;
-    let playersHandInfos: PlayerHandInfosModel[];
-    let handPlayersActionsHistory: RoundPlayersActionsHistoryModel;
-    let roundInfos: RoundInfosModel;
-
-    levelsService.currentLevel$.pipe().subscribe((currentLevel: LevelInfosModel) => {
-        return currentLevelInfos = currentLevel;
-    });
-
-    levelsService.nextLevel$.pipe().subscribe((nextLevel: LevelInfosModel) => {
-        return nextLevelInfos = nextLevel;
-    });
-
-    playersService.playersHandInfos$.pipe().subscribe((playersHand: PlayerHandInfosModel[]) => {
-        return playersHandInfos = playersHand;
-    });
-
-    roundService.roundPlayersActionsHistory$.pipe().subscribe((handPlayersActionsHistoryResponse: RoundPlayersActionsHistoryModel) => {
-        return handPlayersActionsHistory = handPlayersActionsHistoryResponse;
-    });
-
-    roundService.roundInfos$.pipe().subscribe((round: RoundInfosModel) => {
-        return roundInfos = round;
-    });
-
-    const mockCurrentLevelInfos: LevelInfosModel = {
-        index: 1,
-        smallBlindValue: 5,
-        bingBlindValue: 10,
+    let currentLevelInfos!: LevelInfosModel;
+    let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel>({
+        smallBlindValue: 0,
+        bingBlindValue: 0,
         anteValue: 0,
-        duration: 10,
-    }
-    const mockNextLevelInfos: LevelInfosModel = {
-        index: 2,
-        smallBlindValue: 10,
-        bingBlindValue: 20,
-        anteValue: 0,
-        duration: 10,
-    }
-    const mockPlayersHandInfos: PlayerHandInfosModel[] = [
-        {
-            seatIndex: 1,
-            lastAction: GameActionEnum.BET,
-            betValue: 100,
-            betIsValid: true,
-        },
-        {
-            seatIndex: 2,
-            lastAction: GameActionEnum.CHECK,
-            betValue: 0,
-            betIsValid: true,
-        },
-        {
-            seatIndex: 3,
-            lastAction: GameActionEnum.FOLD,
-            betValue: 0,
-            betIsValid: true,
-        },
-    ]
+        duration: 0,
+        index: 0
+    });
+    let [handPlayersActionsHistory, setHandPlayersActionsHistory] = useState<RoundPlayersActionsHistoryModel>();
+    let [playersHandInfos, setPlayersHandInfos] = useState<PlayerHandInfosModel[]>([]);
+    let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
+
+    useEffect(() => {
+        const currentLevel_subscribe = levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
+            currentLevelInfos = currentLevel;
+            console.log(currentLevel)
+        });
+        const nextLevel_subscribe = levelsService.nextLevel$.subscribe((nextLevelInfos: LevelInfosModel) => {
+            setNextLevelInfos(nextLevelInfos);
+        });
+        const handPlayersActionsHistory_subscribe = roundService.roundPlayersActionsHistory$.subscribe((handPlayersActionsHistory:RoundPlayersActionsHistoryModel) => {
+            setHandPlayersActionsHistory(handPlayersActionsHistory);
+        });
+        const playersHandInfos_subscribe = playersService.playersHandInfos$.subscribe((playersHand: PlayerHandInfosModel[]) => {
+            setPlayersHandInfos(playersHand);
+        });
+        const roundInfos_subscribe = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel) => {
+            setRoundInfos(roundInfos);
+        });
+
+        return () => {
+            currentLevel_subscribe.unsubscribe();
+            nextLevel_subscribe.unsubscribe();
+            handPlayersActionsHistory_subscribe.unsubscribe();
+            playersHandInfos_subscribe.unsubscribe();
+            roundInfos_subscribe.unsubscribe();
+        }
+    }, []);
+
     const mockHandHistory: RoundPlayersActionsHistoryModel = {
         preflop: [
             {
@@ -140,18 +120,19 @@ export default function InformationPanel() {
     return (
         <Box className={styles.informationPanel}>
             <Box className={styles.leftInformationPanel}>
-                <LevelIndex levelInfos={mockCurrentLevelInfos}/>
-                <HandHistory handHistoryInfos={mockHandHistory}/>
+                {currentLevelInfos && <LevelIndex levelInfos={currentLevelInfos}/>}
+                {mockHandHistory && <HandHistory handHistoryInfos={mockHandHistory}/>}
             </Box>
             <Box className={styles.middleInformationPanel}>
-                <TimeRemaining
-                    currentLevelInfos={mockCurrentLevelInfos}
+                {currentLevelInfos && mockRoundLInfos &&
+                    <TimeRemaining
+                    currentLevelInfos={currentLevelInfos}
                     roundInfos={mockRoundLInfos}
-                />
-                <NextLevelInfos levelInfos={mockNextLevelInfos}/>
+                />}
+                {nextLevelInfos && <NextLevelInfos levelInfos={nextLevelInfos}/>}
             </Box>
             <Box className={styles.rightInformationPanel}>
-                <PlayersStatus playersHandInfos={mockPlayersHandInfos}/>
+                {playersHandInfos && <PlayersStatus playersHandInfos={playersHandInfos}/>}
             </Box>
         </Box>
     )
