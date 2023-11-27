@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
+import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 
-const useTimeRemaining = (timeDuration: number) => {
-  const [time, setTime] = useState<number>(timeDuration*60);
+const useTimeRemaining = (currentLevel: LevelInfosModel) => {
+  const [time, setTime] = useState<number>(currentLevel.duration*60);
 
   const handleTimeUp = (): void => {
-    setTime(timeDuration*60);
+    setTime(currentLevel.duration*60);
   };
 
   return { time, handleTimeUp };

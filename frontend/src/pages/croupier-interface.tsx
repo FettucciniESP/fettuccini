@@ -9,18 +9,36 @@ import { LevelInfosModel } from '@/app/models/LevelInfos.model'
 import NextLevelInfos from '@/app/components/information-panel/next-level-infos/NextLevelInfos'
 import InformationPanel from '@/app/components/information-panel/InformationPanel'
 import {playersService} from "@/app/services/players.service";
+import {useEffect, useState} from "react";
+import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistoryModel";
+import {RoundInfosModel} from "@/app/models/RoundInfos.model";
+import {levelsService} from "@/app/services/levels.service";
+import {roundService} from "@/app/services/roundService";
+import croupierLoadingService from "@/app/services/croupier-loading.service";
+import {useRouter} from "next/router";
 
 export default function CroupierInterface() {
-  let currentPlayerInfo: PlayerInfosModel | undefined;
+  const router = useRouter()
+  let [currentPlayerInfo, setCurrentPlayerInfo] = useState<PlayerInfosModel|undefined>(undefined);
 
-  playersService.currentPlayerInfos$.subscribe((currentPlayer: PlayerInfosModel) => {
-    currentPlayerInfo = currentPlayer;
-  })
+  useEffect(() => {
+    const currentPlayer_subscribe = playersService.currentPlayerInfos$.subscribe((currentPlayer: PlayerInfosModel) => {
+      setCurrentPlayerInfo(currentPlayer);
+    });
+
+    if (!croupierLoadingService.getSessionId()){
+      router.push('/home');
+    }
+
+    return () => {
+      currentPlayer_subscribe.unsubscribe();
+    }
+  }, []);
   return (
     <ChakraProvider>
       <main className={styles.main}>
         <InformationPanel />
-        <ActionFooter playerInfos={currentPlayerInfo!} />
+        {currentPlayerInfo && <ActionFooter playerInfos={currentPlayerInfo} />}
       </main>
     </ChakraProvider>
   )

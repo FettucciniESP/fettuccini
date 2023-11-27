@@ -6,18 +6,16 @@ import {LevelInfosModel} from '@/app/models/LevelInfos.model'
 import {PlayerHandInfosModel} from '@/app/models/PlayerHandInfos.model'
 import HandHistory from '@/app/components/information-panel/hand-history/HandHistory'
 import {RoundPlayersActionsHistoryModel} from '@/app/models/RoundPlayersActionsHistoryModel'
-import {GameActionEnum} from '@/app/enums/GameAction.enum'
 import LevelIndex from './level-index/LevelIndex'
 import TimeRemaining from './time-remaining/TimeRemaining'
 import {RoundInfosModel} from '@/app/models/RoundInfos.model'
-import {RoundStepEnum} from "@/app/enums/RoundStep.enum";
 import {levelsService} from "@/app/services/levels.service";
 import {playersService} from "@/app/services/players.service";
 import {roundService} from "@/app/services/roundService";
 import {useEffect, useState} from "react";
 
 export default function InformationPanel() {
-    let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel|undefined>(undefined);;
+    let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel|undefined>(undefined);
     let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel|undefined>(undefined);
     let [handPlayersActionsHistory, setHandPlayersActionsHistory] = useState<RoundPlayersActionsHistoryModel>();
     let [playersHandInfos, setPlayersHandInfos] = useState<PlayerHandInfosModel[]>([]);

@@ -13,7 +13,7 @@ export default function TimeRemaining({
   currentLevelInfos: LevelInfosModel
   roundInfos: RoundInfosModel
 }) {
-  const { time, handleTimeUp } = useTimeRemaining(currentLevelInfos.duration)
+  const { time, handleTimeUp } = useTimeRemaining(currentLevelInfos)
 
   return (
     <InformationContainer>

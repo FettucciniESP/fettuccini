@@ -4,6 +4,7 @@ import { RoundStepEnum } from '../enums/RoundStep.enum';
 import {BehaviorSubject} from "rxjs";
 import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 import {StartGameResponseModel} from "@/app/models/StartGameResponse.model";
+import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 
 class CroupierService {
   private sessionId!: string;
@@ -28,20 +29,30 @@ class CroupierService {
       const response = await this.axiosInstance.post(`/start`);
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de l'envoi de l'action : ", error);
-      throw new Error("Erreur lors de l'envoi de l'action");
+      console.error("Erreur lors de la création d'une partie : ", error);
+      throw new Error("Erreur lors de la création d'une partie");
     }
   }
 
   async setPlayerAction(
       action: PlayerActionModel,
-      sessionId: string
-  ): Promise<any> {
+      roundId: string
+  ): Promise<RoundInfosModel> {
     try {
-      const response = await this.axiosInstance.post(`/poker/action/${sessionId}`, {
-        roundId: sessionId,
+      const response = await this.axiosInstance.post(`/action/${this.sessionId}`, {
+        roundId: roundId,
         action: action,
       });
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de l'action : ", error);
+      throw new Error("Erreur lors de l'envoi de l'action");
+    }
+  }
+
+  async startNewRound(): Promise<RoundInfosModel> {
+    try {
+      const response = await this.axiosInstance.post(`/playRound/${this.sessionId}`);
       return response.data;
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'action : ", error);

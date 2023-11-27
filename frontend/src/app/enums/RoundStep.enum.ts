@@ -4,5 +4,5 @@ export enum RoundStepEnum {
   TURN = 'TURN',
   RIVER = 'RIVER',
   SHOWDOWN = 'SHOWDOWN',
-  ENDED = 'ENDED',
+  FINISHED = 'FINISHED',
 }

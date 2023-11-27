@@ -17,7 +17,6 @@ class CroupierService {
         playersService.setPlayersHandInfos(startGameResponse.players)
         roundService.setRoundPlayersActionsHistory(startGameResponse.playerActionResponse.roundPlayersActionsHistory)
         roundService.setRoundInfos(startGameResponse.playerActionResponse)
-        console.log(startGameResponse.playerActionResponse)
     }
 }
 
