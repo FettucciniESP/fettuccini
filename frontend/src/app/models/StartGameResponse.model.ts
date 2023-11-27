@@ -1,11 +1,10 @@
 import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
-import {PlayerActionResponseModel} from "@/app/models/PlayerActionResponse.model";
+import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
-import {LevelsStructureModel} from "@/app/models/LevelsStructure.model";
 
 export interface StartGameResponseModel {
-    levelsStructure: LevelsStructureModel
+    levelsStructure: LevelInfosModel[]
     players: PlayerHandInfosModel[]
-    playerActionResponse: PlayerActionResponseModel
+    playerActionResponse: RoundInfosModel
 }

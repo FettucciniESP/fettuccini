@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-const useTimeRemaining = (initialTime: number = 3605) => {
-  const [time, setTime] = useState<number>(initialTime);
+const useTimeRemaining = (timeDuration: number) => {
+  const [time, setTime] = useState<number>(timeDuration*60);
 
   const handleTimeUp = (): void => {
-    setTime(time + 5);
+    setTime(timeDuration*60);
   };
 
   return { time, handleTimeUp };

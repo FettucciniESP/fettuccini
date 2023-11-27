@@ -23,15 +23,15 @@ export default function HandStepHistory({
             {playersActions.map((action, index) => (
                 <Box key={index} className={styles.historyItem}>
                     <Text className={styles.historySubItem}>
-                        Siège {action.seatIndex}
+                        Seat {action.seatIndex}
                     </Text>
                     <Image
                         src={getActionIcon(action.actionType)}
                         alt="icone action"
-                        style={{ width: 24, height: 'auto', marginInlineEnd: 10 }}
+                        className={styles.imgLastAction}
                     />
-                    <Text paddingInlineEnd={1}>{action.actionType} </Text>
-                    {action.amount > 0 ? <Text> {action.amount}</Text> : null}
+                    <Text className={styles.actionType}>{action.actionType} </Text>
+                    {action.amount > 0 ? <Text className={styles.actionType}> {action.amount}</Text> : null}
                 </Box>
             ))}
         </>

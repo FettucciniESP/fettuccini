@@ -13,7 +13,7 @@ export default function TimeRemaining({
   currentLevelInfos: LevelInfosModel
   roundInfos: RoundInfosModel
 }) {
-  const { time, handleTimeUp } = useTimeRemaining()
+  const { time, handleTimeUp } = useTimeRemaining(currentLevelInfos.duration)
 
   return (
     <InformationContainer>
@@ -23,21 +23,21 @@ export default function TimeRemaining({
         <Box>
           <Box className={styles.infoZone}>
             <Text className={styles.infoText}>
-              small blind / big blind / ante :
+              Small Blind / Big Blind / Ante :
             </Text>
             <Text>
-              {currentLevelInfos.smallBlindValue} /
-              {currentLevelInfos.bingBlindValue} /{currentLevelInfos.anteValue}
+              {currentLevelInfos.smallBlind} /
+              {currentLevelInfos.bigBlind} /{currentLevelInfos.ante}
             </Text>
           </Box>
           <Box className={styles.infoZone}>
             <Text className={styles.infoText}>BTN : </Text>
-            <Text>Siège {roundInfos.buttonSeatIndex}</Text>
+            <Text> Seat {}</Text>
           </Box>
         </Box>
         <Box className={styles.potTotal}>
           <Text>Pot Total :</Text>
-          <Text className={styles.total}>{roundInfos.potAmount}</Text>
+          <Text className={styles.total}>{roundInfos.currentPotAmount}</Text>
         </Box>
       </Box>
     </InformationContainer>

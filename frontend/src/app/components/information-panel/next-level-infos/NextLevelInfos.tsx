@@ -13,22 +13,22 @@ export default function NextLevelInfos({
       <Box className={styles.container}>
         <Box className={styles.stack}>
           <Text as={'b'} className={styles.bold}>
-            Niveau suivant :{' '}
+            Niveau suivant :
           </Text>
-          <Text>{levelInfos.index}</Text>
+          <Text>{levelInfos.levelIndex}</Text>
         </Box>
         <Box className={`${styles.stack} ${styles.paddingBlock}`}>
           <Text as={'b'} className={styles.bold}>
-            small Blind / Big blind / ante :{' '}
+            Small Blind / Big Blind / Ante :
           </Text>
           <Text>
-            {levelInfos.smallBlindValue} / {levelInfos.bingBlindValue} /
-            {levelInfos.anteValue}
+            {levelInfos.smallBlind} / {levelInfos.bigBlind} /
+            {levelInfos.ante}
           </Text>
         </Box>
         <Box className={styles.stack}>
           <Text as={'b'} className={styles.bold}>
-            Temps du niveau :{' '}
+            Temps du niveau :
           </Text>
           <Text>{levelInfos.duration} minutes </Text>
         </Box>

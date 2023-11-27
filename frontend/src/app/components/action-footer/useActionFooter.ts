@@ -1,7 +1,7 @@
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import { RoundStepEnum } from '@/app/enums/RoundStep.enum'
 import { PlayerActionModel } from '@/app/models/PlayerAction.model'
-import croupierService from '@/app/services/croupier-loading.service'
+import croupierLoadingService from '@/app/services/croupier-loading.service'
 
 export default function useActionFooter() {
   async function handleActionButtonClick(
@@ -18,9 +18,9 @@ export default function useActionFooter() {
       if (action === GameActionEnum.BET) {
         playerAction.amount = 10
       }
-      croupierService.setPlayerAction(
+      croupierLoadingService.setPlayerAction(
           playerAction,
-          croupierService.getSessionId()
+          croupierLoadingService.getSessionId()
       ).then();
     } catch (error) {
       console.error(

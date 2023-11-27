@@ -3,18 +3,18 @@ import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 
 class LevelsService {
     private currentLevel = new BehaviorSubject<LevelInfosModel>({
-        smallBlindValue: 0,
-        bingBlindValue: 0,
-        anteValue: 0,
+        smallBlind: 0,
+        bigBlind: 0,
+        ante: 0,
         duration: 0,
-        index: 0
+        levelIndex: 0
     });
     private nextLevel = new BehaviorSubject<LevelInfosModel>({
-        smallBlindValue: 0,
-        bingBlindValue: 0,
-        anteValue: 0,
+        smallBlind: 0,
+        bigBlind: 0,
+        ante: 0,
         duration: 0,
-        index: 0
+        levelIndex: 0
     });
 
     currentLevel$ = this.currentLevel.asObservable();

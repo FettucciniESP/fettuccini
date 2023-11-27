@@ -1,8 +1,8 @@
 export enum GameActionEnum {
-  FOLD = 'fold',
-  CHECK = 'check',
-  BET = 'bet',
-  ALL_IN = 'all-in',
-  CALL = 'call',
+  FOLD = 'FOLD',
+  CHECK = 'CHECK',
+  BET = 'BET',
+  ALL_IN = 'ALL_IN',
+  CALL = 'CALL',
   NOTHING = '',
 }

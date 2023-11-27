@@ -17,22 +17,15 @@ import {roundService} from "@/app/services/roundService";
 import {useEffect, useState} from "react";
 
 export default function InformationPanel() {
-    let currentLevelInfos!: LevelInfosModel;
-    let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel>({
-        smallBlindValue: 0,
-        bingBlindValue: 0,
-        anteValue: 0,
-        duration: 0,
-        index: 0
-    });
+    let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel|undefined>(undefined);;
+    let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel|undefined>(undefined);
     let [handPlayersActionsHistory, setHandPlayersActionsHistory] = useState<RoundPlayersActionsHistoryModel>();
     let [playersHandInfos, setPlayersHandInfos] = useState<PlayerHandInfosModel[]>([]);
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
     useEffect(() => {
         const currentLevel_subscribe = levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
-            currentLevelInfos = currentLevel;
-            console.log(currentLevel)
+            setCurrentLevelInfos(currentLevel);
         });
         const nextLevel_subscribe = levelsService.nextLevel$.subscribe((nextLevelInfos: LevelInfosModel) => {
             setNextLevelInfos(nextLevelInfos);
@@ -43,7 +36,7 @@ export default function InformationPanel() {
         const playersHandInfos_subscribe = playersService.playersHandInfos$.subscribe((playersHand: PlayerHandInfosModel[]) => {
             setPlayersHandInfos(playersHand);
         });
-        const roundInfos_subscribe = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel) => {
+        const roundInfos_subscribe = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel|undefined) => {
             setRoundInfos(roundInfos);
         });
 
@@ -56,78 +49,17 @@ export default function InformationPanel() {
         }
     }, []);
 
-    const mockHandHistory: RoundPlayersActionsHistoryModel = {
-        preflop: [
-            {
-                seatIndex: 1,
-                actionType: GameActionEnum.BET,
-                amount: 100,
-                roundStep: RoundStepEnum.PREFLOP,
-            },
-            {
-                seatIndex: 2,
-                actionType: GameActionEnum.CHECK,
-                amount: 0,
-                roundStep: RoundStepEnum.PREFLOP,
-            },
-            {
-                seatIndex: 3,
-                actionType: GameActionEnum.FOLD,
-                amount: 0,
-                roundStep: RoundStepEnum.PREFLOP,
-            },
-        ],
-        flop: [
-            {
-                seatIndex: 1,
-                actionType: GameActionEnum.BET,
-                amount: 100,
-                roundStep: RoundStepEnum.FLOP,
-            },
-            {
-                seatIndex: 2,
-                actionType: GameActionEnum.CALL,
-                amount: 100,
-                roundStep: RoundStepEnum.FLOP,
-            },
-        ],
-        turn: [
-            {
-                seatIndex: 1,
-                actionType: GameActionEnum.BET,
-                amount: 100,
-                roundStep: RoundStepEnum.TURN,
-            },
-            {
-                seatIndex: 2,
-                actionType: GameActionEnum.FOLD,
-                amount: 0,
-                roundStep: RoundStepEnum.TURN,
-            }
-        ],
-        river: null,
-    }
-
-    const mockRoundLInfos: RoundInfosModel = {
-        id: 1,
-        gameId: 'string',
-        roundIndex: 1,
-        actions: [],
-        board: [],
-        buttonSeatIndex: 1,
-        potAmount: 10000,
-    }
     return (
         <Box className={styles.informationPanel}>
             <Box className={styles.leftInformationPanel}>
                 {currentLevelInfos && <LevelIndex levelInfos={currentLevelInfos}/>}
-                {mockHandHistory && <HandHistory handHistoryInfos={mockHandHistory}/>}
+                {handPlayersActionsHistory && <HandHistory handHistoryInfos={handPlayersActionsHistory}/>}
             </Box>
             <Box className={styles.middleInformationPanel}>
-                {currentLevelInfos && mockRoundLInfos &&
+                {currentLevelInfos && roundInfos &&
                     <TimeRemaining
                     currentLevelInfos={currentLevelInfos}
-                    roundInfos={mockRoundLInfos}
+                    roundInfos={roundInfos}
                 />}
                 {nextLevelInfos && <NextLevelInfos levelInfos={nextLevelInfos}/>}
             </Box>

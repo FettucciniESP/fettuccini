@@ -1,8 +1,8 @@
 export enum RoundStepEnum {
-  PREFLOP = 'preflop',
-  FLOP = 'flop',
-  TURN = 'turn',
-  RIVER = 'river',
-  SHOWDOWN = 'showdown',
-  ENDED = 'ended',
+  PREFLOP = 'PREFLOP',
+  FLOP = 'FLOP',
+  TURN = 'TURN',
+  RIVER = 'RIVER',
+  SHOWDOWN = 'SHOWDOWN',
+  ENDED = 'ENDED',
 }

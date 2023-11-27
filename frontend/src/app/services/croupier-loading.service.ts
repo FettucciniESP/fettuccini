@@ -50,5 +50,5 @@ class CroupierService {
   }
 }
 
-const croupierService = new CroupierService();
-export default croupierService;
+const croupierLoadingService = new CroupierService();
+export default croupierLoadingService;

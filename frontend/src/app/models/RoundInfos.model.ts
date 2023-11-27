@@ -1,12 +1,12 @@
-import {GameActionEnum} from "@/app/enums/GameAction.enum";
-import {BoardInfosModel} from "@/app/models/BoardInfos.model";
+import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
+import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistoryModel";
+import {RoundStepEnum} from "@/app/enums/RoundStep.enum";
 
 export interface RoundInfosModel {
-    id: number;
-    gameId: string;
-    roundIndex: number;
-    actions: GameActionEnum[];
-    board: BoardInfosModel[];
-    buttonSeatIndex: number;
-    potAmount: number;
+    currentPlayingUser: PlayerInfosModel
+    currentPotAmount: number
+    roundId: string
+    roundPlayersActionsHistory: RoundPlayersActionsHistoryModel
+    roundStep: RoundStepEnum
+    sessionId: string
 }

@@ -12,7 +12,7 @@ export default function LevelIndex({
     <InformationContainer>
       <Box className={styles.container}>
         <Text className={styles.title}>Niveau en cours : </Text>
-        <Text className={styles.levelIndex}>{levelInfos.index}</Text>
+        <Text className={styles.levelIndex}>{levelInfos.levelIndex}</Text>
       </Box>
     </InformationContainer>
   )
