@@ -138,9 +138,13 @@ public class RoundValidationService {
      */
     private void isBetAmountValid(PlayerActionRequest playerActionRequest, Round round) throws PokerException {
         Integer highestBetValue = PokerUtils.getHighestBetValueForCurrentRoundStep(round);
+        Integer betAmount = playerActionRequest.getAction().getAmount();
+        Integer bigBlindAmount = round.getCurrentLevel().getBigBlindAmount();
 
-        if((playerActionRequest.getAction().getAmount() - highestBetValue >= highestBetValue && !highestBetValue.equals(0)) ||
-                highestBetValue.equals(0) && playerActionRequest.getAction().getAmount() < round.getCurrentLevel().getBigBlindAmount()){
+        boolean isBetLowerThanHighest = highestBetValue != 0 && betAmount < highestBetValue;
+        boolean isBetLowerThanBigBlind = highestBetValue == 0 && betAmount < bigBlindAmount;
+
+        if(isBetLowerThanHighest || isBetLowerThanBigBlind) {
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
                     String.format(PokerExceptionType.BAD_BET_AMOUNT.getMessage(), highestBetValue));
         }
