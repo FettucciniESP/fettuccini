@@ -1,51 +1,85 @@
 package fr.fettuccini.backend.service;
 
-import fr.fettuccini.backend.model.GameSession;
-import fr.fettuccini.backend.model.Player;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.fettuccini.backend.enums.PokerExceptionType;
+import fr.fettuccini.backend.model.exception.PokerException;
+import fr.fettuccini.backend.model.poker.GameSession;
+import fr.fettuccini.backend.model.poker.Level;
+import fr.fettuccini.backend.model.request.PlayerActionRequest;
+import fr.fettuccini.backend.model.response.PlayerActionResponse;
+import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
-@AllArgsConstructor
-public class PokerService {
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
+@Service
+@RequiredArgsConstructor
+public class PokerService {
+    @Value("${defaultLevelsStructureFilePath}")
+    private String defaultLevelsStructureFilePath;
     private final GameSessionRepository gameSessionRepository;
     private final PokerEvaluatorService pokerEvaluatorService;
+    private final RoundService roundService;
 
-    public GameSession startGame() {
-        var player = new Player();
-        var gameSession = new GameSession(player);
+    public StartGameResponse startGame() throws IOException {
+        var gameSession = new GameSession();
         gameSession.startGame();
+        gameSession.setLevelsStructure(initializeLevelsStructureFromJson());
 
-        return gameSessionRepository.save(gameSession);
+        gameSessionRepository.save(gameSession);
+
+        return new StartGameResponse(
+                playRound(gameSession.getId()),
+                gameSession.getLevelsStructure()
+        );
     }
 
-    public GameSession playRound(String sessionId) {
+    public PlayerActionResponse playRound(String sessionId) {
         GameSession gameSession = gameSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("No game session found for the given sessionId"));
 
-        // Drawing 5 cards for the player.
-        // TODO: Check if the deck has enough cards to draw 5 cards.
-        for (int i = 0; i < 5; i++) {
-            gameSession.getPlayer().getHand().add(gameSession.getDeck().drawCard());
-        }
+        PlayerActionResponse playerActionResponse = roundService.initializeRoundForGame(gameSession);
 
-        var handType = pokerEvaluatorService.evaluateHand(gameSession.getPlayer().getHand());
+        gameSessionRepository.save(gameSession);
 
-        // Adding the result to the game session's round results
-        gameSession.addRoundResult(handType);
-
-        return gameSessionRepository.save(gameSession);
+        return playerActionResponse;
     }
 
 
-    public GameSession endGame(String sessionId) {
+    public GameSession endGame(String sessionId) throws PokerException {
         var gameSession = gameSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("No game session found for the given sessionId"));
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
 
         gameSession.endGame();
 
         return gameSessionRepository.save(gameSession);
+    }
+
+    public PlayerActionResponse setPlayerAction(String sessionId, PlayerActionRequest playerActionRequest) throws PokerException {
+        var gameSession = gameSessionRepository.findById(sessionId)
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
+
+        PlayerActionResponse playerActionResponse = roundService.setPlayerAction(playerActionRequest, gameSession);
+
+        gameSessionRepository.save(gameSession);
+        return playerActionResponse;
+    }
+
+    public List<Level> initializeLevelsStructureFromJson() throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(defaultLevelsStructureFilePath);
+        if (inputStream == null) {
+            throw new IOException("Le fichier de structure de niveau par défaut est introuvable");
+        }
+        return (mapper.readValue(inputStream, new TypeReference<List<Level>>() {}));
     }
 }

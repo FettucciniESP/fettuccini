@@ -1,4 +1,4 @@
-package fr.fettuccini.backend.model;
+package fr.fettuccini.backend.model.poker;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
