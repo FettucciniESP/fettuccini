@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 public class PlayerCardsRequest implements Serializable {
 
-    private Integer seatIndex;
+    private String ip;
     private List<String> cardsId;
 }

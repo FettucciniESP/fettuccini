@@ -14,6 +14,7 @@ public enum PokerExceptionType {
     BAD_ACTION_TYPE("Action type %s is not valid"),
     PLAYER_ALREADY_FOLD("Player seat %s already fold"),
     EXPECTED_OTHER_PLAYER_ACTION("Expected player seat %s to make action"),
+    IMPOSSIBLE_MAPPING("Impossible to map card or chip to value"),
     ;
 
     private final String message;

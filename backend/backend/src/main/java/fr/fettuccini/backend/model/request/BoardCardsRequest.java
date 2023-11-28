@@ -8,6 +8,5 @@ import java.util.List;
 
 @Getter
 public class BoardCardsRequest implements Serializable {
-    private RoundStep roundStep;
     private List<String> cardsId;
 }

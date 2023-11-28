@@ -1,5 +1,8 @@
 package fr.fettuccini.backend.controller;
 
+import fr.fettuccini.backend.mapper.BoardCardsRequestMapper;
+import fr.fettuccini.backend.mapper.PlayerCardsRequestMapper;
+import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.BoardCardsRequest;
@@ -9,7 +12,11 @@ import fr.fettuccini.backend.model.request.PlayerChipsRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.service.PokerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import fr.fettuccini.backend.service.UpdateBoardCardsService;
+import fr.fettuccini.backend.service.UpdateCardsService;
+import fr.fettuccini.backend.service.UpdatePlayerChipsService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +26,13 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/poker")
 @CrossOrigin("localhost")
+@RequiredArgsConstructor
 public class PokerController {
 
     private final PokerService pokerService;
-
-    @Autowired
-    public PokerController(PokerService pokerService) {
-        this.pokerService = pokerService;
-    }
+    private final UpdatePlayerChipsService updatePlayerChipsService;
+    private final UpdateCardsService updateCardsService;
+    private final UpdateBoardCardsService updateBoardCardsService;
 
     @PostMapping("/start")
     public StartGameResponse startGame() throws IOException {
@@ -47,18 +53,30 @@ public class PokerController {
     public PlayerActionResponse setPlayerAction(@PathVariable String sessionId, @RequestBody PlayerActionRequest playerActionRequest) throws PokerException {
         return pokerService.setPlayerAction(sessionId, playerActionRequest);
     }
+
     @PostMapping("/playerCards")
-    public ResponseEntity<HttpStatus> setPlayerCard(@RequestBody PlayerCardsRequest playerCardsRequest){
+    public ResponseEntity<HttpStatus> setPlayerCard(HttpServletRequest req, @RequestBody PlayerCardsRequest playerCardsRequest) {
+        var ip = req.getRemoteAddr();
+        var playerCards = new PlayerCardsRequestMapper().map(playerCardsRequest, ip);
+
+        updateCardsService.updatePlayerCards(playerCards);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/playerChips")
-    public ResponseEntity<HttpStatus> setPlayerChip(@RequestBody PlayerChipsRequest playerChipsRequest){
+    public ResponseEntity<HttpStatus> setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) {
+        var ip = req.getRemoteAddr();
+        var playerChips = new PlayerChipsRequestMapper().map(playerChipsRequest, ip);
+
+        updatePlayerChipsService.updatePlayerChips(playerChips);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/boardChips")
-    public ResponseEntity<HttpStatus> setBoardChip(@RequestBody BoardCardsRequest boardCardsRequest){
+    @PostMapping("/boardCards")
+    public ResponseEntity<HttpStatus> setBoardCards(@RequestBody BoardCardsRequest boardCardsRequest) throws PokerException {
+        var boardCards = new BoardCardsRequestMapper().map(boardCardsRequest);
+
+        updateBoardCardsService.updateBoardCards(boardCards);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
