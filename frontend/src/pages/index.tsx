@@ -7,7 +7,7 @@ const Index = () => {
   useEffect(() => {
     router.replace('/home')
     router.replace('/croupier-interface')
-  }, [])
+  })
 
   return null
 }

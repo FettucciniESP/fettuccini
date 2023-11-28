@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import Countdown, { zeroPad } from 'react-countdown'
 import styles from '../TimeRemaining.module.scss'
 
-export const Timer = ({ initialTime, onTimeUp }) => {
+export const Timer = ({ initialTime, onTimeUp }: { initialTime: number, onTimeUp: () => void }) => {
   const [timerKey, setTimerKey] = useState(0)
 
   const handleTimeUp = useCallback(() => {
@@ -10,7 +10,7 @@ export const Timer = ({ initialTime, onTimeUp }) => {
     setTimerKey((prevKey) => prevKey + 1)
   }, [onTimeUp])
 
-  const renderer = ({ hours, minutes, seconds, completed }) => {
+  const renderer = ({ hours, minutes, seconds, completed }: { hours: number, minutes: number, seconds: number, completed: boolean }) => {
     if (completed) {
       handleTimeUp()
       return null
