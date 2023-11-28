@@ -77,6 +77,9 @@ public class RoundService {
         roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
+        //TODO: FINISHED -> EVERYONE FOLDED EXCEPT WINNER
+        //TODO: SHOWDOWN -> WE COMPUTE THE WINNER(S)
+        //TODO: then we can update the player's balance
         updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
 
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());

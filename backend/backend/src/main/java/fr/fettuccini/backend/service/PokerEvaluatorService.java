@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 public class PokerEvaluatorService {
 
     public HandType evaluateHand(List<Card> hand) {
+        //TODO: Find best 5 cards within 7 cards
         if (hand.size() != 5) {
             throw new IllegalArgumentException("A poker hand must have 5 cards");
         }
