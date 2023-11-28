@@ -1,6 +1,5 @@
 package fr.fettuccini.backend.model.request;
 
-import fr.fettuccini.backend.enums.RoundStep;
 import lombok.Getter;
 
 import java.io.Serializable;
