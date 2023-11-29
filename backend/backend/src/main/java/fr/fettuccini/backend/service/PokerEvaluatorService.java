@@ -1,7 +1,8 @@
 package fr.fettuccini.backend.service;
 
-import fr.fettuccini.backend.model.poker.Card;
+import fr.fettuccini.backend.enums.CardValue;
 import fr.fettuccini.backend.enums.HandType;
+import fr.fettuccini.backend.model.poker.Card;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class PokerEvaluatorService {
 
     private boolean isStraight(List<Card> hand) {
         var values = hand.stream().map(Card::getValue).sorted().toList();
-        var allValues = new String[]{"ACE", "2", "3", "4", "5", "6", "7", "8", "9", "10", "JACK", "QUEEN", "KING", "ACE"}; // Ace can be high or low
+        var allValues = CardValue.values();
 
         for (int i = 0; i <= allValues.length - 5; i++) {
             var subset = List.of(allValues).subList(i, i + 5);
