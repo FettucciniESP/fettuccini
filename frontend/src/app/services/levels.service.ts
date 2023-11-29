@@ -22,15 +22,15 @@ class LevelsService {
     nextLevel$ = this.nextLevel.asObservable();
     levelsStructure$ = this.levelsStructure.asObservable();
 
-    setCurrentLevel(currentLevel: LevelInfosModel) {
+    setCurrentLevel(currentLevel: LevelInfosModel): void {
         this.currentLevel.next(currentLevel);
     }
 
-    setNextLevel(nextLevel: LevelInfosModel) {
+    setNextLevel(nextLevel: LevelInfosModel): void {
         this.nextLevel.next(nextLevel);
     }
 
-    setLevelsStructure(levelsStructure: LevelInfosModel[]) {
+    setLevelsStructure(levelsStructure: LevelInfosModel[]): void {
         this.levelsStructure.next(levelsStructure);
     }
 

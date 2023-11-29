@@ -5,7 +5,7 @@ class GameService {
 
     startTime$ = this.startTime.asObservable();
 
-    setStartTime(startTime: Date) {
+    setStartTime(startTime: Date): void {
         this.startTime.next(startTime);
     }
 

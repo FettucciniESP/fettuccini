@@ -12,4 +12,5 @@ export interface RoundInfosModel {
     sessionId: string
     currentButtonUser: PlayerInfosModel
     playersLastActions: PlayerHandInfosModel[]
+    gameStartedDatetime: Date
 }

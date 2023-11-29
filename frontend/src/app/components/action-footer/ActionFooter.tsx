@@ -11,7 +11,12 @@ export default function ActionFooter({
                                      }: {
     playerInfos: PlayerInfosModel
 }) {
-    const {handleActionButtonClick, buttonBetIsDisabled, buttonFoldIsDisabled, buttonCheckCallIsDisabled} = useActionFooter()
+    const {
+        handleActionButtonClick,
+        buttonBetIsDisabled,
+        buttonFoldIsDisabled,
+        buttonCheckCallIsDisabled
+    } = useActionFooter()
 
     return (
         <Box className={styles.actionFooter}>

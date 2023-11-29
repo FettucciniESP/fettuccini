@@ -1,17 +1,17 @@
-import { Box, Text } from '@chakra-ui/react'
+import {Box, Text} from '@chakra-ui/react'
 import Image from 'next/image'
 import styles from '../HandHistory.module.scss'
 import useHandHistory from "@/app/components/information-panel/hand-history/useHandHistory";
 import {PlayerActionModel} from "@/app/models/PlayerAction.model";
 
 export default function HandStepHistory({
-  handStepName,
-  playersActions,
-}: {
+                                            handStepName,
+                                            playersActions,
+                                        }: {
     handStepName: string,
     playersActions: PlayerActionModel[]
 }) {
-  const { getActionIcon } = useHandHistory();
+    const {getActionIcon} = useHandHistory();
     if (!playersActions || playersActions.length === 0) {
         return null;
     }

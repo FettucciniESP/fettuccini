@@ -1,27 +1,27 @@
 import {GameActionEnum} from '@/app/enums/GameAction.enum'
 import {RoundStepEnum} from '@/app/enums/RoundStep.enum'
 import {PlayerActionModel} from '@/app/models/PlayerAction.model'
-import croupierLoadingService from '@/app/services/croupier-loading.service'
+import {croupierLoadingService} from '@/app/services/croupier-loading.service'
 import {roundService} from "@/app/services/roundService";
-import {take} from "rxjs";
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 import {playersService} from "@/app/services/players.service";
 import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
 import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistoryModel";
 import {useEffect, useState} from "react";
+import {Subscription} from "rxjs";
 
 export default function useActionFooter() {
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
     useEffect(() => {
-        const roundInfos_subscribe = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel | undefined) => {
+        const roundInfos_subscribe: Subscription = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel | undefined) => {
             setRoundInfos(roundInfos);
         })
 
         return () => {
             roundInfos_subscribe.unsubscribe();
         }
-    }, [])
+    }, []);
 
     async function handleActionButtonClick(
         player: PlayerInfosModel,
@@ -62,7 +62,7 @@ export default function useActionFooter() {
                 if (roundInfos.roundStep === RoundStepEnum.FINISHED) {
                     croupierLoadingService.startNewRound().then((newRoundInfos: RoundInfosModel) => updateInformations(newRoundInfos));
                 } else {
-                    updateInformations(roundInfos)
+                    updateInformations(roundInfos);
                 }
             });
         } catch (error) {
@@ -74,15 +74,15 @@ export default function useActionFooter() {
     }
 
     function updateInformations(roundInfos: RoundInfosModel): void {
-        playersService.setCurrentPlayerInfos(roundInfos.currentPlayingUser)
-        playersService.setPlayersHandInfos(roundInfos.playersLastActions)
-        roundService.setRoundPlayersActionsHistory(roundInfos.roundPlayersActionsHistory)
-        roundService.setRoundInfos(roundInfos)
+        playersService.setCurrentPlayerInfos(roundInfos.currentPlayingUser);
+        playersService.setPlayersHandInfos(roundInfos.playersLastActions);
+        roundService.setRoundPlayersActionsHistory(roundInfos.roundPlayersActionsHistory);
+        roundService.setRoundInfos(roundInfos);
     }
 
     function isCheckOrCall(player: PlayerInfosModel, roundInfos: RoundInfosModel): PlayerActionModel {
-        const amountToCall = calculateHighestBet(roundInfos);
-        const highestBetForPlayer = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
+        const amountToCall: number = calculateHighestBet(roundInfos);
+        const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
 
         if (amountToCall > 0 && highestBetForPlayer < amountToCall) {
             return createCallAction(player, amountToCall, roundInfos.roundStep);
@@ -92,12 +92,12 @@ export default function useActionFooter() {
     }
 
     function calculateHighestBet(roundInfos: RoundInfosModel): number {
-        const actions = roundInfos.roundPlayersActionsHistory[roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel];
+        const actions: PlayerActionModel[] = roundInfos.roundPlayersActionsHistory[roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel];
         return actions.reduce((max, action) => Math.max(max, action.amount), 0);
     }
 
     function calculateHighestBetForPlayer(roundInfos: RoundInfosModel, seatIndex: number): number {
-        const actions = roundInfos.roundPlayersActionsHistory[roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel];
+        const actions: PlayerActionModel[] = roundInfos.roundPlayersActionsHistory[roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel];
         return actions
             .filter(action => action.seatIndex === seatIndex)
             .reduce((max, action) => Math.max(max, action.amount), 0);
@@ -123,7 +123,7 @@ export default function useActionFooter() {
 
     function buttonBetIsDisabled(player: PlayerInfosModel): boolean {
         if (roundInfos) {
-            const highestBet = calculateHighestBet(roundInfos);
+            const highestBet: number = calculateHighestBet(roundInfos);
             return player.balance <= highestBet;
         }
         return false;
@@ -131,8 +131,8 @@ export default function useActionFooter() {
 
     function buttonFoldIsDisabled(player: PlayerInfosModel): boolean {
         if (roundInfos) {
-            const highestBet = calculateHighestBet(roundInfos);
-            const highestBetForPlayer = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
+            const highestBet: number = calculateHighestBet(roundInfos);
+            const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
             return highestBet === 0 || highestBetForPlayer === highestBet;
         }
         return false;
@@ -140,7 +140,7 @@ export default function useActionFooter() {
 
     function buttonCheckCallIsDisabled(player: PlayerInfosModel): boolean {
         if (roundInfos) {
-            const highestBet = calculateHighestBet(roundInfos);
+            const highestBet: number = calculateHighestBet(roundInfos);
             return player.balance <= highestBet;
         }
         return false;

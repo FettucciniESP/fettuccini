@@ -13,28 +13,29 @@ import {levelsService} from "@/app/services/levels.service";
 import {playersService} from "@/app/services/players.service";
 import {roundService} from "@/app/services/roundService";
 import {useEffect, useState} from "react";
+import {Subscription} from "rxjs";
 
 export default function InformationPanel() {
-    let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel|undefined>(undefined);
-    let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel|undefined>(undefined);
+    let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
+    let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
     let [handPlayersActionsHistory, setHandPlayersActionsHistory] = useState<RoundPlayersActionsHistoryModel>();
     let [playersHandInfos, setPlayersHandInfos] = useState<PlayerHandInfosModel[]>([]);
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
     useEffect(() => {
-        const currentLevel_subscribe = levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
+        const currentLevel_subscribe: Subscription = levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
             setCurrentLevelInfos(currentLevel);
         });
-        const nextLevel_subscribe = levelsService.nextLevel$.subscribe((nextLevelInfos: LevelInfosModel) => {
+        const nextLevel_subscribe: Subscription = levelsService.nextLevel$.subscribe((nextLevelInfos: LevelInfosModel) => {
             setNextLevelInfos(nextLevelInfos);
         });
-        const handPlayersActionsHistory_subscribe = roundService.roundPlayersActionsHistory$.subscribe((handPlayersActionsHistory:RoundPlayersActionsHistoryModel) => {
+        const handPlayersActionsHistory_subscribe: Subscription = roundService.roundPlayersActionsHistory$.subscribe((handPlayersActionsHistory: RoundPlayersActionsHistoryModel) => {
             setHandPlayersActionsHistory(handPlayersActionsHistory);
         });
-        const playersHandInfos_subscribe = playersService.playersHandInfos$.subscribe((playersHand: PlayerHandInfosModel[]) => {
+        const playersHandInfos_subscribe: Subscription = playersService.playersHandInfos$.subscribe((playersHand: PlayerHandInfosModel[]) => {
             setPlayersHandInfos(playersHand);
         });
-        const roundInfos_subscribe = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel|undefined) => {
+        const roundInfos_subscribe: Subscription = roundService.roundInfos$.subscribe((roundInfos: RoundInfosModel | undefined) => {
             setRoundInfos(roundInfos);
         });
 
@@ -56,9 +57,9 @@ export default function InformationPanel() {
             <Box className={styles.middleInformationPanel}>
                 {currentLevelInfos && roundInfos &&
                     <TimeRemaining
-                    currentLevelInfos={currentLevelInfos}
-                    roundInfos={roundInfos}
-                />}
+                        currentLevelInfos={currentLevelInfos}
+                        roundInfos={roundInfos}
+                    />}
                 {nextLevelInfos && <NextLevelInfos levelInfos={nextLevelInfos}/>}
             </Box>
             <Box className={styles.rightInformationPanel}>

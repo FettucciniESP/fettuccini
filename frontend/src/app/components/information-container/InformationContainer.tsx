@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import styles from './InformationContainer.module.scss'
 
 export default function InformationContainer({

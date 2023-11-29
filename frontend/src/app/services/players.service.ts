@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
 import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
 
@@ -13,11 +13,11 @@ class PlayersService {
     currentPlayerInfos$ = this.currentPlayerInfos.asObservable();
     playersHandInfos$ = this.playersHandInfos.asObservable();
 
-    setCurrentPlayerInfos(currentPlayerInfos: PlayerInfosModel) {
+    setCurrentPlayerInfos(currentPlayerInfos: PlayerInfosModel): void {
         this.currentPlayerInfos.next(currentPlayerInfos);
     }
 
-    setPlayersHandInfos(playersHandInfos: Array<PlayerHandInfosModel>) {
+    setPlayersHandInfos(playersHandInfos: Array<PlayerHandInfosModel>): void {
         this.playersHandInfos.next(playersHandInfos);
     }
 }
