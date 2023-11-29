@@ -3,7 +3,6 @@ import styles from './TimeRemaining.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
 import { Timer } from './timer/Timer'
 import { LevelInfosModel } from '@/app/models/LevelInfos.model'
-import useTimeRemaining from '@/app/components/information-panel/time-remaining/useTimeRemaining'
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 
 export default function TimeRemaining({
@@ -13,13 +12,12 @@ export default function TimeRemaining({
   currentLevelInfos: LevelInfosModel
   roundInfos: RoundInfosModel
 }) {
-  const { time, handleTimeUp } = useTimeRemaining(currentLevelInfos)
 
   return (
     <InformationContainer>
       <Box className={styles.container}>
         <Text>Temps restant : </Text>
-        <Timer initialTime={time} onTimeUp={handleTimeUp} />
+        <Timer />
         <Box>
           <Box className={styles.infoZone}>
             <Text className={styles.infoText}>
@@ -32,7 +30,7 @@ export default function TimeRemaining({
           </Box>
           <Box className={styles.infoZone}>
             <Text className={styles.infoText}>BTN : </Text>
-            <Text> Seat {}</Text>
+            <Text>{roundInfos.currentButtonUser.name}</Text>
           </Box>
         </Box>
         <Box className={styles.potTotal}>

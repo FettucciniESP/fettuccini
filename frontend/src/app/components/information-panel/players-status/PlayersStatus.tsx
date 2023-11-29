@@ -18,17 +18,19 @@ export default function PlayersStatus({
         <Text>Joueurs</Text>
       </Box>
       <Box className={styles.playerList}>
-        {playersHandInfos.map((value, index) => (
+        {playersHandInfos.map((playerHandInfos, index) => (
           <Box key={index} className={styles.playerItem}>
-            <Text className={styles.playerSubItem}>{value.name}</Text>
+            <Text className={styles.playerSubItem}>{playerHandInfos.player.name}</Text>
             <Image
-              src={getActionIcon(value.lastAction)}
+              src={getActionIcon(playerHandInfos.lastAction?.actionType)}
               alt="icone action"
               className={styles.imgLastAction}
             />
               <Text className={styles.lastActionText}>
-                  {value.lastAction ? value.lastAction : <Text className={styles.noActions}>En attente d'une action</Text>}
+                  {playerHandInfos.lastAction ? playerHandInfos.lastAction.actionType : <Text className={styles.noActions}>En attente d'une action</Text>}
+
               </Text>
+              {playerHandInfos.lastAction && playerHandInfos.lastAction.amount > 0 ? <Text className={styles.lastActionText}> {playerHandInfos.lastAction.amount}</Text> : null}
           </Box>
         ))}
       </Box>

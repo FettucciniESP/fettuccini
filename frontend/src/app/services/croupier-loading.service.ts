@@ -13,6 +13,9 @@ class CroupierService {
   constructor() {
     this.axiosInstance = axios.create({
       baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
   }
 
@@ -28,9 +31,9 @@ class CroupierService {
     try {
       const response = await this.axiosInstance.post(`/start`);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erreur lors de la création d'une partie : ", error);
-      throw new Error("Erreur lors de la création d'une partie");
+      throw alert(error.response.data);
     }
   }
 
@@ -44,9 +47,9 @@ class CroupierService {
         action: action,
       });
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erreur lors de l'envoi de l'action : ", error);
-      throw new Error("Erreur lors de l'envoi de l'action");
+      throw alert(error.response.data);
     }
   }
 
@@ -54,9 +57,9 @@ class CroupierService {
     try {
       const response = await this.axiosInstance.post(`/playRound/${this.sessionId}`);
       return response.data;
-    } catch (error) {
-      console.error("Erreur lors de l'envoi de l'action : ", error);
-      throw new Error("Erreur lors de l'envoi de l'action");
+    } catch (error: any) {
+      console.error("Erreur lors de la création du round : ", error);
+      throw alert(error.response.data);
     }
   }
 }

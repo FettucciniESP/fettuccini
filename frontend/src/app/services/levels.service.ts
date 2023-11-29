@@ -16,9 +16,11 @@ class LevelsService {
         duration: 0,
         levelIndex: 0
     });
+    private levelsStructure = new BehaviorSubject<LevelInfosModel[]>([]);
 
     currentLevel$ = this.currentLevel.asObservable();
     nextLevel$ = this.nextLevel.asObservable();
+    levelsStructure$ = this.levelsStructure.asObservable();
 
     setCurrentLevel(currentLevel: LevelInfosModel) {
         this.currentLevel.next(currentLevel);
@@ -26,6 +28,10 @@ class LevelsService {
 
     setNextLevel(nextLevel: LevelInfosModel) {
         this.nextLevel.next(nextLevel);
+    }
+
+    setLevelsStructure(levelsStructure: LevelInfosModel[]) {
+        this.levelsStructure.next(levelsStructure);
     }
 
 }

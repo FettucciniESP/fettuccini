@@ -16,7 +16,7 @@ export default function useActionFooter() {
       roundService.roundInfos$.pipe(take(1)).subscribe((roundInfos: RoundInfosModel| undefined) => {
         if (!roundInfos) {
           console.error("Erreur : round informations is undefined");
-          throw new Error("round informations is undefined");
+          throw alert("round informations is undefined");
         }
         let playerAction: PlayerActionModel = {
           actionType: action,
@@ -53,6 +53,7 @@ export default function useActionFooter() {
 
   function updateInformations(roundInfos: RoundInfosModel): void {
     playersService.setCurrentPlayerInfos(roundInfos.currentPlayingUser)
+    playersService.setPlayersHandInfos(roundInfos.playersLastActions)
     roundService.setRoundPlayersActionsHistory(roundInfos.roundPlayersActionsHistory)
     roundService.setRoundInfos(roundInfos)
   }
