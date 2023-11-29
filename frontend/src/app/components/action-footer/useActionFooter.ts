@@ -6,10 +6,11 @@ import {roundService} from "@/app/services/roundService";
 import {take} from "rxjs";
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 import {playersService} from "@/app/services/players.service";
+import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
 
 export default function useActionFooter() {
   async function handleActionButtonClick(
-    idPlayer: number,
+    player: PlayerInfosModel,
     action: GameActionEnum
   ): Promise<void> {
     try {
@@ -21,16 +22,21 @@ export default function useActionFooter() {
         let playerAction: PlayerActionModel = {
           actionType: action,
           amount: 0,
-          seatIndex: idPlayer,
+          seatIndex: player.seatIndex,
           roundStep: roundInfos.roundStep
         }
-        if (action === GameActionEnum.BET) {
-          const betAmount = prompt("Entrez le montant du pari :", "10");
-          if (betAmount !== null) {
-            playerAction.amount = parseInt(betAmount);
-          } else {
-            return;
-          }
+        switch (action) {
+          case GameActionEnum.BET:
+            const betAmount = prompt("Entrez le montant du pari :", "10");
+            if (betAmount !== null) {
+              playerAction.amount = parseInt(betAmount);
+            } else {
+              return;
+            }
+            break;
+          case GameActionEnum.ALL_IN:
+            playerAction.actionType = GameActionEnum.BET;
+            playerAction.amount = player.balance;
         }
         croupierLoadingService.setPlayerAction(
             playerAction,

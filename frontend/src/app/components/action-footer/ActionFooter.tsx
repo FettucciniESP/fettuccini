@@ -36,7 +36,7 @@ export default function ActionFooter({
           <Button
             className={styles.button}
             onClick={() =>
-              handleActionButtonClick(playerInfos.seatIndex, GameActionEnum.FOLD)
+              handleActionButtonClick(playerInfos, GameActionEnum.FOLD)
             }
           >
             FOLD
@@ -44,7 +44,7 @@ export default function ActionFooter({
           <Button
             className={styles.button}
             onClick={() =>
-              handleActionButtonClick(playerInfos.seatIndex, GameActionEnum.CHECK)
+              handleActionButtonClick(playerInfos, GameActionEnum.CHECK)
             }
           >
             CHECK / CALL
@@ -52,7 +52,7 @@ export default function ActionFooter({
           <Button
             className={styles.button}
             onClick={() =>
-              handleActionButtonClick(playerInfos.seatIndex, GameActionEnum.BET)
+              handleActionButtonClick(playerInfos, GameActionEnum.BET)
             }
           >
             BET
@@ -60,7 +60,7 @@ export default function ActionFooter({
           <Button
             className={styles.button}
             onClick={() =>
-              handleActionButtonClick(playerInfos.seatIndex, GameActionEnum.ALL_IN)
+              handleActionButtonClick(playerInfos, GameActionEnum.ALL_IN)
             }
           >
             ALL-IN
