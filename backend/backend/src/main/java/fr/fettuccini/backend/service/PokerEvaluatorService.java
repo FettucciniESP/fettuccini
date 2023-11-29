@@ -32,7 +32,7 @@ public class PokerEvaluatorService {
 
     private List<List<Card>> generateCombinations(List<Card> cards) {
         List<List<Card>> combinations = new ArrayList<>();
-        generateCombinationsRecursive(cards, 5, 0, new ArrayList<Card>(), combinations);
+        generateCombinationsRecursive(cards, 5, 0, new ArrayList<>(), combinations);
         return combinations;
     }
 
