@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PokerService {
-    @Value("${defaultLevelsStructureFilePath}")
-    private String defaultLevelsStructureFilePath;
     private final GameSessionRepository gameSessionRepository;
     private final PokerEvaluatorService pokerEvaluatorService;
     private final RoundService roundService;
+    @Value("${defaultLevelsStructureFilePath}")
+    private String defaultLevelsStructureFilePath;
 
     public StartGameResponse startGame() throws IOException {
         var gameSession = new GameSession();
@@ -80,6 +80,7 @@ public class PokerService {
         if (inputStream == null) {
             throw new IOException("Le fichier de structure de niveau par défaut est introuvable");
         }
-        return (mapper.readValue(inputStream, new TypeReference<List<Level>>() {}));
+        return (mapper.readValue(inputStream, new TypeReference<>() {
+        }));
     }
 }

@@ -4,6 +4,7 @@ import fr.fettuccini.backend.mapper.BoardCardsRequestMapper;
 import fr.fettuccini.backend.mapper.PlayerCardsRequestMapper;
 import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
+import fr.fettuccini.backend.model.poker.Card;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.BoardCardsRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 @RestController
 @RequestMapping("/poker")
@@ -33,6 +35,9 @@ public class PokerController {
     private final UpdatePlayerChipsService updatePlayerChipsService;
     private final UpdateCardsService updateCardsService;
     private final UpdateBoardCardsService updateBoardCardsService;
+    private final PlayerCardsRequestMapper playerCardsRequestMapper;
+    private final PlayerChipsRequestMapper playerChipsRequestMapper;
+    private final BoardCardsRequestMapper boardCardsRequestMapper;
 
     @PostMapping("/start")
     public StartGameResponse startGame() throws IOException {
@@ -57,7 +62,7 @@ public class PokerController {
     @PostMapping("/playerCards")
     public ResponseEntity<HttpStatus> setPlayerCard(HttpServletRequest req, @RequestBody PlayerCardsRequest playerCardsRequest) {
         var ip = req.getRemoteAddr();
-        var playerCards = new PlayerCardsRequestMapper().map(playerCardsRequest, ip);
+        var playerCards = playerCardsRequestMapper.map(playerCardsRequest, ip);
 
         updateCardsService.updatePlayerCards(playerCards);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -66,7 +71,7 @@ public class PokerController {
     @PostMapping("/playerChips")
     public ResponseEntity<HttpStatus> setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) {
         var ip = req.getRemoteAddr();
-        var playerChips = new PlayerChipsRequestMapper().map(playerChipsRequest, ip);
+        var playerChips = playerChipsRequestMapper.map(playerChipsRequest, ip);
 
         updatePlayerChipsService.updatePlayerChips(playerChips);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -74,9 +79,9 @@ public class PokerController {
 
     @PostMapping("/boardCards")
     public ResponseEntity<HttpStatus> setBoardCards(@RequestBody BoardCardsRequest boardCardsRequest) throws PokerException {
-        var boardCards = new BoardCardsRequestMapper().map(boardCardsRequest);
+        var boardCards = boardCardsRequestMapper.map(boardCardsRequest);
 
-        updateBoardCardsService.updateBoardCards(boardCards);
+        updateBoardCardsService.updateBoardCards((HashSet<Card>) boardCards);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

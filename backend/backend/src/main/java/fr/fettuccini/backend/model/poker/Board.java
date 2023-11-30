@@ -3,13 +3,12 @@ package fr.fettuccini.backend.model.poker;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 
 @Data
 @NoArgsConstructor
 public class Board {
-    private List<Card> communityCards = new LinkedList<>();
+    private HashSet<Card> communityCards = new HashSet<>();
 
     public void addCard(Card card) {
         if (communityCards.size() < 5) {

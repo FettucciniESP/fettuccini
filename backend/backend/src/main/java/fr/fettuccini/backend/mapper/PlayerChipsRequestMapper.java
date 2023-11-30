@@ -5,7 +5,6 @@ import fr.fettuccini.backend.model.request.PlayerChipsRequest;
 import fr.fettuccini.backend.repository.SeatRepository;
 import fr.fettuccini.backend.repository.TokenMapperRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,11 +13,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class PlayerChipsRequestMapper {
 
-    private SeatRepository seatRepository;
-    private TokenMapperRepository tokenMapperRepository;
+    private final SeatRepository seatRepository;
+    private final TokenMapperRepository tokenMapperRepository;
 
     /**
      * @param request PlayerChipsRequest

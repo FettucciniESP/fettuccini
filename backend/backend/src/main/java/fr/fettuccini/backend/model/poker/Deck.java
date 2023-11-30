@@ -1,5 +1,7 @@
 package fr.fettuccini.backend.model.poker;
 
+import fr.fettuccini.backend.enums.CardType;
+import fr.fettuccini.backend.enums.CardValue;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +16,9 @@ public class Deck {
 
     public Deck(boolean initialize) {
         if (initialize) {
-            for (var type : List.of("HEARTS", "DIAMONDS", "CLUBS", "SPADES")) {
-                for (var value : List.of("ACE", "2", "3", "4", "5", "6", "7", "8", "9", "10", "JACK", "QUEEN", "KING")) {
-                    cards.add(new Card(type, value));
+            for (var cardType : CardType.values()) {
+                for (var cardValue : CardValue.values()) {
+                    cards.add(new Card(cardType, cardValue));
                 }
             }
         }
