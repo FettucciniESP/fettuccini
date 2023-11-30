@@ -27,6 +27,7 @@ public:
 private:
     OledScreen *screen;
     NfcModule* nfc;
+    NfcModule* nfc2;
     PokerApi* api;
 };
 

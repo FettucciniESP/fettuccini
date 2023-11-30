@@ -18,7 +18,6 @@ Program::Program() {
     Serial.begin(MONITOR_SPEED);
 
     this->nfc = new NfcModule(27, 26);
-    //this->nfc2 = new NfcModule(32, 12);
 
     //this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
 
