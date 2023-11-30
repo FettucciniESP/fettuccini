@@ -143,7 +143,7 @@ public class PokerEvaluatorService {
         hand.sort((c1, c2) -> c2.getValue().getValue() - c1.getValue().getValue());
 
         for (var i = 0; i < hand.size(); i++) {
-            score += (int) (hand.get(i).getValue().getValue() * Math.pow(100, hand.size() - i - 1));
+            score += (hand.get(i).getValue().getValue() * (int) Math.pow(100, hand.size() - i - 1));
         }
 
         return score;
