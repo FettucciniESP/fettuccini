@@ -30,7 +30,7 @@ bool PokerApi::sendCard(String seat, String card[]) {
         this->sendCard(seat, card);
     } else if (resp != 201) {
 #ifdef DEBUG
-        Serial.print("Error while sending money (QR) : ");
+        Serial.print("Error while sending Card : ");
         Serial.println(resp);
         Serial.println(this->http->errorToString(resp));
         Serial.println(this->http->getString());
