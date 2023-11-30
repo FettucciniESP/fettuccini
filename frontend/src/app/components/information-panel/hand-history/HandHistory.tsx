@@ -1,14 +1,23 @@
-import { Box, Text } from '@chakra-ui/react'
+import {Box, Text} from '@chakra-ui/react'
 import styles from './HandHistory.module.scss'
 import InformationContainer from '@/app/components/information-container/InformationContainer'
-import { HandPlayersActionsHistoryModel } from '@/app/models/HandPlayersActionsHistoryModel'
+import {RoundPlayersActionsHistoryModel} from '@/app/models/RoundPlayersActionsHistoryModel'
 import HandStepHistory from "@/app/components/information-panel/hand-history/hand-step-history/HandStepHistory";
+import {RefObject, useEffect, useRef} from "react";
 
 export default function HandHistory({
-  handHistoryInfos,
-}: {
-  handHistoryInfos: HandPlayersActionsHistoryModel
+                                        handHistoryInfos,
+                                    }: {
+    handHistoryInfos: RoundPlayersActionsHistoryModel
 }) {
+    const historyListRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (historyListRef.current) {
+            historyListRef.current.scrollTop = historyListRef.current.scrollHeight;
+        }
+    }, [handHistoryInfos]);
+
     return (
         <InformationContainer>
             <Box className={styles.header}>
@@ -16,11 +25,13 @@ export default function HandHistory({
                     Historique de la main
                 </Text>
             </Box>
-            <Box className={styles.historyList}>
-                {handHistoryInfos.preflop && <HandStepHistory handStepName="Preflop" playersActions={handHistoryInfos.preflop} />}
-                {handHistoryInfos.flop && <HandStepHistory handStepName="Flop" playersActions={handHistoryInfos.flop} />}
-                {handHistoryInfos.turn && <HandStepHistory handStepName="Turn" playersActions={handHistoryInfos.turn} />}
-                {handHistoryInfos.river && <HandStepHistory handStepName="River" playersActions={handHistoryInfos.river} />}
+            <Box className={styles.historyList} ref={historyListRef}>
+                {handHistoryInfos.preflop &&
+                    <HandStepHistory handStepName="Preflop" playersActions={handHistoryInfos.preflop}/>}
+                {handHistoryInfos.flop && <HandStepHistory handStepName="Flop" playersActions={handHistoryInfos.flop}/>}
+                {handHistoryInfos.turn && <HandStepHistory handStepName="Turn" playersActions={handHistoryInfos.turn}/>}
+                {handHistoryInfos.river &&
+                    <HandStepHistory handStepName="River" playersActions={handHistoryInfos.river}/>}
             </Box>
         </InformationContainer>
     );

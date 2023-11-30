@@ -1,4 +1,5 @@
 export interface PlayerInfosModel {
-  seatIndex: number;
-  stack: number;
+  name: string
+  seatIndex: number
+  balance: number
 }

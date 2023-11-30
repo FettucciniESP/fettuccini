@@ -40,8 +40,21 @@
 
 .lastActionText {
   text-transform: capitalize;
+  padding-left: $space-between-texts;
+}
+
+.noActions {
+  font-style: oblique;
+  padding-left: $space-between-texts;
 }
 
 .playerSubItem {
-  padding-right: 10px;
+  padding-right: $space-between-texts;
+}
+
+.imgLastAction {
+  width: 24px;
+  height: auto;
+  margin-left: 10px;
+  margin-right: 10px;
 }

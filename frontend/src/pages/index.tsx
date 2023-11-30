@@ -1,15 +1,14 @@
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
+import {useEffect} from 'react'
+import {NextRouter, useRouter} from 'next/router'
 
 const Index = () => {
-  const router = useRouter()
+    const router: NextRouter = useRouter()
 
-  useEffect(() => {
-    router.replace('/home')
-    router.replace('/croupier-interface')
-  })
+    useEffect(() => {
+        router.replace('/home');
+    }, [])
 
-  return null
+    return null;
 }
 
 export default Index

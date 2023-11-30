@@ -1,7 +1,7 @@
 export interface LevelInfosModel {
-  smallBlindValue: number
-  bingBlindValue: number
-  anteValue: number
+  smallBlind: number
+  bigBlind: number
+  ante: number
   duration: number
-  index: number
+  levelIndex: number
 }
