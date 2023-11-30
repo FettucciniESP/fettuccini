@@ -12,6 +12,8 @@ export default function useActionFooter() {
       let playerAction: PlayerActionModel = {
         actionType: action,
         amount: 0,
+        seatIndex: 0,
+        roundStep: RoundStepEnum.PREFLOP
       }
       if (action === GameActionEnum.BET) {
         playerAction.amount = 10

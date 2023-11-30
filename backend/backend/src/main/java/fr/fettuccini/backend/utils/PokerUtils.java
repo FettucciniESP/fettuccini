@@ -319,6 +319,77 @@ public class PokerUtils {
                 .orElse(0);
     }
 
+    /**
+     * Retrieves a list of the last actions made by each player in the current round.
+     *
+     * @param currentGame The current game session.
+     * @param currentRound The round for which to retrieve the last actions.
+     * @return A list of PlayerLastAction objects representing each player's last action in the round.
+     */
+    public static List<PlayerLastAction> getRoundPlayersLastActionList(GameSession currentGame, Round currentRound) {
+        List<PlayerLastAction> playerLastActionList = new ArrayList<>();
+        List<Player> players = currentGame.getPlayers();
+
+        for(Player player : players){
+            playerLastActionList.add(getPlayerLastAction(currentGame, currentRound, player.getSeatIndex()));
+        }
+
+        return playerLastActionList;
+    }
+
+    /**
+     * Retrieves the last action performed by a specific player in the current round.
+     * If the player has folded, this will be their last action. Otherwise, it fetches the last action based on the amount.
+     *
+     * @param currentGame The current game session.
+     * @param currentRound The round for which to retrieve the player's last action.
+     * @param seatIndex The seat index of the player.
+     * @return PlayerLastAction object representing the player's last action.
+     */
+    public static PlayerLastAction getPlayerLastAction(GameSession currentGame, Round currentRound, Integer seatIndex) {
+        PlayerLastAction playerLastAction = new PlayerLastAction();
+        playerLastAction.setPlayer(getPlayerBySeatIndex(currentGame, seatIndex));
+
+        Optional<Action> playerFoldedAction = currentRound.getActions()
+                .stream()
+                .filter(action -> action.getSeatIndex().equals(seatIndex))
+                .filter(action -> action.getActionType().equals(Action.ActionType.FOLD))
+                .findFirst();
+
+        if(playerFoldedAction.isPresent()){
+            playerLastAction.setLastAction(playerFoldedAction.get());
+            return playerLastAction;
+        }
+
+        Optional<Action> lastAction = getLastPlayerAction(currentRound, seatIndex);
+        playerLastAction.setLastAction(lastAction.orElse(null));
+
+        return playerLastAction;
+    }
+
+    /**
+     * Retrieves the most recent action for a specific player in the current round step.
+     * The latest action is determined based on the highest amount bet by the player.
+     *
+     * @param currentRound The current round of the game.
+     * @param seatIndex The seat index of the player.
+     * @return An Optional containing the player's last action, if it exists.
+     */
+    public static Optional<Action> getLastPlayerAction(Round currentRound, Integer seatIndex) {
+        return currentRound.getActions()
+                .stream()
+                .filter(action -> action.getSeatIndex().equals(seatIndex))
+                .filter(action -> action.getRoundStep().equals(currentRound.getRoundStep()))
+                .max(Comparator.comparingInt(Action::getAmount));
+    }
+
+    /**
+     * Formats a message for a PokerException based on the exception type and a custom message.
+     *
+     * @param pokerExceptionType The type of the poker exception.
+     * @param message The custom message to include in the exception.
+     * @return A formatted string representing the exception message.
+     */
     public static String formatPokerExceptionMessage(PokerExceptionType pokerExceptionType, String message) {
         return pokerExceptionType.toString() + " : " + message;
     }

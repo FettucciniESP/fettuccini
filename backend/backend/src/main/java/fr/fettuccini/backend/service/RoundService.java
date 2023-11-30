@@ -52,13 +52,14 @@ public class RoundService {
     public PlayerActionResponse buildPlayerActionResponse(GameSession currentGame, Round round, Action action){
         PlayerActionResponse playerActionResponse = new PlayerActionResponse();
         playerActionResponse.setRoundId(round.getId());
+        playerActionResponse.setGameStartedDatetime(currentGame.getDateGameStarted());
         playerActionResponse.setSessionId(currentGame.getId());
         playerActionResponse.setCurrentPotAmount(round.getPotAmount());
         playerActionResponse.setRoundStep(round.getRoundStep());
         playerActionResponse.setRoundPlayersActionsHistory(ActionsByRoundStep.buildActionByRoundStepFromActionList(round.getActions()));
-
-        Optional<Player> nextPlayerToPlay = PokerUtils.getNextPlayerToPlay(action, currentGame, round);
-        nextPlayerToPlay.ifPresent(playerActionResponse::setCurrentPlayingUser);
+        playerActionResponse.setCurrentPlayingUser(PokerUtils.getPlayerBySeatIndex(currentGame, round.getNextPlayerToPlaySeatIndex()));
+        playerActionResponse.setCurrentButtonUser(PokerUtils.getPlayerBySeatIndex(currentGame, round.getButtonSeatIndex()));
+        playerActionResponse.setPlayersLastActions(PokerUtils.getRoundPlayersLastActionList(currentGame, round));
 
         return playerActionResponse;
     }
@@ -76,7 +77,11 @@ public class RoundService {
         roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
+        //TODO: FINISHED -> EVERYONE FOLDED EXCEPT WINNER
+        //TODO: SHOWDOWN -> WE COMPUTE THE WINNER(S)
+        //TODO: then we can update the player's balance
         updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
+
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
     }
 

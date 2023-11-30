@@ -10,6 +10,7 @@ import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import LevelIndex from './level-index/LevelIndex'
 import TimeRemaining from './time-remaining/TimeRemaining'
 import { RoundInfosModel } from '@/app/models/RoundInfos.model'
+import { RoundStepEnum } from '@/app/enums/RoundStep.enum'
 
 export default function InformationPanel() {
   const mockCurrentLevelInfos: LevelInfosModel = {
@@ -52,40 +53,47 @@ export default function InformationPanel() {
             seatIndex: 1,
             actionType: GameActionEnum.BET,
             amount: 100,
+            roundStep: RoundStepEnum.FLOP
         },
         {
             seatIndex: 2,
             actionType: GameActionEnum.CHECK,
             amount: 0,
+            roundStep: RoundStepEnum.FLOP
         },
         {
             seatIndex: 3,
             actionType: GameActionEnum.FOLD,
             amount: 0,
+            roundStep: RoundStepEnum.FLOP
         },
     ],
     flop: [
-        {
-            seatIndex: 1,
-            actionType: GameActionEnum.BET,
-            amount: 100,
-        },
-        {
-            seatIndex: 2,
-            actionType: GameActionEnum.CALL,
-            amount: 100,
-        },
+      {
+        seatIndex: 1,
+        actionType: GameActionEnum.BET,
+        amount: 100,
+        roundStep: RoundStepEnum.FLOP
+      },
+      {
+        seatIndex: 2,
+        actionType: GameActionEnum.CALL,
+        amount: 100,
+        roundStep: RoundStepEnum.FLOP
+      },
     ],
     turn: [
         {
             seatIndex: 1,
             actionType: GameActionEnum.BET,
             amount: 100,
+            roundStep: RoundStepEnum.FLOP
         },
         {
             seatIndex: 2,
             actionType: GameActionEnum.FOLD,
             amount: 0,
+            roundStep: RoundStepEnum.FLOP
         }
     ],
     river: null,
