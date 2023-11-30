@@ -24,7 +24,7 @@ public:
      * @param card[2] the card of the player
      * @return true if the transaction is a success
      */
-    bool sendCard(String seat, String card[]);
+    bool sendCard(String card[]);
 
     /**
      * @brief receive value from the card of the consumer account to the connected account

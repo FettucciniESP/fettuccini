@@ -14,20 +14,18 @@ PokerApi::PokerApi(String ip, int port, String user, String password) {
     this->token = "";
 }
 
-bool PokerApi::sendCard(String seat, String card[]) {
+bool PokerApi::sendCard(String card[]) {
     bool sortie = true;
     this->http->begin(*this->client, this->ip, this->port, API_CARD);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    body["seatIndex"] = 3;
-    body["cardIdList"][0] = card[0];
-    body["cardIdList"][1] = card[1];
+    body["cardsId"][0] = card[0];
+    body["cardsId"][1] = card[1];
     int resp = this->http->POST(JSON.stringify(body));
-
     if (resp == 401) {  // 401 = Unauthorized
         this->login();
-        this->sendCard(seat, card);
+        this->sendCard(card);
     } else if (resp != 201) {
 #ifdef DEBUG
         Serial.print("Error while sending Card : ");

@@ -17,7 +17,8 @@ Program::Program() {
     // Startup
     Serial.begin(MONITOR_SPEED);
 
-    nfc = new NfcModule(27, 26);
+    this->nfc = new NfcModule(27, 26);
+    //this->nfc2 = new NfcModule(32, 12);
 
     //this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
 
@@ -30,13 +31,14 @@ Program::Program() {
 }
 
 String oldVal = "";
+String oldVal2 = "";
 
 void Program::loop() {
     String val = nfc->read();
     if(val !="" && val != oldVal){
         Serial.println(val);
         oldVal = val;
-        String cards[] = {val,"4269"};
-        this->api->sendCard("1",cards);
+        String cards[] = {val,"23892B"};
+        this->api->sendCard(cards);
     }
 }
