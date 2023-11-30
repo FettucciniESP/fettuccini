@@ -1,0 +1,60 @@
+@import 'src/app/assets/styles/variables';
+
+.header,
+.historyList {
+  display: flex;
+  border: 1px solid $white-color;
+}
+
+.header {
+  font-size: $font-size-header;
+  font-weight: bold;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.historyList {
+  padding-left: 30px;
+  padding-block: 30px;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 50vh;
+  overflow: auto;
+  padding-right: 30px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.historyItem {
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.historySubItem {
+  padding-right: $space-between-texts;
+}
+
+.historyStatusItem {
+  padding-right: 10px;
+  color: #182e3b;
+  font-size: 20px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: normal;
+}
+
+.imgLastAction {
+  width: 24px;
+  height: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.actionType {
+  padding-left: $space-between-texts;
+}

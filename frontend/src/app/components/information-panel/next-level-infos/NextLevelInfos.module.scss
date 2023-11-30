@@ -1,0 +1,21 @@
+@import 'src/app/assets/styles/variables';
+
+.container {
+  border: 1px solid $white-color;
+  border-radius: 5px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.bold {
+  font-weight: bold;
+  padding-right: $space-between-texts;
+}
+
+.paddingBlock {
+  padding-block: 20px;
+}

@@ -1,0 +1,60 @@
+@import 'src/app/assets/styles/variables';
+
+.header,
+.playerList {
+  display: flex;
+  border: 1px solid $white-color;
+}
+
+.header {
+  font-size: $font-size-header;
+  font-weight: bold;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.playerList {
+  padding-left: 30px;
+  padding-block: 30px;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 50vh;
+  overflow: auto;
+  padding-right: 30px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.playerItem {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.lastActionText {
+  text-transform: capitalize;
+  padding-left: $space-between-texts;
+}
+
+.noActions {
+  font-style: oblique;
+  padding-left: $space-between-texts;
+}
+
+.playerSubItem {
+  padding-right: $space-between-texts;
+}
+
+.imgLastAction {
+  width: 24px;
+  height: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+}
