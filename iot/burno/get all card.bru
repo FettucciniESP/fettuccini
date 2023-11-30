@@ -1,0 +1,18 @@
+meta {
+  name: get all card
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://192.168.137.1:8080/poker/card/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "seatIndex": 3,
+      "cardIdList": ["04315252906780", "043"]
+  }
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Start Game
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://192.168.137.1:8080/poker/start
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "card_id": "16"
+  }
+}
