@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  title: Poker Game API
+  version: 1.0.0
+
+paths:
+  /poker/start:
+    post:
+      summary: Start a new game
+      responses:
+        "201":
+          description: Game successfully started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSession'
+
+  /poker/playRound/{sessionId}:
+    post:
+      summary: Play a round
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Round played successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerActionResponse'
+
+  /poker/end/{sessionId}:
+    post:
+      summary: End the game
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Game ended successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSession'
+
+  /poker/action/{sessionId}:
+    post:
+      summary: Set player action
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerActionRequest'
+      responses:
+        "200":
+          description: Player action set successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerActionResponse'
+    
+    /poker/card:
+    post:
+      summary: Set a player's card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerCardsRequest'
+      responses:
+        "200":
+          description: Player's card set successfully
+
+  /poker/chip:
+    post:
+      summary: Set a player's chip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerChipsRequest'
+      responses:
+        "200":
+          description: Player's chip set successfully
+
+  /poker/boardChips:
+    post:
+      summary: Set chips on the board
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoardCardsRequest'
+      responses:
+        "200":
+          description: Chips successfully set on the board
+
+components:
+  schemas:
+
+    PlayerActionRequest:
+      type: object
+      properties:
+        roundId:
+          type: string
+          description: The unique identifier for the round.
+        action:
+          $ref: '#/components/schemas/Action'
+
+    PlayerActionResponse:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: The unique identifier for the game session.
+        roundId:
+          type: string
+          description: The unique identifier for the round.
+        currentPotAmount:
+          type: integer
+          description: The current amount in the pot.
+        roundPlayersActionsHistory:
+          $ref: '#/components/schemas/ActionsByRoundStep'
+        currentPlayingUser:
+          $ref: '#/components/schemas/Player'
+        roundStep:
+          $ref: '#/components/schemas/RoundStep'
+
+    Hand:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/Card"
+
+    Card:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [TWO_HEARTS, ..., ACE_SPADES]
+        value:
+          type: integer
+
+    Action:
+      type: object
+      properties:
+        actionType:
+          type: string
+          enum: [BET, RAISE, CALL, FOLD, CHECK]
+        amount:
+          type: integer
+        seatIndex:
+          type: integer
+        roundStep:
+          $ref: '#/components/schemas/RoundStep'
+
+    Level:
+      type: object
+      properties:
+        roundIndex:
+          type: integer
+        bigBlindAmount:
+          type: integer
+        smallBlindAmount:
+          type: integer
+        anteAmount:
+          type: integer
+        duration:
+          type: integer
+
+    LevelsStructure:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Level'
+
+    Player:
+      type: object
+      properties:
+        name:
+          type: string
+        seatIndex:
+          type: integer
+        balance:
+          type: integer
+        hand:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+
+    Round:
+      type: object
+      properties:
+        id:
+          type: string
+        gameId:
+          type: string
+        roundIndex:
+          type: integer
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        board:
+          $ref: '#/components/schemas/Board'
+        buttonSeatIndex:
+          type: integer
+        potAmount:
+          type: integer
+        currentLevel:
+          $ref: '#/components/schemas/Level'
+        roundStep:
+          $ref: '#/components/schemas/RoundStep'
+        nextPlayerToPlaySeatIndex:
+          type: integer
+    
+    RoundStep:
+      type: string
+      enum: [PREFLOP, FLOP, TURN, RIVER, SHOWDOWN]
+
+    PlayerCardsRequest:
+      type: object
+      properties:
+        seatIndex:
+          type: integer
+          description: The seat index of the player.
+        cardsId:
+          type: array
+          items:
+            type: string
+          description: List of card identifiers.
+
+    PlayerChipsRequest:
+      type: object
+      properties:
+        seatIndex:
+          type: integer
+          description: The seat index of the player.
+        chipsId:
+          type: array
+          items:
+            type: string
+          description: List of chip identifiers.
+
+    BoardCardsRequest:
+      type: object
+      properties:
+        roundStep:
+          $ref: '#/components/schemas/RoundStep'
+        cardsId:
+          type: array
+          items:
+            type: string
+          description: List of card identifiers for the board.
