@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <vector>
+#include <SoftwareSerial.h>
 
 #include "TrameList.h"
 
@@ -58,6 +59,8 @@ private:
      *
      */
     std::vector<byte>* trame;
+
+    SoftwareSerial* serial;
 };
 
 
