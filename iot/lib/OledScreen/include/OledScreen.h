@@ -14,7 +14,7 @@ public:
      * @param screenHeight The height of the screen
      * @param oledResetPin The pin used to reset the screen (default: -1)
      */
-    OledScreen(int screenWidth, int screenHeight, int oledResetPin = -1);
+    OledScreen(int screenWidth, int screenHeight, int oledResetPin = -1, TwoWire* wire = &Wire);
 
     /**
      * @brief display welcome screen
