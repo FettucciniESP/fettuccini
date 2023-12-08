@@ -2,8 +2,8 @@
 
 #include <Adafruit_SSD1306.h>
 
-OledScreen::OledScreen(int screenWidth, int screenHeight, int oledResetPin) {
-    this->display = new Adafruit_SSD1306(screenWidth, screenHeight, &Wire, oledResetPin);
+OledScreen::OledScreen(int screenWidth, int screenHeight, int oledResetPin, TwoWire* wire) {
+    this->display = new Adafruit_SSD1306(screenWidth, screenHeight, wire, oledResetPin);
     if (!display->begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
         Serial.println(F("SSD1306 allocation failed"));
         for (;;); // Don't proceed, loop forever
@@ -74,4 +74,16 @@ void OledScreen::wifiWaiting() {
 
 void OledScreen::clear() {
     this->display->clearDisplay();
+}
+
+
+void OledScreen::setTagNB(int nb){
+    this->display->clearDisplay();
+    this->display->setCursor(0, 0);
+    this->display->setTextSize(2);
+    this->display->setTextColor(WHITE);
+    this->display->println(F("NB Jeuton:\n"));
+    this->display->println(nb);
+
+    this->display->display();
 }

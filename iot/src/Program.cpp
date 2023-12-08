@@ -17,27 +17,27 @@ Program::Program() {
     // Startup
     Serial.begin(MONITOR_SPEED);
 
-    this->nfc = new NfcModule(27, 26);
-
-    //this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
+    this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
 
     initWiFi();
 
     this->api = new PokerApi(IP, PORT);
 
 
-//    this->screen->welcome();
+//    //this->screen->welcome();
+    this->NFC = new NfcReader();
+    this->NFC->init();
+
 }
 
 String oldVal = "";
 String oldVal2 = "";
 
 void Program::loop() {
-    String val = nfc->read();
-    if(val !="" && val != oldVal){
-        Serial.println(val);
-        oldVal = val;
-        String cards[] = {val,"23892B"};
-        this->api->sendCard(cards);
-    }
+    NFC->refresh();
+    NFC->printTrame();
+    Serial.println();
+    Serial.println(NFC->getNbTags());
+    this->screen->setTagNB(NFC->getNbTags());
+    delay(200);
 }

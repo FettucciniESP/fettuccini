@@ -9,6 +9,7 @@
 
 #include "NfcModule.h"
 #include "OledScreen.h"
+#include "NfcReader.h"
 #include "PokerApi.h"
 
 class Program {
@@ -26,9 +27,8 @@ public:
 
 private:
     OledScreen *screen;
-    NfcModule* nfc;
-    NfcModule* nfc2;
     PokerApi* api;
+    NfcReader* NFC;
 };
 
 #endif
