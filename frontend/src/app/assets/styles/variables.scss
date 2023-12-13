@@ -1,13 +1,20 @@
 // Couleurs
 $blue-color: #182e3b;
 $dark-blue-color: #142530;
+$back-players-blue-color: #363E4B;
 $white-color: #f7f0e1;
 $red-color: #c60000;
 $gradient-blue-color: linear-gradient(#182e3b80, #182e3b80);
 $transparent-white-color: #f7f0e1bf;
 
 // Taille des polices
-$font-size-header: 2em;
+$font-size-header: 2vw;
+$font-size-main-informations: 3.5vw;
+$font-size-primary-informations: 2.5vw;
+$font-size-secondary-informations: 1.5vw;
 
 // Espacements
-$space-between-texts: 0.5vw
+$space-between-texts: 0.5vw;
+
+// Arrondis
+$border-players-card-radius: 15px;

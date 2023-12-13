@@ -10,7 +10,7 @@ import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsH
 import {useEffect, useState} from "react";
 import {Subscription} from "rxjs";
 
-export default function useActionFooter() {
+export default function useActionButtons() {
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
     useEffect(() => {

@@ -1,12 +1,8 @@
-import {Box} from '@chakra-ui/react'
+import {Box, Text} from '@chakra-ui/react'
 import styles from './InformationPanel.module.scss'
-import NextLevelInfos from './next-level-infos/NextLevelInfos'
-import PlayersStatus from './players-status/PlayersStatus'
 import {LevelInfosModel} from '@/app/models/LevelInfos.model'
 import {PlayerHandInfosModel} from '@/app/models/PlayerHandInfos.model'
-import HandHistory from '@/app/components/information-panel/hand-history/HandHistory'
 import {RoundPlayersActionsHistoryModel} from '@/app/models/RoundPlayersActionsHistoryModel'
-import LevelIndex from './level-index/LevelIndex'
 import TimeRemaining from './time-remaining/TimeRemaining'
 import {RoundInfosModel} from '@/app/models/RoundInfos.model'
 import {levelsService} from "@/app/services/levels.service";
@@ -14,6 +10,9 @@ import {playersService} from "@/app/services/players.service";
 import {roundService} from "@/app/services/roundService";
 import {useEffect, useState} from "react";
 import {Subscription} from "rxjs";
+import PlayerSeatInformations from "@/app/components/information-panel/player-seat-informations/PlayerSeatInformations";
+import GameInformations from "@/app/components/information-panel/game-informations/GameInformations";
+import Image from "next/image";
 
 export default function InformationPanel() {
     let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
@@ -51,19 +50,69 @@ export default function InformationPanel() {
     return (
         <Box className={styles.informationPanel}>
             <Box className={styles.leftInformationPanel}>
-                {currentLevelInfos && <LevelIndex levelInfos={currentLevelInfos}/>}
-                {handPlayersActionsHistory && <HandHistory handHistoryInfos={handPlayersActionsHistory}/>}
+                {playersHandInfos[1] && roundInfos && <PlayerSeatInformations seatIndex={2}
+                                                                              playerHandInfos={playersHandInfos[1]}
+                                                                              buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                              currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
+                {playersHandInfos[0] && roundInfos && <PlayerSeatInformations seatIndex={1}
+                                                                              playerHandInfos={playersHandInfos[0]}
+                                                                              buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                              currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
             </Box>
             <Box className={styles.middleInformationPanel}>
-                {currentLevelInfos && roundInfos &&
-                    <TimeRemaining
-                        currentLevelInfos={currentLevelInfos}
-                        roundInfos={roundInfos}
-                    />}
-                {nextLevelInfos && <NextLevelInfos levelInfos={nextLevelInfos}/>}
+                <Box className={styles.playersInformationsContainer}>
+                    <Box className={styles.playersInformationsCard}>
+                        {playersHandInfos[2] && roundInfos && <PlayerSeatInformations seatIndex={3}
+                                                                                      playerHandInfos={playersHandInfos[2]}
+                                                                                      buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                                      currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
+                    </Box>
+                    <Box className={styles.playersInformationsCard}>
+                        {playersHandInfos[3] && roundInfos && <PlayerSeatInformations seatIndex={4}
+                                                                                      playerHandInfos={playersHandInfos[3]}
+                                                                                      buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                                      currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
+                    </Box>
+                </Box>
+                {currentLevelInfos && roundInfos && nextLevelInfos &&
+                    <GameInformations roundInfos={roundInfos} currentLevelInfos={currentLevelInfos} nextLevelInfos={nextLevelInfos}/>}
             </Box>
             <Box className={styles.rightInformationPanel}>
-                {playersHandInfos && <PlayersStatus playersHandInfos={playersHandInfos}/>}
+                {playersHandInfos[4] && roundInfos && <PlayerSeatInformations seatIndex={5}
+                                                                              playerHandInfos={playersHandInfos[4]}
+                                                                              buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                              currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
+                {playersHandInfos[5] && roundInfos && <PlayerSeatInformations seatIndex={6}
+                                                                              playerHandInfos={playersHandInfos[5]}
+                                                                              buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
+                                                                              currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
+                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+                    <Image
+                        src={require('../../assets/images/jeton_poker_v3_Blanc.png')}
+                        alt="icone action"
+                        className={styles.imgLevelInformation}
+                    />
+                    <Text className={styles.levelInformationTitle}>Ante :</Text>
+                    <Text className={styles.levelInformationValue}>{currentLevelInfos.ante}</Text>
+                </Box>}
+                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+                    <Image
+                        src={require('../../assets/images/jeton_poker_v3_Bleu.png')}
+                        alt="icone action"
+                        className={styles.imgLevelInformation}
+                    />
+                    <Text className={styles.levelInformationTitle}>Big Blind :</Text>
+                    <Text className={styles.levelInformationValue}>{currentLevelInfos.bigBlind}</Text>
+                </Box>}
+                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+                    <Image
+                        src={require('../../assets/images/jeton_poker_v3_Blanc.png')}
+                        alt="icone action"
+                        className={styles.imgLevelInformation}
+                    />
+                    <Text className={styles.levelInformationTitle}>Small Blind :</Text>
+                    <Text className={styles.levelInformationValue}>{currentLevelInfos.smallBlind}</Text>
+                </Box>}
             </Box>
         </Box>
     )

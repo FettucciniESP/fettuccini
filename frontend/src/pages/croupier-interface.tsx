@@ -1,6 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import styles from '../app/assets/styles/croupier-interface.module.scss'
-import ActionFooter from '@/app/components/action-footer/ActionFooter'
 import { PlayerInfosModel } from '@/app/models/PlayerInfos.model'
 import InformationPanel from '@/app/components/information-panel/InformationPanel'
 import {playersService} from "@/app/services/players.service";
@@ -30,7 +29,6 @@ export default function CroupierInterface() {
     <ChakraProvider>
       <main className={styles.main}>
         <InformationPanel />
-        {currentPlayerInfo && <ActionFooter playerInfos={currentPlayerInfo} />}
       </main>
     </ChakraProvider>
   )

@@ -1,0 +1,17 @@
+@import '../../assets/styles/variables.scss';
+
+.container {
+  padding-inline: 2px;
+  padding-block: 2px;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  border-radius: $border-players-card-radius;
+  background-color: $dark-blue-color;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container > * {
+  color: $white-color;
+}
