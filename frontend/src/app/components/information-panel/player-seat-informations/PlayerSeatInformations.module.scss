@@ -17,35 +17,6 @@
   border-bottom: $dark-blue-color 1px solid;
 }
 
-
-// Last action
-.playerAction {
-  height: 20vh;
-  justify-content: center;
-  align-items: center;
-  margin: 0 !important;
-  padding: 0 !important;
-  filter: none !important;
-}
-
-.lastActionAmountValue {
-  font-size: $font-size-main-informations;
-  font-weight: bold;
-  margin-left: 1vw;
-}
-
-.imgLastAction {
-  width: 20vh;
-  height: 20vh;
-}
-
-.imgLastActionWithAmount {
-  width: 8vh;
-  height: 8vh;
-  margin-right: 1vw;
-}
-
-
 // Informations
 .playerInformations {
   padding-left: 1vw;
@@ -82,27 +53,4 @@
 .imgSeatInformation {
   width: 5vh;
   height: 5vh;
-}
-
-.foldContainer, .allInContainer{
-  height: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  filter: none !important;
-  border: $white-color 1px solid;
-  box-shadow: $dark-blue-color 3px 3px 3px 3px;
-}
-
-.foldContainer {
-  background-color: $dark-blue-color;
-}
-
-.allInContainer {
-  background-color: $red-color;
-}
-
-.actionValue {
-  font-size: $font-size-primary-informations;
 }

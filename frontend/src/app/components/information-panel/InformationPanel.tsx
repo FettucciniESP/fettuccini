@@ -13,6 +13,7 @@ import {Subscription} from "rxjs";
 import PlayerSeatInformations from "@/app/components/information-panel/player-seat-informations/PlayerSeatInformations";
 import GameInformations from "@/app/components/information-panel/game-informations/GameInformations";
 import Image from "next/image";
+import BlindsInformations from "@/app/components/information-panel/blinds-informations/BlindsInformations";
 
 export default function InformationPanel() {
     let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
@@ -86,33 +87,7 @@ export default function InformationPanel() {
                                                                               playerHandInfos={playersHandInfos[5]}
                                                                               buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex}
                                                                               currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex}></PlayerSeatInformations>}
-                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
-                    <Image
-                        src={require('../../assets/images/jeton_poker_v3_Blanc.png')}
-                        alt="icone action"
-                        className={styles.imgLevelInformation}
-                    />
-                    <Text className={styles.levelInformationTitle}>Ante :</Text>
-                    <Text className={styles.levelInformationValue}>{currentLevelInfos.ante}</Text>
-                </Box>}
-                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
-                    <Image
-                        src={require('../../assets/images/jeton_poker_v3_Bleu.png')}
-                        alt="icone action"
-                        className={styles.imgLevelInformation}
-                    />
-                    <Text className={styles.levelInformationTitle}>Big Blind :</Text>
-                    <Text className={styles.levelInformationValue}>{currentLevelInfos.bigBlind}</Text>
-                </Box>}
-                {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
-                    <Image
-                        src={require('../../assets/images/jeton_poker_v3_Blanc.png')}
-                        alt="icone action"
-                        className={styles.imgLevelInformation}
-                    />
-                    <Text className={styles.levelInformationTitle}>Small Blind :</Text>
-                    <Text className={styles.levelInformationValue}>{currentLevelInfos.smallBlind}</Text>
-                </Box>}
+                {currentLevelInfos && <BlindsInformations currentLevelInfos={currentLevelInfos}></BlindsInformations>}
             </Box>
         </Box>
     )

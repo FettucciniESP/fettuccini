@@ -42,27 +42,3 @@
   height: 100%;
   width: 21vw;
 }
-
-// LevelsInformations
-.levelsInformationsContainer {
-  display: flex;
-  align-items: center;
-  color: $white-color;
-  margin-bottom: 1vh;
-}
-
-.levelInformationTitle {
-  font-weight: bold;
-  font-size: $font-size-secondary-informations;
-}
-
-.levelInformationValue {
-  margin-left: 1vw;
-  font-size: $font-size-secondary-informations;
-}
-
-.imgLevelInformation {
-  width: 4vh;
-  height: 4vh;
-  margin-right: 1vw;
-}

@@ -1,6 +1,6 @@
 import {Box, Button, Text} from "@chakra-ui/react";
 import styles from "@/app/components/information-panel/game-informations/GameInformations.module.scss";
-import FettucciniContainer from "@/app/components/fettuccini-container/FettucciniContainer";
+import FettucciniContainer from "@/app/components/design-system/fettuccini-container/FettucciniContainer";
 import TimeRemaining from "@/app/components/information-panel/time-remaining/TimeRemaining";
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 import {LevelInfosModel} from "@/app/models/LevelInfos.model";
