@@ -1,8 +1,9 @@
-@import 'src/app/assets/styles/variables';
+@import '../../../assets/styles/variables.scss';
 
 .container {
   border: 1px solid $white-color;
   border-radius: 5px;
+  width: 100%;
 }
 
 .timer {

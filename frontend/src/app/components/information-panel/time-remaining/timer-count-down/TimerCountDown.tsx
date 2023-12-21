@@ -6,7 +6,7 @@ import {levelsService} from "@/app/services/levels.service";
 import {gameService} from "@/app/services/game.service";
 import {Subscription} from "rxjs";
 
-export const Timer = () => {
+export const TimerCountDown = () => {
     const [levelsStructure, setLevelsStructure] = useState<LevelInfosModel[]>();
     const [startTime, setStartTime] = useState<Date>();
     const [timeRemaining, setTimeRemaining] = useState<number>();

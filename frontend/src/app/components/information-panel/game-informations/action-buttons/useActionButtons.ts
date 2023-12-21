@@ -10,7 +10,7 @@ import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsH
 import {useEffect, useState} from "react";
 import {Subscription} from "rxjs";
 
-export default function useActionFooter() {
+export default function useActionButtons() {
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function useActionFooter() {
                 case GameActionEnum.CHECK:
                     playerAction = isCheckOrCall(player, roundInfos);
                     break;
-                case GameActionEnum.BET:
+                case GameActionEnum.BET: {
                     const betAmount = prompt("Entrez le montant du pari :", "10");
                     if (betAmount !== null) {
                         playerAction.amount = parseInt(betAmount);
@@ -50,6 +50,7 @@ export default function useActionFooter() {
                         return;
                     }
                     break;
+                }
                 case GameActionEnum.ALL_IN:
                     playerAction.actionType = GameActionEnum.BET;
                     playerAction.amount = player.balance;
@@ -121,35 +122,26 @@ export default function useActionFooter() {
         };
     }
 
-    function buttonBetIsDisabled(player: PlayerInfosModel): boolean {
+    function buttonIsDisabled(player: PlayerInfosModel, button: GameActionEnum): boolean {
         if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            return player.balance <= highestBet;
-        }
-        return false;
-    }
-
-    function buttonFoldIsDisabled(player: PlayerInfosModel): boolean {
-        if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
-            return highestBet === 0 || highestBetForPlayer === highestBet;
-        }
-        return false;
-    }
-
-    function buttonCheckCallIsDisabled(player: PlayerInfosModel): boolean {
-        if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            return player.balance <= highestBet;
+            switch (button) {
+                case GameActionEnum.CHECK:
+                case GameActionEnum.BET: {
+                    const highestBet: number = calculateHighestBet(roundInfos);
+                    return player.balance <= highestBet;
+                }
+                case GameActionEnum.FOLD: {
+                    const highestBet: number = calculateHighestBet(roundInfos);
+                    const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
+                    return highestBet === 0 || highestBetForPlayer === highestBet;
+                }
+            }
         }
         return false;
     }
 
     return {
         handleActionButtonClick,
-        buttonBetIsDisabled,
-        buttonFoldIsDisabled,
-        buttonCheckCallIsDisabled
+        buttonIsDisabled,
     }
 }

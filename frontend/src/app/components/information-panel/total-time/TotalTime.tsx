@@ -1,13 +1,13 @@
 import {Box} from '@chakra-ui/react'
-import styles from './TimeRemaining.module.scss'
+import styles from './TotalTime.module.scss'
 import InformationContainer from '@/app/components/design-system/information-container/InformationContainer'
-import {TimerCountDown} from '@/app/components/information-panel/time-remaining/timer-count-down/TimerCountDown'
+import {TimerCountUp} from '@/app/components/information-panel/total-time/timer-count-up/TimerCountUp'
 
-export default function TimeRemaining() {
+export default function TotalTime() {
     return (
         <InformationContainer>
             <Box className={styles.container}>
-                <TimerCountDown/>
+                <TimerCountUp/>
             </Box>
         </InformationContainer>
     )

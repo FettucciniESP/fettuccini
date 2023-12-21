@@ -1,4 +1,4 @@
-@import '../../assets/styles/variables.scss';
+@import '../../../assets/styles/variables';
 .container {
   border-radius: 5px;
   padding-inline: 2px;
@@ -8,7 +8,7 @@
 }
 
 .container > * {
-  background-color: $transparent-white-color;
+  background-color: $white-color;
   padding: 5px;
   color: $blue-color;
 }

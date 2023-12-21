@@ -1,0 +1,56 @@
+@import '../../../assets/styles/variables.scss';
+
+.header,
+.playerAction,
+.playerInformations {
+  display: flex;
+}
+
+// Header
+.header {
+  font-size: $font-size-header;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: $border-players-card-radius;
+  border-top-right-radius: $border-players-card-radius;
+  border-bottom: $dark-blue-color 1px solid;
+}
+
+// Informations
+.playerInformations {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  align-items: center;
+  height: 7vh;
+  justify-content: space-between;
+  border-bottom-left-radius: $border-players-card-radius;
+  border-bottom-right-radius: $border-players-card-radius;
+}
+
+.imgBalance,
+.balanceValue {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.imgBalance {
+  width: 3vh;
+  height: 3vh;
+}
+
+.balanceContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.balanceValue {
+  font-size: $font-size-header;
+}
+
+.imgSeatInformation {
+  width: 5vh;
+  height: 5vh;
+}
