@@ -125,6 +125,7 @@ export default function useActionButtons() {
     function buttonIsDisabled(player: PlayerInfosModel, button: GameActionEnum): boolean {
         if (roundInfos) {
             switch (button) {
+                case GameActionEnum.CHECK:
                 case GameActionEnum.BET: {
                     const highestBet: number = calculateHighestBet(roundInfos);
                     return player.balance <= highestBet;
@@ -133,10 +134,6 @@ export default function useActionButtons() {
                     const highestBet: number = calculateHighestBet(roundInfos);
                     const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
                     return highestBet === 0 || highestBetForPlayer === highestBet;
-                }
-                case GameActionEnum.CHECK: {
-                    const highestBet: number = calculateHighestBet(roundInfos);
-                    return player.balance <= highestBet;
                 }
             }
         }
