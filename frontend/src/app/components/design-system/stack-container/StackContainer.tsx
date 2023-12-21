@@ -4,7 +4,7 @@ import styles from './StackContainer.module.scss'
 export default function StackContainer({
   children,
 }: {
-  children: React.ReactNode
+  readonly children: React.ReactNode
 }) {
   return <Box className={styles.container}>{children}</Box>
 }

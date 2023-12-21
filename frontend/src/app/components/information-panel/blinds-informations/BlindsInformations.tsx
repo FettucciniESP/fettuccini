@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const JETON_BLEU_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
 const JETON_BLANC_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
-export default function BlindsInformations({currentLevelInfos}: { currentLevelInfos: LevelInfosModel}) {
+export default function BlindsInformations({currentLevelInfos}: { readonly currentLevelInfos: LevelInfosModel}) {
 
     return (
         <Box>

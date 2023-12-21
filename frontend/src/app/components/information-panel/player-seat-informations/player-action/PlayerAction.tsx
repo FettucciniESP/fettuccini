@@ -8,7 +8,7 @@ import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
 const CHECK_IMAGE = require('../../../../assets/images/check.png');
 const JETON_BLEU_IMAGE = require('../../../../assets/images/jeton_poker_v3_Bleu.png');
 
-export default function PlayerAction({playerHandInfos}: { playerHandInfos: PlayerHandInfosModel }) {
+export default function PlayerAction({playerHandInfos}: { readonly playerHandInfos: PlayerHandInfosModel }) {
 
     const foldActionContent = () => {
         return (

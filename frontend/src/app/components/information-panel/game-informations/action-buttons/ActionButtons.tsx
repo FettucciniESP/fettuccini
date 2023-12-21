@@ -1,6 +1,4 @@
-import {Box, Button, Stack} from '@chakra-ui/react'
-import imgPokerChip from '@/app/assets/images/jeton_poker_v3_Blanc.png'
-import Image from 'next/image'
+import {Box, Button} from '@chakra-ui/react'
 import {PlayerInfosModel} from '@/app/models/PlayerInfos.model'
 import styles from './ActionButtons.module.scss'
 import useActionButtons from './useActionButtons'
@@ -9,20 +7,18 @@ import {GameActionEnum} from '@/app/enums/GameAction.enum'
 export default function ActionButtons({
                                          playerInfos,
                                      }: {
-    playerInfos: PlayerInfosModel
+    readonly playerInfos: PlayerInfosModel
 }) {
     const {
         handleActionButtonClick,
-        buttonBetIsDisabled,
-        buttonFoldIsDisabled,
-        buttonCheckCallIsDisabled
+        buttonIsDisabled,
     } = useActionButtons()
 
     return (
         <Box className={styles.actionButtonsContainer}>
             <Box className={styles.actionButtonsLine}>
                 <Button
-                    isDisabled={buttonFoldIsDisabled(playerInfos)}
+                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.FOLD)}
                     className={styles.button}
                     onClick={() =>
                         handleActionButtonClick(playerInfos, GameActionEnum.FOLD)
@@ -31,7 +27,7 @@ export default function ActionButtons({
                     FOLD
                 </Button>
                 <Button
-                    isDisabled={buttonCheckCallIsDisabled(playerInfos)}
+                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.CHECK)}
                     className={styles.button}
                     onClick={() =>
                         handleActionButtonClick(playerInfos, GameActionEnum.CHECK)
@@ -42,7 +38,7 @@ export default function ActionButtons({
             </Box>
             <Box className={styles.actionButtonsLine}>
                 <Button
-                    isDisabled={buttonBetIsDisabled(playerInfos)}
+                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.BET)}
                     className={styles.button}
                     onClick={() =>
                         handleActionButtonClick(playerInfos, GameActionEnum.BET)

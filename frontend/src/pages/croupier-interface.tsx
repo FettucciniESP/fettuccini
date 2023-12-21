@@ -10,21 +10,13 @@ import {Subscription} from "rxjs";
 
 export default function CroupierInterface() {
   const router: NextRouter = useRouter();
-  let [currentPlayerInfo, setCurrentPlayerInfo] = useState<PlayerInfosModel|undefined>(undefined);
 
   useEffect(() => {
-    const currentPlayer_subscribe: Subscription = playersService.currentPlayerInfos$.subscribe((currentPlayer: PlayerInfosModel) => {
-      setCurrentPlayerInfo(currentPlayer);
-    });
-
     if (!croupierLoadingService.getSessionId()){
       router.push('/home');
     }
-
-    return () => {
-      currentPlayer_subscribe.unsubscribe();
-    }
   }, []);
+  
   return (
     <ChakraProvider>
       <main className={styles.main}>

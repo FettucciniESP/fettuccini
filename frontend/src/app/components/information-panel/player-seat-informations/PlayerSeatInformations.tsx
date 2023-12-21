@@ -17,10 +17,10 @@ export default function PlayerSeatInformations({
                                                    buttonSeatIndex,
                                                    currentPlayerSeatIndex
                                                }: {
-    seatIndex: number,
-    playerHandInfos: PlayerHandInfosModel,
-    buttonSeatIndex: number,
-    currentPlayerSeatIndex: number
+    readonly seatIndex: number,
+    readonly playerHandInfos: PlayerHandInfosModel,
+    readonly buttonSeatIndex: number,
+    readonly currentPlayerSeatIndex: number
 }) {
 
     const {seatPlaying} = usePlayerSeatInformations();

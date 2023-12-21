@@ -42,7 +42,7 @@ export default function useActionButtons() {
                 case GameActionEnum.CHECK:
                     playerAction = isCheckOrCall(player, roundInfos);
                     break;
-                case GameActionEnum.BET:
+                case GameActionEnum.BET: {
                     const betAmount = prompt("Entrez le montant du pari :", "10");
                     if (betAmount !== null) {
                         playerAction.amount = parseInt(betAmount);
@@ -50,6 +50,7 @@ export default function useActionButtons() {
                         return;
                     }
                     break;
+                }
                 case GameActionEnum.ALL_IN:
                     playerAction.actionType = GameActionEnum.BET;
                     playerAction.amount = player.balance;
@@ -121,35 +122,29 @@ export default function useActionButtons() {
         };
     }
 
-    function buttonBetIsDisabled(player: PlayerInfosModel): boolean {
+    function buttonIsDisabled(player: PlayerInfosModel, button: GameActionEnum): boolean {
         if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            return player.balance <= highestBet;
-        }
-        return false;
-    }
-
-    function buttonFoldIsDisabled(player: PlayerInfosModel): boolean {
-        if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
-            return highestBet === 0 || highestBetForPlayer === highestBet;
-        }
-        return false;
-    }
-
-    function buttonCheckCallIsDisabled(player: PlayerInfosModel): boolean {
-        if (roundInfos) {
-            const highestBet: number = calculateHighestBet(roundInfos);
-            return player.balance <= highestBet;
+            switch (button) {
+                case GameActionEnum.BET: {
+                    const highestBet: number = calculateHighestBet(roundInfos);
+                    return player.balance <= highestBet;
+                }
+                case GameActionEnum.FOLD: {
+                    const highestBet: number = calculateHighestBet(roundInfos);
+                    const highestBetForPlayer: number = calculateHighestBetForPlayer(roundInfos, player.seatIndex);
+                    return highestBet === 0 || highestBetForPlayer === highestBet;
+                }
+                case GameActionEnum.CHECK: {
+                    const highestBet: number = calculateHighestBet(roundInfos);
+                    return player.balance <= highestBet;
+                }
+            }
         }
         return false;
     }
 
     return {
         handleActionButtonClick,
-        buttonBetIsDisabled,
-        buttonFoldIsDisabled,
-        buttonCheckCallIsDisabled
+        buttonIsDisabled,
     }
 }

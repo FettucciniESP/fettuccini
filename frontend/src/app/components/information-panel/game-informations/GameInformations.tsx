@@ -1,4 +1,4 @@
-import {Box, Button, Text} from "@chakra-ui/react";
+import {Box, Text} from "@chakra-ui/react";
 import styles from "@/app/components/information-panel/game-informations/GameInformations.module.scss";
 import FettucciniContainer from "@/app/components/design-system/fettuccini-container/FettucciniContainer";
 import TimeRemaining from "@/app/components/information-panel/time-remaining/TimeRemaining";
@@ -7,7 +7,7 @@ import {LevelInfosModel} from "@/app/models/LevelInfos.model";
 import ActionButtons from "@/app/components/information-panel/game-informations/action-buttons/ActionButtons";
 import TotalTime from "@/app/components/information-panel/total-time/TotalTime";
 
-export default function GameInformations({roundInfos, currentLevelInfos, nextLevelInfos}: { roundInfos: RoundInfosModel, currentLevelInfos: LevelInfosModel, nextLevelInfos: LevelInfosModel}) {
+export default function GameInformations({roundInfos, currentLevelInfos, nextLevelInfos}: { readonly roundInfos: RoundInfosModel, readonly currentLevelInfos: LevelInfosModel, readonly nextLevelInfos: LevelInfosModel}) {
 
     return (
         <FettucciniContainer>
