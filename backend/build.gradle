@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'fr.fettuccini'
-version = '0.0.1-MVP'
+version = '0.0.2'
 
 java {
     sourceCompatibility = '21'
@@ -44,6 +44,5 @@ sonar {
         property "sonar.projectKey", "fettuccini_back"
         property "sonar.organization", "fettucciniesp"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.gradle.skipCompile", "true"
     }
 }
