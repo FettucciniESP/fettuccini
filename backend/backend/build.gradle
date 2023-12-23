@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.0'
+    id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
     id "org.sonarqube" version "4.4.1.3373"
 }
@@ -25,6 +25,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.pi4j:pi4j-core:2.4.0'
+    implementation 'com.pi4j:pi4j-plugin-raspberrypi:2.4.0'
+    implementation 'com.pi4j:pi4j-plugin-pigpio:2.4.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -41,5 +44,6 @@ sonar {
         property "sonar.projectKey", "fettuccini_back"
         property "sonar.organization", "fettucciniesp"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.gradle.skipCompile", "true"
     }
 }
