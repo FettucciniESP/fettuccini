@@ -7,15 +7,17 @@ import fr.fettuccini.backend.model.poker.*;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class RoundService {
-    @Resource
-    private RoundValidationService roundValidationService;
+    private final RoundValidationService roundValidationService;
+
+    private final PokerEvaluatorService pokerEvaluatorService;
 
     /**
      * Initializes a new round for a given game session.
@@ -77,13 +79,65 @@ public class RoundService {
         roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
-        //TODO: FINISHED -> EVERYONE FOLDED EXCEPT WINNER
-        //TODO: SHOWDOWN -> WE COMPUTE THE WINNER(S)
-        //TODO: then we can update the player's balance
-        updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
 
+        if (currentRound.getRoundStep().equals(RoundStep.SHOWDOWN)) {
+            determineWinnerAndAllocatePot(gameSession, currentRound);
+        }
+
+        updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
     }
+
+    /**
+     * Determines the winner(s) of the current poker round and allocates the pot accordingly.
+     * This method is called when the round reaches the SHOWDOWN stage. It evaluates the hands of all players
+     * who have not folded, identifies the player(s) with the highest hand, and splits the pot among them.
+     * In case of a tie (multiple players with the highest hand), the pot is evenly split among the winners.
+     * If the pot amount does not split evenly, the remainder is allocated to one of the winners.
+     *
+     * @param gameSession The current game session containing the round and player information.
+     * @param currentRound The current round where the showdown occurs.
+     */
+    private void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
+        HashSet<Card> communityCards = new HashSet<>(currentRound.getBoard().getCommunityCards());
+        Map<Player, Integer> playerScores = new HashMap<>();
+
+        // Evaluate the hand for each player
+        for (Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)) {
+            HashSet<Card> playerHand = new HashSet<>(player.getHand());
+            int handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
+            playerScores.put(player, handScore);
+        }
+
+        // Find the highest score
+        int highestScore = playerScores.values().stream()
+                .max(Integer::compare)
+                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score"));
+
+        // Identify all players with the highest score
+        List<Player> winners = playerScores.entrySet().stream()
+                .filter(entry -> entry.getValue().equals(highestScore))
+                .map(Map.Entry::getKey)
+                .toList();
+
+        // Split the pot among the winners
+        int potAmount = currentRound.getPotAmount();
+        int splitAmount = potAmount / winners.size();
+        for (Player winner : winners) {
+            winner.setBalance(winner.getBalance() + splitAmount);
+        }
+
+        // Handle remainder if pot doesn't split evenly
+        int remainder = potAmount % winners.size();
+        if (remainder > 0) {
+            winners.getFirst().setBalance(winners.getFirst().getBalance() + remainder);
+        }
+
+        // Set round as finished
+        currentRound.setRoundStep(RoundStep.FINISHED);
+    }
+
+
 
     /**
      * Finds a round by its ID in the given game session.
@@ -207,6 +261,10 @@ public class RoundService {
      */
     public void playerMakeABet(Player player, Action action, Round round){
         Integer betAmount = action.getAmount();
+        playerAction(player, action, round, betAmount);
+    }
+
+    private void playerAction(Player player, Action action, Round round, Integer betAmount) {
         if(player.getBalance() < betAmount){
             action.setAmount(player.getBalance());
         }
@@ -251,13 +309,7 @@ public class RoundService {
                 .max()
                 .orElseThrow();
 
-        if(player.getBalance() < callAmount){
-            action.setAmount(player.getBalance());
-        }
-        Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
-        player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
-        round.addAction(action);
-        round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
+        playerAction(player, action, round, callAmount);
     }
 
     /**

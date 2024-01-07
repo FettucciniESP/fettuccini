@@ -4,7 +4,6 @@ import fr.fettuccini.backend.mapper.BoardCardsRequestMapper;
 import fr.fettuccini.backend.mapper.PlayerCardsRequestMapper;
 import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
-import fr.fettuccini.backend.model.poker.Card;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.BoardCardsRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
@@ -23,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 @RestController
 @RequestMapping("/poker")
@@ -81,7 +79,7 @@ public class PokerController {
     public ResponseEntity<HttpStatus> setBoardCards(@RequestBody BoardCardsRequest boardCardsRequest) throws PokerException {
         var boardCards = boardCardsRequestMapper.map(boardCardsRequest);
 
-        updateBoardCardsService.updateBoardCards((HashSet<Card>) boardCards);
+        updateBoardCardsService.updateBoardCards(boardCards);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

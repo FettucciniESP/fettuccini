@@ -2,11 +2,9 @@ package fr.fettuccini.backend.model.poker;
 
 import fr.fettuccini.backend.enums.HandType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

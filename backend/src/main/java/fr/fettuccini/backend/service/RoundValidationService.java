@@ -1,12 +1,12 @@
 package fr.fettuccini.backend.service;
 
+import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Round;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.utils.PokerUtils;
-import fr.fettuccini.backend.enums.PokerExceptionType;
 import org.springframework.stereotype.Service;
 
 @Service

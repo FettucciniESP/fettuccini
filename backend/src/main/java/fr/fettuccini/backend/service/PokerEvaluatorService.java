@@ -44,7 +44,7 @@ public class PokerEvaluatorService {
         for (var i = start; i < cards.size(); i++) {
             current.add(cards.get(i));
             generateCombinationsRecursive(cards, n, i + 1, current, combinations);
-            current.remove(current.size() - 1);
+            current.removeLast();
         }
     }
 
