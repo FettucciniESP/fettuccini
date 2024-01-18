@@ -2,11 +2,11 @@ import {GameActionEnum} from '@/app/enums/GameAction.enum'
 import {RoundStepEnum} from '@/app/enums/RoundStep.enum'
 import {PlayerActionModel} from '@/app/models/PlayerAction.model'
 import {croupierLoadingService} from '@/app/services/croupier-loading.service'
-import {roundService} from "@/app/services/roundService";
+import {roundService} from "@/app/services/round.service";
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 import {playersService} from "@/app/services/players.service";
 import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
-import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistoryModel";
+import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistory.model";
 import {useEffect, useState} from "react";
 import {Subscription} from "rxjs";
 

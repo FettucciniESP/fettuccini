@@ -5,7 +5,7 @@ import {PlayerHandInfosModel} from '@/app/models/PlayerHandInfos.model'
 import {RoundInfosModel} from '@/app/models/RoundInfos.model'
 import {levelsService} from "@/app/services/levels.service";
 import {playersService} from "@/app/services/players.service";
-import {roundService} from "@/app/services/roundService";
+import {roundService} from "@/app/services/round.service";
 import {useEffect, useState} from "react";
 import {Subscription} from "rxjs";
 import PlayerSeatInformations from "@/app/components/information-panel/player-seat-informations/PlayerSeatInformations";

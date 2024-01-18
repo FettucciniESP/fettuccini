@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs';
-import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistoryModel";
+import {RoundPlayersActionsHistoryModel} from "@/app/models/RoundPlayersActionsHistory.model";
 import {RoundInfosModel} from "@/app/models/RoundInfos.model";
 
 class RoundService {
