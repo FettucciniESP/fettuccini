@@ -6,7 +6,7 @@ import Image from "next/image";
 import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
 
 const CHECK_IMAGE = require('../../../../assets/images/check.png');
-const JETON_BLEU_IMAGE = require('../../../../assets/images/jeton_poker_v3_Bleu.png');
+const BLUE_TOKEN_IMAGE = require('../../../../assets/images/jeton_poker_v3_Bleu.png');
 
 export default function PlayerAction({playerHandInfos}: { readonly playerHandInfos: PlayerHandInfosModel }) {
 
@@ -33,7 +33,7 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
     const betActionContent = () => {
         return (
             <>
-                <Image src={JETON_BLEU_IMAGE} alt="Bet/Call" className={styles.imgLastActionWithAmount} />
+                <Image src={BLUE_TOKEN_IMAGE} alt="Bet/Call" className={styles.imgLastActionWithAmount} />
                 <Text className={styles.lastActionAmountValue}>{playerHandInfos.lastAction?.amount}</Text>
             </>
         );

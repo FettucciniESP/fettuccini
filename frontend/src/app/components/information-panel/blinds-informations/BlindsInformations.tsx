@@ -3,15 +3,15 @@ import styles from './BlindsInformations.module.scss'
 import {LevelInfosModel} from '@/app/models/LevelInfos.model'
 import Image from "next/image";
 
-const JETON_BLEU_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
-const JETON_BLANC_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
+const BLUE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
+const WHITE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
 export default function BlindsInformations({currentLevelInfos}: { readonly currentLevelInfos: LevelInfosModel}) {
 
     return (
         <Box>
             {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
                 <Image
-                    src={JETON_BLANC_IMAGE}
+                    src={WHITE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />
@@ -20,7 +20,7 @@ export default function BlindsInformations({currentLevelInfos}: { readonly curre
             </Box>}
             {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
                 <Image
-                    src={JETON_BLEU_IMAGE}
+                    src={BLUE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />
@@ -29,7 +29,7 @@ export default function BlindsInformations({currentLevelInfos}: { readonly curre
             </Box>}
             {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
                 <Image
-                    src={JETON_BLANC_IMAGE}
+                    src={WHITE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />

@@ -8,8 +8,8 @@ import usePlayerSeatInformations
     from "@/app/components/information-panel/player-seat-informations/usePlayerSeatInformations";
 import PlayerAction from "@/app/components/information-panel/player-seat-informations/player-action/PlayerAction";
 
-const JETON_BLEU_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
-const JETON_BLANC_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
+const BLUE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
+const WHITE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
 
 export default function PlayerSeatInformations({
                                                    seatIndex,
@@ -34,7 +34,7 @@ export default function PlayerSeatInformations({
             <Box className={styles.playerInformations}>
                 <StackContainer>
                     <Image
-                        src={JETON_BLANC_IMAGE}
+                        src={WHITE_TOKEN_IMAGE}
                         alt="icone action"
                         className={styles.imgBalance}
                     />
@@ -43,7 +43,7 @@ export default function PlayerSeatInformations({
                     </Box>
                 </StackContainer>
                 {seatIndex === buttonSeatIndex && <Image
-                    src={JETON_BLEU_IMAGE}
+                    src={BLUE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgSeatInformation}
                 />}
