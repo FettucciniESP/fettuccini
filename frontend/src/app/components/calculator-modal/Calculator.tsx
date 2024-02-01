@@ -32,13 +32,13 @@ export default function Calculator() {
       for (let i = 1; i <= 9; i += 3) {
         buttons.push(
           <Flex key={i} mt={2}>
-            <Button onClick={() => handleChange(i)} mr={2}>
+            <Button onClick={() => handleChange(i)} mr={2} className={styles.ButtonNumber}>
               {i}
             </Button>
-            <Button onClick={() => handleChange(i + 1)} mr={2}>
+            <Button onClick={() => handleChange(i + 1)} mr={2} className={styles.ButtonNumber}>
               {i + 1}
             </Button>
-            <Button onClick={() => handleChange(i + 2)}>
+            <Button onClick={() => handleChange(i + 2)} className={styles.ButtonNumber}>
               {i + 2}
             </Button>
           </Flex>
@@ -46,10 +46,10 @@ export default function Calculator() {
       }
       buttons.push(
         <Flex key={0} mt={2}>
-          <Button onClick={() => handleChange(0)} mr={2}>
+          <Button onClick={() => handleChange(0)} mr={10}  className={styles.ButtonNumber}>
             0
           </Button>
-          <Button onClick={handleDelete} w="100%" leftIcon={<ArrowBackIcon />}>
+          <Button onClick={handleDelete} leftIcon={<ArrowBackIcon />} className={styles.ButtonNumber}>
           </Button>
         </Flex>
       );
@@ -63,15 +63,15 @@ export default function Calculator() {
       </Button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
+        <ModalContent className={styles.CalculatorContent}>
+          <ModalCloseButton color="#F7F0E1"/>
+          <ModalBody className={styles.CalculatorBody}>
             <Flex direction="column" align="center">
               <Box mb={4}>
-                <input value={code} disabled />
+                <input value={code} disabled className={styles.inputCalculator}/>
               </Box>
               {renderButtons()}
-              <Button colorScheme="blue" onClick={handleSubmit} mt={4}>
+              <Button onClick={handleSubmit} mt={4} className={styles.ButtonSubmit}>
                 Valider
               </Button>
             </Flex>
