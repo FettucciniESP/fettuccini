@@ -2,7 +2,7 @@
 
 
 NfcReader::NfcReader(){
-    Serial2.begin(115200);//TODO: mettre le port série en paramètre
+    Serial2.begin(115200,SERIAL_8N1,5,17);//TODO: mettre le port série en paramètre
     this->pair = true;
     this->trame = new std::vector<byte>();
 }

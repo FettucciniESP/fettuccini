@@ -82,7 +82,7 @@ void OledScreen::setTagNB(int nb){
     this->display->setCursor(0, 0);
     this->display->setTextSize(2);
     this->display->setTextColor(WHITE);
-    this->display->println(F("NB Jeuton:\n"));
+    this->display->println(F("NB Jetons:\n"));
     this->display->println(nb);
 
     this->display->display();
