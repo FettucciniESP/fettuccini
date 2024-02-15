@@ -36,7 +36,7 @@ public class PokerService {
 
         return new StartGameResponse(
                 playRound(gameSession.getId()),
-                gameSession.getLevelsStructure()
+                gameSession. getLevelsStructure()
         );
     }
 
