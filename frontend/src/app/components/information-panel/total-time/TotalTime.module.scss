@@ -1,0 +1,15 @@
+@import '../../../assets/styles/variables.scss';
+
+.container {
+  border: 1px solid $white-color;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.timer {
+  display: flex;
+  font-weight: bold;
+  font-size: 3ch;
+  text-align: center;
+  justify-content: center;
+}

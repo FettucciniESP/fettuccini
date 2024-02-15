@@ -2,7 +2,7 @@ import {StartGameResponseModel} from "@/app/models/StartGameResponse.model";
 import {croupierLoadingService} from "@/app/services/croupier-loading.service";
 import {levelsService} from "@/app/services/levels.service";
 import {playersService} from "@/app/services/players.service";
-import {roundService} from "@/app/services/roundService";
+import {roundService} from "@/app/services/round.service";
 import {gameService} from "@/app/services/game.service";
 
 class CroupierService {
