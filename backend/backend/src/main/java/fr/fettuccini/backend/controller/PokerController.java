@@ -27,7 +27,7 @@ import java.util.HashSet;
 
 @RestController
 @RequestMapping("/poker")
-@CrossOrigin("localhost")
+@CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
 public class PokerController {
 
