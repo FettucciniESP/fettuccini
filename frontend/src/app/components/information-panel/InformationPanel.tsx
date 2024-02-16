@@ -15,6 +15,8 @@ import BlindsInformations from "@/app/components/information-panel/blinds-inform
 
 export default function InformationPanel() {
   const toast = useToast();
+  const toastOptions = toastService.setToastOptions();
+
   let [currentLevelInfos, setCurrentLevelInfos] = useState<
     LevelInfosModel | undefined
   >(undefined);
@@ -50,11 +52,11 @@ export default function InformationPanel() {
 
     const errorValue_subscribe: Subscription =
       toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        if (!!errorValue) {
-          const toastOptions = toastService.setToastOptions(errorValue);
-          if (!!toastOptions) {
-            toast(toastOptions);
-          }
+        if (!!errorValue && !!toastOptions) {
+          toast({
+            title: errorValue,
+            ...toastOptions,
+          });
         }
       });
 

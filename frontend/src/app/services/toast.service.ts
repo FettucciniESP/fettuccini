@@ -20,15 +20,9 @@ class ToastService {
   }
 
   setToastOptions(
-    errorValue: String,
     customOptions?: UseToastOptions
   ): UseToastOptions | undefined {
-    if (!errorValue) {
-      return;
-    }
-
     const toastOptions: UseToastOptions = {
-      title: errorValue,
       ...defaultOptions,
       ...customOptions,
     };
