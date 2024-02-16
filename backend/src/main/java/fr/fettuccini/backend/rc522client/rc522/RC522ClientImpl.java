@@ -39,7 +39,7 @@ public class RC522ClientImpl implements RC522Client {
     private final RC522Adapter rc522;
     private static Context pi4jContext;
 
-    private final static String READ_CARD_UID_LOG = "Card Read UID: (HEX) {}";
+    private static final String READ_CARD_UID_LOG = "Card Read UID: (HEX) {}";
 
     public static RC522Client createInstance() {
         final RaspberryPiAdapter piAdapter = new RaspberryPiAdapterImpl(pi4jContext);

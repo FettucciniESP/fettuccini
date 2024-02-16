@@ -1,8 +1,6 @@
 package fr.fettuccini.backend.rc522client.model.card;
 
 import fr.fettuccini.backend.rc522client.exception.GpioException;
-import fr.fettuccini.backend.rc522client.exception.GpioException;
-import fr.fettuccini.backend.rc522client.exception.GpioException;
 import lombok.Getter;
 import lombok.Setter;
 
