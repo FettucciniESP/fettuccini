@@ -1,7 +1,8 @@
 package fr.fettuccini.backend.rc522client.model.card;
 
-import fr.fettuccini.backend.rc522client.exception.BlockIndexOutOfRangeException;
-import fr.fettuccini.backend.rc522client.exception.ByteIndexOutOfRangeException;
+import fr.fettuccini.backend.rc522client.exception.GpioException;
+import fr.fettuccini.backend.rc522client.exception.GpioException;
+import fr.fettuccini.backend.rc522client.exception.GpioException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +34,13 @@ public class DataBlock implements Block {
 
 	private void validateBlockIndex(int index) {
 		if (index < 0 || index >= BLOCK_COUNT) {
-			throw new BlockIndexOutOfRangeException("Block index out of range: " + index);
+			throw new GpioException("Block index out of range: " + index);
 		}
 	}
 
 	private void validateDataSize(byte[] data) {
 		if (data != null && data.length > BYTE_COUNT) {
-			throw new RuntimeException("Data array too large: " + data.length + ", should be less than " + BYTE_COUNT);
+			throw new GpioException("Data array too large: " + data.length + ", should be less than " + BYTE_COUNT);
 		}
 	}
 
@@ -55,7 +56,7 @@ public class DataBlock implements Block {
 
 	private void validateByteIndex(int byteIndex) {
 		if (byteIndex < 0 || byteIndex >= BYTE_COUNT) {
-			throw new ByteIndexOutOfRangeException("Byte number out of range: " + byteIndex);
+			throw new GpioException("Byte number out of range: " + byteIndex);
 		}
 	}
 

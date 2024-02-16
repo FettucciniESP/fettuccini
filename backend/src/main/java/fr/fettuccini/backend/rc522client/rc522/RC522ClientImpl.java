@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 import static fr.fettuccini.backend.rc522client.model.auth.BlockAuthKey.getFactoryDefaultKey;
 import static fr.fettuccini.backend.rc522client.model.auth.BlockAuthKey.getFactoryDefaultSectorKey;
 import static fr.fettuccini.backend.rc522client.model.card.Card.TAG_ID_SIZE;
@@ -30,257 +32,265 @@ import static fr.fettuccini.backend.rc522client.util.CardUtil.getReadStatus;
 @Slf4j
 public class RC522ClientImpl implements RC522Client {
 
-	private static final int RESET_PIN = 22;
-	private static final int SPEED = 500000;
-	private static final int SPI_CHANNEL = 0;
+    private static final int RESET_PIN = 22;
+    private static final int SPEED = 500000;
+    private static final int SPI_CHANNEL = 0;
 
-	private final RC522Adapter rc522;
-	private static Context pi4jContext;
+    private final RC522Adapter rc522;
+    private static Context pi4jContext;
 
-	public static RC522Client createInstance() {
-		final RaspberryPiAdapter piAdapter = new RaspberryPiAdapterImpl(pi4jContext);
-		final RC522Adapter rc522Adapter = new RC522AdapterImpl(piAdapter);
-		final RC522Client rc522Client = new RC522ClientImpl(rc522Adapter);
+    private final static String READ_CARD_UID_LOG = "Card Read UID: (HEX) {}";
 
-		rc522Client.init();
-		return rc522Client;
-	}
+    public static RC522Client createInstance() {
+        final RaspberryPiAdapter piAdapter = new RaspberryPiAdapterImpl(pi4jContext);
+        final RC522Adapter rc522Adapter = new RC522AdapterImpl(piAdapter);
+        final RC522Client rc522Client = new RC522ClientImpl(rc522Adapter);
 
-	@Override
-	public void init() {
-		rc522.init(SPEED, RESET_PIN, SPI_CHANNEL);
-	}
+        rc522Client.init();
+        return rc522Client;
+    }
 
-	/**
-	 * This method checks for nearby cards. If no cards detected, it returns false
-	 * otherwise, if a card is present,
-	 * then returns true. Important: This method will returns true when the card is
-	 * present, but it's not readable!
-	 *
-	 * @return Has any card near to the reader?
-	 */
-	@Override
-	public boolean hasCard() {
-		CommunicationResult readResult = rc522.selectCard();
+    @Override
+    public void init() {
+        rc522.init(SPEED, RESET_PIN, SPI_CHANNEL);
+    }
 
-		return readResult.getStatus() != CommunicationStatus.NO_TAG;
-	}
+    /**
+     * This method checks for nearby cards. If no cards detected, it returns false
+     * otherwise, if a card is present,
+     * then returns true. Important: This method will returns true when the card is
+     * present, but it's not readable!
+     *
+     * @return Has any card near to the reader?
+     */
+    @Override
+    public boolean hasCard() {
+        CommunicationResult readResult = rc522.selectCard();
 
-	/**
-	 * Select one of your card and read its tagId. If the selection has error or no
-	 * rad is present then it will return
-	 * with a null.
-	 *
-	 * @return The selected card id or null if no card present or the selection
-	 *         process is failed
-	 */
-	@Override
-	public byte[] readCardTag() {
-		CommunicationResult readResult = rc522.selectCard();
+        return readResult.getStatus() != CommunicationStatus.NO_TAG;
+    }
 
-		if (!readResult.isSuccess()) {
-			return null;
-		}
+    /**
+     * Select one of your card and read its tagId. If the selection has error or no
+     * rad is present then it will return
+     * with a null.
+     *
+     * @return The selected card id or null if no card present or the selection
+     * process is failed
+     */
+    @Override
+    public Optional<byte[]> readCardTag() {
+        CommunicationResult readResult = rc522.selectCard();
 
-		return readResult.getData(TAG_ID_SIZE);
-	}
+        if (!readResult.isSuccess()) {
+            return Optional.empty();
+        }
 
-	/**
-	 * Reads all data from your card. If no card present or the process is failed it
-	 * returns with null. This method is
-	 * using the factory default authentication keys.
-	 *
-	 * @return The Card object with all the readable card data
-	 */
-	@Override
-	public Card readCardData() {
-		return readCardData(CardAuthKey.getFactoryDefaultKey());
-	}
+        return Optional.ofNullable(readResult.getData(TAG_ID_SIZE));
+    }
 
-	/**
-	 * Reads all data from your card. If no card present or the process is failed it
-	 * returns with null. This method is
-	 * using the given authentication keys.
-	 *
-	 * @param cardAuthKey Authentication keys for the whole card
-	 * @return The Card object with all the readable card data
-	 */
-	@Override
-	public Card readCardData(CardAuthKey cardAuthKey) {
-		byte[] tagId = readCardTag();
+    /**
+     * Reads all data from your card. If no card present or the process is failed it
+     * returns with null. This method is
+     * using the factory default authentication keys.
+     *
+     * @return The Card object with all the readable card data
+     */
+    @Override
+    public Card readCardData() {
+        return readCardData(CardAuthKey.getFactoryDefaultKey());
+    }
 
-		if (tagId == null) {
-			return null;
-		}
+    /**
+     * Reads all data from your card. If no card present or the process is failed it
+     * returns with null. This method is
+     * using the given authentication keys.
+     *
+     * @param cardAuthKey Authentication keys for the whole card
+     * @return The Card object with all the readable card data
+     */
+    @Override
+    public Card readCardData(CardAuthKey cardAuthKey) {
+        Optional<byte[]> optionalTagId = readCardTag();
 
-		Card card = new Card(tagId);
+        if (optionalTagId.isEmpty()) {
+            return null;
+        }
 
-		log.info("Card Read UID: (HEX) {}", card.getTagIdAsString());
+        byte[] tagId = optionalTagId.get();
 
-		for (int sectorIndex = 0; sectorIndex < Card.SECTOR_COUNT; sectorIndex++) {
-			for (int blockIndex = 0; blockIndex < Sector.BLOCK_COUNT; blockIndex++) {
-				CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId,
-						cardAuthKey.getBlockAuthKey(sectorIndex, blockIndex));
+        Card card = new Card(tagId);
 
-				card.addBlock(sectorIndex, blockIndex, result.getData(), getReadStatus(result));
-			}
-		}
+        log.info(READ_CARD_UID_LOG, card.getTagIdAsString());
 
-		card.recalculateAccessModes();
+        for (int sectorIndex = 0; sectorIndex < Card.SECTOR_COUNT; sectorIndex++) {
+            for (int blockIndex = 0; blockIndex < Sector.BLOCK_COUNT; blockIndex++) {
+                CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId,
+                        cardAuthKey.getBlockAuthKey(sectorIndex, blockIndex));
 
-		rc522.reset();
+                card.addBlock(sectorIndex, blockIndex, result.getData(), getReadStatus(result));
+            }
+        }
 
-		return card;
-	}
+        card.recalculateAccessModes();
 
-	/**
-	 * Reads a specific sector data from your selected card. If no card present or
-	 * the process is failed it returns
-	 * with null. This method is using the factory default authentication keys.
-	 *
-	 * @param sectorIndex The target sector's index
-	 * @return The Sector object with all the readable card data
-	 */
-	@Override
-	public Sector readSectorData(int sectorIndex) {
-		return readSectorData(sectorIndex, SectorAuthKey.getFactoryDefaultKey(sectorIndex));
-	}
+        rc522.reset();
 
-	/**
-	 * Reads a specific sector data from your selected card. If no card present or
-	 * the process is failed it returns
-	 * with null. This method is using the given authentication keys.
-	 *
-	 * @param sectorIndex   The target sector's index
-	 * @param sectorAuthKey Authentication keys for the target sector
-	 * @return The Sector object with all the readable card data
-	 */
-	@Override
-	public Sector readSectorData(int sectorIndex, SectorAuthKey sectorAuthKey) {
-		byte[] tagId = readCardTag();
+        return card;
+    }
 
-		if (tagId == null) {
-			return null;
-		}
+    /**
+     * Reads a specific sector data from your selected card. If no card present or
+     * the process is failed it returns
+     * with null. This method is using the factory default authentication keys.
+     *
+     * @param sectorIndex The target sector's index
+     * @return The Sector object with all the readable card data
+     */
+    @Override
+    public Sector readSectorData(int sectorIndex) {
+        return readSectorData(sectorIndex, SectorAuthKey.getFactoryDefaultKey(sectorIndex));
+    }
 
-		Sector sector = new Sector(sectorIndex);
+    /**
+     * Reads a specific sector data from your selected card. If no card present or
+     * the process is failed it returns
+     * with null. This method is using the given authentication keys.
+     *
+     * @param sectorIndex   The target sector's index
+     * @param sectorAuthKey Authentication keys for the target sector
+     * @return The Sector object with all the readable card data
+     */
+    @Override
+    public Sector readSectorData(int sectorIndex, SectorAuthKey sectorAuthKey) {
+        Optional<byte[]> optionalTagId = readCardTag();
 
-		log.info("Card Read UID: (HEX) {}", DataUtil.bytesToHex(tagId));
+        if (optionalTagId.isEmpty()) {
+            return null;
+        }
 
-		for (int blockIndex = 0; blockIndex < Sector.BLOCK_COUNT; blockIndex++) {
-			CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId,
-					sectorAuthKey.getBlockAuthKey(blockIndex));
+        byte[] tagId = optionalTagId.get();
 
-			sector.addBlock(blockIndex, result.getData(), getReadStatus(result));
-		}
+        Sector sector = new Sector(sectorIndex);
 
-		sector.recalculateAccessModes();
+        log.info(READ_CARD_UID_LOG, DataUtil.bytesToHex(tagId));
 
-		rc522.reset();
+        for (int blockIndex = 0; blockIndex < Sector.BLOCK_COUNT; blockIndex++) {
+            CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId,
+                    sectorAuthKey.getBlockAuthKey(blockIndex));
 
-		return sector;
-	}
+            sector.addBlock(blockIndex, result.getData(), getReadStatus(result));
+        }
 
-	/**
-	 * Reads a specific block data from your selected card. If no card present or
-	 * the process is failed it returns
-	 * with null. This method is using the factory default authentication keys.
-	 *
-	 * @param sectorIndex The target sector's index
-	 * @param blockIndex  The target block's index
-	 * @return The Block object with all the readable card data
-	 */
-	@Override
-	public Block readBlockData(int sectorIndex, int blockIndex) {
-		return readBlockData(sectorIndex, blockIndex, getFactoryDefaultSectorKey(), getFactoryDefaultKey(blockIndex));
-	}
+        sector.recalculateAccessModes();
 
-	/**
-	 * Reads a specific block data from your selected card. If no card present or
-	 * the process is failed it returns
-	 * with null. This method is using the given authentication keys.
-	 *
-	 * @param sectorIndex          The target sector's index
-	 * @param blockIndex           The target block's index
-	 * @param sectorTrailerAuthKey Authentication key for the target block's sector
-	 *                             trailer block
-	 * @param blockAuthKey         Authentication key for the target block
-	 * @return The Block object with all the readable card data
-	 */
-	@Override
-	public Block readBlockData(int sectorIndex, int blockIndex, BlockAuthKey sectorTrailerAuthKey,
-			BlockAuthKey blockAuthKey) {
-		byte[] tagId = readCardTag();
+        rc522.reset();
 
-		if (tagId == null) {
-			return null;
-		}
+        return sector;
+    }
 
-		log.info("Card Read UID: (HEX) {}", DataUtil.bytesToHex(tagId));
+    /**
+     * Reads a specific block data from your selected card. If no card present or
+     * the process is failed it returns
+     * with null. This method is using the factory default authentication keys.
+     *
+     * @param sectorIndex The target sector's index
+     * @param blockIndex  The target block's index
+     * @return The Block object with all the readable card data
+     */
+    @Override
+    public Block readBlockData(int sectorIndex, int blockIndex) {
+        return readBlockData(sectorIndex, blockIndex, getFactoryDefaultSectorKey(), getFactoryDefaultKey(blockIndex));
+    }
 
-		Block block;
-		SectorTrailerBlock sectorTrailerBlock;
-		CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId, blockAuthKey);
+    /**
+     * Reads a specific block data from your selected card. If no card present or
+     * the process is failed it returns
+     * with null. This method is using the given authentication keys.
+     *
+     * @param sectorIndex          The target sector's index
+     * @param blockIndex           The target block's index
+     * @param sectorTrailerAuthKey Authentication key for the target block's sector
+     *                             trailer block
+     * @param blockAuthKey         Authentication key for the target block
+     * @return The Block object with all the readable card data
+     */
+    @Override
+    public Block readBlockData(int sectorIndex, int blockIndex, BlockAuthKey sectorTrailerAuthKey,
+                               BlockAuthKey blockAuthKey) {
+        Optional<byte[]> optionalTagId = readCardTag();
 
-		if (blockIndex == SECTOR_TRAILER_BLOCK_INDEX) {
-			block = new SectorTrailerBlock(result.getData(), getReadStatus(result));
-			sectorTrailerBlock = new SectorTrailerBlock(result.getData(), getReadStatus(result));
-		} else if (blockIndex == MANUFACTURER_BLOCK_INDEX && sectorIndex == MANUFACTURER_SECTOR_INDEX) {
-			block = new ManufacturerBlock(result.getData(), getReadStatus(result));
+        if (optionalTagId.isEmpty()) {
+            return null;
+        }
 
-			CommunicationResult sectorTrailerResult = authAndReadData(sectorIndex, SECTOR_TRAILER_BLOCK_INDEX, tagId,
-					blockAuthKey);
-			sectorTrailerBlock = new SectorTrailerBlock(sectorTrailerResult.getData(),
-					getReadStatus(sectorTrailerResult));
-		} else {
-			block = new DataBlock(blockIndex, result.getData(), getReadStatus(result));
+        byte[] tagId = optionalTagId.get();
 
-			CommunicationResult sectorTrailerResult = authAndReadData(sectorIndex, SECTOR_TRAILER_BLOCK_INDEX, tagId,
-					blockAuthKey);
-			sectorTrailerBlock = new SectorTrailerBlock(sectorTrailerResult.getData(),
-					getReadStatus(sectorTrailerResult));
-		}
+        log.info(READ_CARD_UID_LOG, DataUtil.bytesToHex(tagId));
 
-		block.updateAccessMode(sectorTrailerBlock);
+        Block block;
+        SectorTrailerBlock sectorTrailerBlock;
+        CommunicationResult result = authAndReadData(sectorIndex, blockIndex, tagId, blockAuthKey);
 
-		rc522.reset();
+        if (blockIndex == SECTOR_TRAILER_BLOCK_INDEX) {
+            block = new SectorTrailerBlock(result.getData(), getReadStatus(result));
+            sectorTrailerBlock = new SectorTrailerBlock(result.getData(), getReadStatus(result));
+        } else if (blockIndex == MANUFACTURER_BLOCK_INDEX && sectorIndex == MANUFACTURER_SECTOR_INDEX) {
+            block = new ManufacturerBlock(result.getData(), getReadStatus(result));
 
-		return block;
-	}
+            CommunicationResult sectorTrailerResult = authAndReadData(sectorIndex, SECTOR_TRAILER_BLOCK_INDEX, tagId,
+                    blockAuthKey);
+            sectorTrailerBlock = new SectorTrailerBlock(sectorTrailerResult.getData(),
+                    getReadStatus(sectorTrailerResult));
+        } else {
+            block = new DataBlock(blockIndex, result.getData(), getReadStatus(result));
 
-	private CommunicationResult authAndReadData(int sectorIndex, int blockIndex, byte[] tagId,
-			BlockAuthKey blockAuthKey) {
-		byte fullAddress = getFullAddress(sectorIndex, blockIndex);
-		CommunicationResult result = auth(fullAddress, tagId, blockAuthKey);
+            CommunicationResult sectorTrailerResult = authAndReadData(sectorIndex, SECTOR_TRAILER_BLOCK_INDEX, tagId,
+                    blockAuthKey);
+            sectorTrailerBlock = new SectorTrailerBlock(sectorTrailerResult.getData(),
+                    getReadStatus(sectorTrailerResult));
+        }
 
-		if (result.isSuccess()) {
-			return readData(fullAddress);
-		}
+        block.updateAccessMode(sectorTrailerBlock);
 
-		return result;
-	}
+        rc522.reset();
 
-	private CommunicationResult auth(byte blockAddress, byte[] tagId, BlockAuthKey blockAuthKey) {
-		log.debug("Authenticate block: {}", blockAddress);
+        return block;
+    }
 
-		byte authCommand = switch (blockAuthKey.keyType()) {
+    private CommunicationResult authAndReadData(int sectorIndex, int blockIndex, byte[] tagId,
+                                                BlockAuthKey blockAuthKey) {
+        byte fullAddress = getFullAddress(sectorIndex, blockIndex);
+        CommunicationResult result = auth(fullAddress, tagId, blockAuthKey);
+
+        if (result.isSuccess()) {
+            return readData(fullAddress);
+        }
+
+        return result;
+    }
+
+    private CommunicationResult auth(byte blockAddress, byte[] tagId, BlockAuthKey blockAuthKey) {
+        log.debug("Authenticate block: {}", blockAddress);
+
+        byte authCommand = switch (blockAuthKey.getKeyType()) {
             case AUTH_A -> PICC_AUTHENT1A;
             case AUTH_B -> PICC_AUTHENT1B;
         };
 
-        CommunicationResult result = rc522.authCard(authCommand, blockAddress, blockAuthKey.key(), tagId);
+        CommunicationResult result = rc522.authCard(authCommand, blockAddress, blockAuthKey.getKey(), tagId);
 
-		if (result.isSuccess()) {
-			log.debug("Successfully authenticated!");
-		} else {
-			log.debug("Authentication error");
-		}
+        if (result.isSuccess()) {
+            log.debug("Successfully authenticated!");
+        } else {
+            log.debug("Authentication error");
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private CommunicationResult readData(byte blockAddress) {
-		return rc522.read(blockAddress);
-	}
+    private CommunicationResult readData(byte blockAddress) {
+        return rc522.read(blockAddress);
+    }
 
 }

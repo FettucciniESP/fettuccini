@@ -1,6 +1,9 @@
 package fr.fettuccini.backend.rc522client.rc522;
 
+import lombok.NoArgsConstructor;
+
 //@SuppressWarnings("unused")
+@NoArgsConstructor
 class RC522CommandTable {
 
 	// reserved for future use?

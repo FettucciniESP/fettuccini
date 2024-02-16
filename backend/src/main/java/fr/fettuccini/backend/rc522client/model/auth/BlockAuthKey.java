@@ -1,8 +1,17 @@
 package fr.fettuccini.backend.rc522client.model.auth;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import static fr.fettuccini.backend.rc522client.model.card.SectorTrailerBlock.SECTOR_TRAILER_BLOCK_INDEX;
 
-public record BlockAuthKey(int blockIndex, AuthKeyType keyType, byte[] key) {
+@AllArgsConstructor
+@Getter
+public class BlockAuthKey {
+
+	private final int blockIndex;
+	private final AuthKeyType keyType;
+	private final byte[] key;
 
 	private static final byte[] FACTORY_DEFAULT_KEY = new byte[] {
 			(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF

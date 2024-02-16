@@ -18,7 +18,7 @@ public class SectorAuthKey {
 
 	public BlockAuthKey getBlockAuthKey(int blockIndex) {
 		return blockAuthKeys.stream()
-				.filter(blockAuthKey -> Objects.equals(blockAuthKey.blockIndex(), blockIndex))
+				.filter(blockAuthKey -> Objects.equals(blockAuthKey.getBlockIndex(), blockIndex))
 				.findFirst()
 				.orElse(null);
 	}
