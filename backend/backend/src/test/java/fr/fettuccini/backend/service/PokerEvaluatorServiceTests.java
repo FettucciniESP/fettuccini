@@ -7,6 +7,7 @@ import fr.fettuccini.backend.model.poker.Card;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
+import java.util.SortedMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,28 +47,28 @@ public class PokerEvaluatorServiceTests {
 
         // Four of a Kind qui plante et deviens plus fort que le Straight Flush
         // les aces et les rois sont trop fort.
-//        HashSet<Card> playerHand3 = new HashSet<>();
-//        playerHand3.add(new Card(CardType.HEARTS, CardValue.ACE));
-//        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.ACE ));
-//
-//        HashSet<Card> communityCards3 = new HashSet<>();
-//        communityCards3.add(new Card(CardType.CLUBS, CardValue.ACE));
-//        communityCards3.add(new Card(CardType.SPADES, CardValue.ACE));
-//        communityCards3.add(new Card(CardType.HEARTS, CardValue.TWO));
-//        communityCards3.add(new Card(CardType.CLUBS, CardValue.THREE));
-//        communityCards3.add(new Card(CardType.CLUBS, CardValue.FOUR));
-
-        // Four of a Kind
         HashSet<Card> playerHand3 = new HashSet<>();
-        playerHand3.add(new Card(CardType.HEARTS, CardValue.QUEEN));
-        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.QUEEN));
+        playerHand3.add(new Card(CardType.HEARTS, CardValue.ACE));
+        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.ACE ));
 
         HashSet<Card> communityCards3 = new HashSet<>();
-        communityCards3.add(new Card(CardType.CLUBS, CardValue.QUEEN));
-        communityCards3.add(new Card(CardType.SPADES, CardValue.QUEEN));
+        communityCards3.add(new Card(CardType.CLUBS, CardValue.ACE));
+        communityCards3.add(new Card(CardType.SPADES, CardValue.ACE));
         communityCards3.add(new Card(CardType.HEARTS, CardValue.TWO));
         communityCards3.add(new Card(CardType.CLUBS, CardValue.THREE));
         communityCards3.add(new Card(CardType.CLUBS, CardValue.FOUR));
+
+        // Four of a Kind
+//        HashSet<Card> playerHand3 = new HashSet<>();
+//        playerHand3.add(new Card(CardType.HEARTS, CardValue.QUEEN));
+//        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.QUEEN));
+//
+//        HashSet<Card> communityCards3 = new HashSet<>();
+//        communityCards3.add(new Card(CardType.CLUBS, CardValue.QUEEN));
+//        communityCards3.add(new Card(CardType.SPADES, CardValue.QUEEN));
+//        communityCards3.add(new Card(CardType.HEARTS, CardValue.TWO));
+//        communityCards3.add(new Card(CardType.CLUBS, CardValue.THREE));
+//        communityCards3.add(new Card(CardType.CLUBS, CardValue.FOUR));
 
         int fourOfAKindScore = service.evaluateHand(playerHand3, communityCards3);
 
@@ -144,25 +145,45 @@ public class PokerEvaluatorServiceTests {
         // Pair
         HashSet<Card> playerHand9 = new HashSet<>();
         playerHand9.add(new Card(CardType.HEARTS, CardValue.TWO));
-        playerHand9.add(new Card(CardType.DIAMONDS, CardValue.THREE));
+        playerHand9.add(new Card(CardType.DIAMONDS, CardValue.TWO));
 
         HashSet<Card> communityCards9 = new HashSet<>();
-        communityCards9.add(new Card(CardType.CLUBS, CardValue.TWO));
-        communityCards9.add(new Card(CardType.SPADES, CardValue.FOUR));
-        communityCards9.add(new Card(CardType.DIAMONDS, CardValue.FIVE));
-        communityCards9.add(new Card(CardType.CLUBS, CardValue.SIX));
+        communityCards9.add(new Card(CardType.CLUBS, CardValue.EIGHT));
+        communityCards9.add(new Card(CardType.SPADES, CardValue.SIX));
+        communityCards9.add(new Card(CardType.DIAMONDS, CardValue.JACK));
+        communityCards9.add(new Card(CardType.CLUBS, CardValue.KING));
         communityCards9.add(new Card(CardType.CLUBS, CardValue.SEVEN));
 
         int pairScore = service.evaluateHand(playerHand9, communityCards9);
 
+        System.out.println(royalFlushScore + ": royalFlushScore");
+        System.out.println(straightFlushScore + ": straightFlushScore");
+        System.out.println(fourOfAKindScore + ": fourOfAKindScore");
+        System.out.println(fullHouseScore + ": fullHouseScore");
+        System.out.println(flushScore + ": flushScore");
+        System.out.println(straightScore + ": straightScore");
+        System.out.println(threeOfAKindScore + ": threeOfAKindScore");
+        System.out.println(twoPairScore + ": twoPairScore");
+        System.out.println(pairScore + ": pairScore");
+
         // Assert that the hands are ranked correctly
         assertTrue(royalFlushScore > straightFlushScore, "Royal Flush should have a higher score than Straight Flush");
+
+        // Plante =>
         assertTrue(straightFlushScore > fourOfAKindScore, "Straight Flush should have a higher score than Four of a Kind");
+
         assertTrue(fourOfAKindScore > fullHouseScore, "Four of a Kind should have a higher score than Full House");
+
+        // Plante =>
         assertTrue(fullHouseScore > flushScore, "Full House should have a higher score than Flush");
+
         assertTrue(flushScore > straightScore, "Flush should have a higher score than Straight");
         assertTrue(straightScore > threeOfAKindScore, "Straight should have a higher score than Three of a Kind");
+
+        // Plante =>
         assertTrue(threeOfAKindScore > twoPairScore, "Three of a Kind should have a higher score than Two Pair");
+
+        // Plante =>
         assertTrue(twoPairScore > pairScore, "Two Pair should have a higher score than Pair");
     }
 }
