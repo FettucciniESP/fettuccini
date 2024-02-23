@@ -27,22 +27,22 @@ export default function PlayerSeatInformations({
 
     return (
         <FettucciniContainer variantStyle={seatPlaying(playerHandInfos, currentPlayerSeatIndex)}>
-            <Box className={styles.header}>
-                <Text>Siège {seatIndex}</Text>
+            <Box id={"header"} className={styles.header}>
+                <Text id={"header_value"}>Siège {seatIndex}</Text>
             </Box>
             <PlayerAction playerHandInfos={playerHandInfos} />
-            <Box className={styles.playerInformations}>
+            <Box id={"player_info"} className={styles.playerInformations}>
                 <StackContainer>
-                    <Image
+                    <Image id={"white_token"}
                         src={WHITE_TOKEN_IMAGE}
                         alt="icone action"
                         className={styles.imgBalance}
                     />
-                    <Box className={styles.balanceContainer}>
-                        <Text className={styles.balanceValue}>{playerHandInfos.player.balance}</Text>
+                    <Box id={"balance_container"} className={styles.balanceContainer}>
+                        <Text id={"balance_value"} className={styles.balanceValue}>{playerHandInfos.player.balance}</Text>
                     </Box>
                 </StackContainer>
-                {seatIndex === buttonSeatIndex && <Image
+                {seatIndex === buttonSeatIndex && <Image id={"blue_token"}
                     src={BLUE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgSeatInformation}
