@@ -17,103 +17,70 @@
 #include <PN532_I2C.h>
 #include <PN532.h>
 
-PN532_I2C pn532i2c(Wire);
-PN532 nfc(pn532i2c);
+#include "NfcCardReader.h"
 
-PN532_I2C pn532i2c1(Wire1);
-PN532 nfc1(pn532i2c1);
+// PN532_I2C pn532i2c(Wire);
+// PN532 nfc(pn532i2c);
+
+// PN532_I2C pn532i2c1(Wire1);
+// PN532 nfc1(pn532i2c1);
+
+NfcCardReader* card1;
+
+bool card1Connected = 0;
 
 void setup(void) {
-    Serial.begin(115200);
+    Serial.begin(MONITOR_SPEED);
 
     delay(2000);
     Serial.println("Hello!");
+    card1 = new NfcCardReader(SDA_1, SCL_1, 400000U);
 
-    Wire.begin(SDA_1, SCL_1, 400000U);
-    nfc.begin();
+    while (!card1Connected)
+    {
+        card1Connected = card1->connect();
+    }
 
-
-//     uint32_t versiondata = nfc.getFirmwareVersion();
-//     if (! versiondata) {
-//         Serial.print("Didn't find PN53x board");
-//         while (1); // halt
-//     }
-
-//   // Got ok data, print it out!
-//     Serial.print("Found chip PN5 1"); Serial.println((versiondata>>24) & 0xFF, HEX);
-//     Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC);
-//     Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
-
-    Wire1.begin(SDA_2, SCL_2, 400000U);
-    nfc1.begin();
-
-    // uint32_t versiondata1 = nfc1.getFirmwareVersion();
-    // if (! versiondata1) {
-    //     Serial.print("Didn't find PN53x board !!!!!!");
-    //     while (1); // halt
-    // }
-
-    // // Got ok data, print it out!
-    // Serial.print("Found chip PN5 2"); Serial.println((versiondata1>>24) & 0xFF, HEX);
-    // Serial.print("Firmware ver. "); Serial.print((versiondata1>>16) & 0xFF, DEC);
-    // Serial.print('.'); Serial.println((versiondata1>>8) & 0xFF, DEC);
-
-    // Set the max number of retry attempts to read from a card
-    // This prevents us from waiting forever for a card, which is
-    // the default behaviour of the PN532.
-    nfc.setPassiveActivationRetries(READER_CONF_TIMEOUT);
-    nfc1.setPassiveActivationRetries(READER_CONF_TIMEOUT);
-
-    // configure board to read RFID tags
-    nfc.SAMConfig();
-    nfc1.SAMConfig();
-
-    Serial.println("Waiting for an ISO14443A card");
 }
 
 void loop(void) {
-  boolean success;
-  boolean success1;
-  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer to store the returned UID
-  uint8_t uidLength;                        // Length of the UID (4 or 7 bytes depending on ISO14443A card type)
-
-  // Wait for an ISO14443A type cards (Mifare, etc.).  When one is found
-  // 'uid' will be populated with the UID, and uidLength will indicate
-  // if the uid is 4 bytes (Mifare Classic) or 7 bytes (Mifare Ultralight)
-    success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength, READER_TIMEOUT);
-
-    success1 = nfc1.readPassiveTargetID(PN532_MIFARE_ISO14443A, &uid[0], &uidLength, READER_TIMEOUT);
-
-  if (success) {
-    Serial.println("Found a card! 1");
-    Serial.print("UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-    Serial.print("UID Value: ");
-    for (uint8_t i=0; i < uidLength; i++)
-    {
-
-        Serial.print(" 0x");Serial.print(uid[i], HEX);
+    String val = card1->read();
+    if(val != ""){
+        Serial.print("new card : ");
+        Serial.println(val);
     }
-    Serial.println("");
-  }
-  else
-  {
-    // PN532 probably timed out waiting for a card
-    Serial.println("Timed out waiting for a card");
-  }
-
-    if (success1) {
-    Serial.println("Found a card! 2");
-    Serial.print("UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
-    Serial.print("UID Value: ");
-    for (uint8_t i=0; i < uidLength; i++)
-    {
-      Serial.print(" 0x");Serial.print(uid[i], HEX);
-    }
-    Serial.println("");
-  }
-  else
-  {
-    // PN532 probably timed out waiting for a card
-    Serial.println("Timed out waiting for a card");
-  }
 }
+
+//TODO: utiliser ça pour être sur que le lecteur soit bien connecté
+
+// bool connect() {
+
+//     Wire.begin(SDA_1, SCL_1, 400000U);
+//     nfc.begin();
+
+//   // Connected, show version
+//   uint32_t versiondata = nfc.getFirmwareVersion();
+//   if (! versiondata)
+//   {
+//     Serial.println("PN53x card not found!");
+//     return false;
+//   }
+
+//   //port
+//   Serial.print("Found chip PN5"); Serial.println((versiondata >> 24) & 0xFF, HEX);
+//   Serial.print("Firmware version: "); Serial.print((versiondata >> 16) & 0xFF, DEC);
+//   Serial.print('.'); Serial.println((versiondata >> 8) & 0xFF, DEC);
+
+//   // Set the max number of retry attempts to read from a card
+//   // This prevents us from waiting forever for a card, which is
+//   // the default behaviour of the PN532.
+//   nfc.setPassiveActivationRetries(0xFF);
+
+//   // configure board to read RFID tags
+//   nfc.SAMConfig();
+
+//   Serial.println("Waiting for card (ISO14443A Mifare)...");
+//   Serial.println("");
+
+//   return true;
+// }
