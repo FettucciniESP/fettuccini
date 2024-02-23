@@ -25,6 +25,8 @@ private:
 
     TwoWire* wire;
 
+    PN532_I2C* pn532i2c;
+
     PN532* nfc;
 
 };

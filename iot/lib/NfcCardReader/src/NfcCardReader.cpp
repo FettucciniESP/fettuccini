@@ -4,17 +4,15 @@ int NfcCardReader::readerNb = 0;
 
 NfcCardReader::NfcCardReader(int sda, int scl, unsigned int speed){
     NfcCardReader::readerNb++;
-    TwoWire wire(NfcCardReader::readerNb);
-    PN532_I2C pn532i2c = PN532_I2C(wire);
-    this->nfc = new PN532(pn532i2c);
-    wire.begin(sda,scl,speed);
+    this->wire = new TwoWire(NfcCardReader::readerNb);
+    wire->begin(sda,scl,speed);
+    this->pn532i2c = new PN532_I2C(*wire);
+    this->nfc = new PN532(*pn532i2c);
 }
 
 bool NfcCardReader::connect() {
 
-    Serial.println("Hello!");
     this->nfc->begin();
-    Serial.println("Hello!");
 
     uint32_t versiondata = this->nfc->getFirmwareVersion();
     if (! versiondata){
