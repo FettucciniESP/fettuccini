@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('frontend/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Cypress run
+      - name: Cypress run --component
         uses: cypress-io/github-action@v6
         with:
           working-directory: frontend/

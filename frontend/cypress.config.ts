@@ -3,6 +3,7 @@ import path from "path";
 
 export default defineConfig({
   component: {
+    specPattern: 'cypress/components/**/*.cy.{js,jsx,ts,tsx}',
     devServer: {
       framework: "next",
       bundler: "webpack",
