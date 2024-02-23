@@ -1,6 +1,6 @@
 package fr.fettuccini.backend.rc522client.model.card;
 
-import fr.fettuccini.backend.rc522client.exception.BlockIndexOutOfRangeException;
+import fr.fettuccini.backend.rc522client.exception.GpioException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,7 +39,7 @@ public class Sector {
 	public void addBlock(DataBlock dataBlock) {
 		DataBlock existingDataBlock = getBlock(dataBlock.getIndex());
 		if (existingDataBlock != null) {
-			throw new RuntimeException("Block already added with number: " + dataBlock.getIndex());
+			throw new GpioException("Block already added with number: " + dataBlock.getIndex());
 		}
 		dataBlocks.add(dataBlock);
 	}
@@ -55,30 +55,30 @@ public class Sector {
 	}
 
 	public void recalculateAccessModes() {
-		SectorTrailerBlock sectorTrailerBlock = this.getSectorTrailerBlock();
+		SectorTrailerBlock currentSectorTrailerBlock = this.getSectorTrailerBlock();
 
-		if (sectorTrailerBlock == null) {
+		if (currentSectorTrailerBlock == null) {
 			return;
 		}
 
-		sectorTrailerBlock.updateAccessMode(sectorTrailerBlock);
+		currentSectorTrailerBlock.updateAccessMode(currentSectorTrailerBlock);
 
 		if (this.getManufacturerBlock() != null) {
-			this.getManufacturerBlock().updateAccessMode(sectorTrailerBlock);
+			this.getManufacturerBlock().updateAccessMode(currentSectorTrailerBlock);
 		}
 
 		for (int blockIndex = 0; blockIndex < BLOCK_COUNT; blockIndex++) {
 			DataBlock dataBlock = this.getBlock(blockIndex);
 
 			if (dataBlock != null) {
-				dataBlock.updateAccessMode(sectorTrailerBlock);
+				dataBlock.updateAccessMode(currentSectorTrailerBlock);
 			}
 		}
 	}
 
 	private void validateBlockNumber(int blockNumber) {
 		if (blockNumber < 0 || blockNumber >= BLOCK_COUNT) {
-			throw new BlockIndexOutOfRangeException("Block number out of range: " + blockNumber);
+			throw new GpioException("Block number out of range: " + blockNumber);
 		}
 	}
 }

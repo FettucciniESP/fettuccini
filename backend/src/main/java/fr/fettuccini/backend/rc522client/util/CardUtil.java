@@ -33,15 +33,15 @@ public class CardUtil {
 
 	public static BlockAccessMode getBlockAccessMode(Block dataBlock, byte[] accessBytes) {
 		BlockAccessMode blockAccessMode = new BlockAccessMode();
-		int[] C = new int[3];
+		int[] c = new int[3];
 
-		for (int i = 0; i < C.length; i++) {
-			C[i] = getAccessBit(accessBytes, dataBlock.getIndex(), i + 1);
+		for (int i = 0; i < c.length; i++) {
+			c[i] = getAccessBit(accessBytes, dataBlock.getIndex(), i + 1);
 		}
 
-		blockAccessMode.setC1(C[0]);
-		blockAccessMode.setC2(C[1]);
-		blockAccessMode.setC3(C[2]);
+		blockAccessMode.setC1(c[0]);
+		blockAccessMode.setC2(c[1]);
+		blockAccessMode.setC3(c[2]);
 
 		return blockAccessMode;
 	}

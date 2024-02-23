@@ -7,6 +7,8 @@ import fr.fettuccini.backend.rc522client.model.card.Block;
 import fr.fettuccini.backend.rc522client.model.card.Card;
 import fr.fettuccini.backend.rc522client.model.card.Sector;
 
+import java.util.Optional;
+
 public interface RC522Client {
 
 	/**
@@ -32,7 +34,7 @@ public interface RC522Client {
 	 * @return The selected card id or null if no card present or the selection
 	 *         process is failed
 	 */
-	byte[] readCardTag();
+	Optional<byte[]> readCardTag();
 
 	/**
 	 * Reads all data from your card. If no card present or the process is failed it

@@ -306,8 +306,12 @@ public class RC522AdapterImpl implements RC522Adapter {
 
 	private CommunicationResult writeCard(byte command, byte[] sendingData) {
 		CommunicationResult result = new CommunicationResult();
-		byte irq, irq_wait, lastBits;
-		int n, i;
+		byte irq;
+		byte irqWait;
+		byte lastBits;
+
+		int n;
+		int i;
 
 		result.setLength(0);
 
@@ -315,13 +319,13 @@ public class RC522AdapterImpl implements RC522Adapter {
 
 		if (command == PCD_AUTHENT) {
 			irq = 0x12;
-			irq_wait = 0x10;
+			irqWait = 0x10;
 		} else if (command == CONTROL_REG) {
 			irq = 0x77;
-			irq_wait = 0x30;
+			irqWait = 0x30;
 		} else {
 			irq = 0;
-			irq_wait = 0;
+			irqWait = 0;
 		}
 
 		writeRC522(COMM_I_EN_REG, (byte) (irq | 0x80));
@@ -341,7 +345,7 @@ public class RC522AdapterImpl implements RC522Adapter {
 		do {
 			n = readRC522(COMM_IRQ_REG);
 			i--;
-		} while ((i != 0) && (n & 0x01) <= 0 && (n & irq_wait) <= 0);
+		} while ((i != 0) && (n & 0x01) <= 0 && (n & irqWait) <= 0);
 
 		clearBitMask(BIT_FRAMING_REG, (byte) 0x80);
 
