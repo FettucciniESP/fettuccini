@@ -1,0 +1,33 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.inputLabelContainer {
+    max-width: 45%;
+    overflow: hidden;
+}
+
+.inputLabel {
+    font-size: 20;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inputText {
+    text-align: 'right';
+    padding-left: 10px 0px;
+    font-size: 20;
+    color: white;
+    text-overflow: ellipsis;
+}
+
+.inputContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1;
+    max-width: 50%;
+}
+
+.iconStyle {
+    margin-left: 10px;
+}
