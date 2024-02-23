@@ -1,9 +1,9 @@
-import {Box, Text} from '@chakra-ui/react'
+import InformationContainer from '@/app/components/information-container/InformationContainer'
+import { PlayerHandInfosModel } from '@/app/models/PlayerHandInfos.model'
+import { Box, Text } from '@chakra-ui/react'
 import Image from 'next/image'
-import {PlayerHandInfosModel} from '@/app/models/PlayerHandInfos.model'
 import styles from './PlayersStatus.module.scss'
 import usePlayersStatus from './usePlayersStatus'
-import InformationContainer from '@/app/components/information-container/InformationContainer'
 
 export default function PlayersStatus({
                                           playersHandInfos,
@@ -28,7 +28,7 @@ export default function PlayersStatus({
                         />
                         <Text className={styles.lastActionText}>
                             {playerHandInfos.lastAction ? playerHandInfos.lastAction.actionType :
-                                <Text className={styles.noActions}>En attente d'une action</Text>}
+                                <Text className={styles.noActions}>En attente d&apos;une action</Text>}
 
                         </Text>
                         {playerHandInfos.lastAction && playerHandInfos.lastAction.amount > 0 ?
