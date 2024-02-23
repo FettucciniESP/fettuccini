@@ -2,14 +2,11 @@ package fr.fettuccini.backend.service;
 
 import fr.fettuccini.backend.enums.CardType;
 import fr.fettuccini.backend.enums.CardValue;
-import fr.fettuccini.backend.enums.HandType;
 import fr.fettuccini.backend.model.poker.Card;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
-import java.util.SortedMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PokerEvaluatorServiceTests {
@@ -19,6 +16,7 @@ public class PokerEvaluatorServiceTests {
 
         // Royal Flush
         HashSet<Card> playerHand1 = new HashSet<>();
+
         playerHand1.add(new Card(CardType.HEARTS, CardValue.ACE));
         playerHand1.add(new Card(CardType.HEARTS, CardValue.KING));
 
