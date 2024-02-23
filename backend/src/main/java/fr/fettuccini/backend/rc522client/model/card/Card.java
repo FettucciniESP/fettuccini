@@ -1,7 +1,6 @@
 package fr.fettuccini.backend.rc522client.model.card;
 
-import fr.fettuccini.backend.rc522client.exception.SectorAlreadyExistsException;
-import fr.fettuccini.backend.rc522client.exception.SectorOutOfRangeException;
+import fr.fettuccini.backend.rc522client.exception.GpioException;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.val;
@@ -32,7 +31,7 @@ public class Card {
 
 	public Sector getSector(int sectorNumber) {
 		if (sectorNumber < 0 || sectorNumber >= SECTOR_COUNT) {
-			throw new SectorOutOfRangeException("Given sector number is out of range: " + sectorNumber);
+			throw new GpioException("Given sector number is out of range: " + sectorNumber);
 		}
 
 		return sectors.stream()
@@ -45,7 +44,7 @@ public class Card {
 		val existingSector = getSector(sector.getIndex());
 
 		if (existingSector != null) {
-			throw new SectorAlreadyExistsException("Sector already added with number: " + existingSector.getIndex());
+			throw new GpioException("Sector already added with number: " + existingSector.getIndex());
 		}
 
 		sectors.add(sector);

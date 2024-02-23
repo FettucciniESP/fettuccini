@@ -18,7 +18,7 @@ public class CardAuthKey {
 		return sectorAuthKeys.stream()
 				.filter(sectorAuthKey -> Objects.equals(sectorAuthKey.getSectorIndex(), sectorIndex))
 				.flatMap(sectorAuthKey -> sectorAuthKey.getBlockAuthKeys().stream())
-				.filter(blockAuthKey -> Objects.equals(blockAuthKey.blockIndex(), blockIndex))
+				.filter(blockAuthKey -> Objects.equals(blockAuthKey.getBlockIndex(), blockIndex))
 				.findFirst()
 				.orElse(null);
 	}

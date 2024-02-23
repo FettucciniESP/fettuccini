@@ -5,7 +5,7 @@ import fr.fettuccini.backend.repository.GameSessionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class UpdateBoardCardsService {
      *
      * @param cards cards
      */
-    public void updateBoardCards(HashSet<Card> cards) {
+    public void updateBoardCards(Set<Card> cards) {
         var gameSession = gameSessionRepository.findFirstByOrderByDateGameStartedDesc().orElseThrow();
 
         gameSession.getBoard().setCommunityCards(cards);
