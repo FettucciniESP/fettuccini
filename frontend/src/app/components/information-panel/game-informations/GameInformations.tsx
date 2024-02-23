@@ -42,7 +42,7 @@ export default function GameInformations({roundInfos, currentLevelInfos, nextLev
                 </Box>
             </Box>
             <Box id={"actionButtons"} className={styles.actionsButtonsContainer}>
-                <ActionButtons playerInfos={roundInfos.currentPlayingUser}></ActionButtons>
+                <ActionButtons playerInfos={roundInfos.currentPlayingUser} />
             </Box>
         </FettucciniContainer>
     )
