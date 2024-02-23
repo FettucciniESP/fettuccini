@@ -20,7 +20,7 @@ export default function ActionButtons({
     return (
         <Box className={styles.actionButtonsContainer}>
             {showCalculatorModal && (
-                <Calculator isOpen={showCalculatorModal} setIsOpen={setShowCalculatorModal} handleActionButtonClick={(amount: number) => handleActionButtonClick(playerInfos, GameActionEnum.BET, amount)} />
+                <Calculator openCalculator={showCalculatorModal} handleActionButtonClick={(amount: number) => handleActionButtonClick(playerInfos, GameActionEnum.BET, amount)} />
             )}
             <Box className={styles.actionButtonsLine}>
                 <Button

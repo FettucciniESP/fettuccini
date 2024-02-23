@@ -10,17 +10,15 @@ import {Button,
 import {ArrowBackIcon} from '@chakra-ui/icons'
 import styles from './Calculator.module.scss'
 import { useState } from 'react';
-import { PlayerInfosModel } from '@/app/models/PlayerInfos.model';
-import { GameActionEnum } from '@/app/enums/GameAction.enum';
 
 interface CalculatorProps {
-  isOpen: boolean;
-  setIsOpen: (val: boolean) => void;
+  openCalculator: boolean;
   handleActionButtonClick?: (amount: number) => void;
 }
 
-export default function Calculator({isOpen, setIsOpen, handleActionButtonClick}: CalculatorProps) {
+export default function Calculator({openCalculator, handleActionButtonClick}: CalculatorProps) {
   const [code, setCode] = useState("");
+  const [isOpen, setIsOpen] = useState(openCalculator);
 
   const handleChange = (value: number) => {
     setCode(code + value);
@@ -40,13 +38,13 @@ export default function Calculator({isOpen, setIsOpen, handleActionButtonClick}:
     for (let i = 1; i <= 9; i += 3) {
       buttons.push(
         <Flex key={i} mt={2}>
-          <Button onClick={() => handleChange(i)} mr={2} className={styles.ButtonNumber}>
+          <Button id={"idButtonNumber"+i} onClick={() => handleChange(i)} mr={2} className={styles.ButtonNumber}>
             {i}
           </Button>
-          <Button onClick={() => handleChange(i + 1)} mr={2} className={styles.ButtonNumber}>
+          <Button id={"idButtonNumber"+(i+1)} onClick={() => handleChange(i + 1)} mr={2} className={styles.ButtonNumber}>
             {i + 1}
           </Button>
-          <Button onClick={() => handleChange(i + 2)} className={styles.ButtonNumber}>
+          <Button id={"idButtonNumber"+(i+2)} onClick={() => handleChange(i + 2)} className={styles.ButtonNumber}>
             {i + 2}
           </Button>
         </Flex>
@@ -54,10 +52,10 @@ export default function Calculator({isOpen, setIsOpen, handleActionButtonClick}:
     }
     buttons.push(
       <Flex key={0} mt={2}>
-        <Button onClick={() => handleChange(0)} mr={10}  className={styles.ButtonNumber}>
+        <Button id="idButtonNumber0" onClick={() => handleChange(0)} mr={10}  className={styles.ButtonNumber}>
           0
         </Button>
-        <Button onClick={handleDelete} leftIcon={<ArrowBackIcon />} className={styles.ButtonNumber}>
+        <Button id="idButtonDelete" onClick={handleDelete} leftIcon={<ArrowBackIcon />} className={styles.ButtonNumber}>
         </Button>
       </Flex>
     );
@@ -65,7 +63,7 @@ export default function Calculator({isOpen, setIsOpen, handleActionButtonClick}:
   };
 
   return ( 
-    <Box p={4}>
+    <Box>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
         <ModalContent className={styles.CalculatorContent}>
@@ -73,10 +71,10 @@ export default function Calculator({isOpen, setIsOpen, handleActionButtonClick}:
           <ModalBody className={styles.CalculatorBody}>
             <Flex direction="column" align="center">
               <Box mb={4}>
-                <input value={code} disabled className={styles.inputCalculator}/>
+                <input id="idResult" value={code} disabled className={styles.inputCalculator}/>
               </Box>
               {renderButtons()}
-              <Button onClick={handleSubmit} mt={4} className={styles.ButtonSubmit}>
+              <Button id="idButtonSubmit" onClick={handleSubmit} mt={4} className={styles.ButtonSubmit}>
                 Valider
               </Button>
             </Flex>
