@@ -6,9 +6,17 @@ NfcCardReader::NfcCardReader(int sda, int scl, unsigned int speed){
     NfcCardReader::readerNb++;
     this->wire = new TwoWire(NfcCardReader::readerNb);
     wire->begin(sda,scl,speed);
-    this->pn532i2c = new PN532_I2C(*wire);
+    this->pn532i2c = new PN532_I2C(*wire); //I2C
     this->nfc = new PN532(*pn532i2c);
 }
+
+
+NfcCardReader::NfcCardReader(HardwareSerial& serial){
+    NfcCardReader::readerNb++;
+    this->pn532hsu = new PN532_HSU(serial);
+    this->nfc = new PN532(*pn532hsu);
+}
+
 
 bool NfcCardReader::connect() {
 

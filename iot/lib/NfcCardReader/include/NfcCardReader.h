@@ -5,6 +5,7 @@
 #include <Wire.h>
 
 #include <PN532_I2C.h>
+#include <PN532_HSU.h>
 #include <PN532.h>
 
 class NfcCardReader
@@ -12,10 +13,16 @@ class NfcCardReader
 public:
     NfcCardReader(int sda, int scl, unsigned int speed);
 
+    NfcCardReader(HardwareSerial& serial);
+
 
     bool connect();
 
     String read();
+
+    //FIXME: remettre en private après test IRQ
+    PN532* nfc;
+
 
 private:
 
@@ -27,7 +34,8 @@ private:
 
     PN532_I2C* pn532i2c;
 
-    PN532* nfc;
+    PN532_HSU* pn532hsu;
+
 
 };
 
