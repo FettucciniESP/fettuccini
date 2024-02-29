@@ -5,6 +5,6 @@ describe('TiImeRemaining', () => {
   it('renders', () => {
     // see: https://on.cypress.io/mounting-react
     cy.mount(<TimeRemaining />);
-    cy.get("[id='coucou']").should('be.visible');
+    cy.get("[id='timer']").should('be.visible');
   })
 })
