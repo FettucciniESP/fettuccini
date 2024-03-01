@@ -29,12 +29,17 @@ function SwitchLabel(props: SwitchLabelProps) {
   return (
     <Box className={styles.container}>
       <Box className={styles.inputLabelContainer}>
-        <Text className={styles.inputLabel} style={customUpperStyle}>
+        <Text
+          id_cy="labelValue"
+          className={styles.inputLabel}
+          style={customUpperStyle}
+        >
           {label}
         </Text>
       </Box>
       <Box className={styles.inputContainer}>
         <Switch
+          id_cy="switchValue"
           size="lg"
           value={currentValue}
           onChange={handleChange}

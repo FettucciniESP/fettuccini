@@ -44,7 +44,6 @@ export default function SettingLobby() {
         handleChangeCurrentValue={handleChange1}
         currentValue={value1}
         type={InputLabelIcon.types.NUMBER}
-        isUpperCase
         customAddToText={"$"}
       />
 

@@ -89,12 +89,17 @@ function InputLabelIcon(props: InputLabelIconProps) {
   return (
     <Box className={commonStyles.container}>
       <Box className={styles.inputLabelContainer}>
-        <Text className={styles.inputLabel} style={customUpperStyle}>
+        <Text
+          id_cy="labelValue"
+          className={styles.inputLabel}
+          style={customUpperStyle}
+        >
           {label}
         </Text>
       </Box>
       <Box className={styles.inputContainer}>
         <Input
+          id_cy="inputValue"
           ref={ref}
           value={currentValue}
           onChange={handleChange}
@@ -106,7 +111,9 @@ function InputLabelIcon(props: InputLabelIconProps) {
           {...customInputProps}
           {...customUpperStyle}
         />
-        <Text className={commonStyles.addCustomText}>{customAddToText}</Text>
+        <Text id_cy="customTextValue" className={commonStyles.addCustomText}>
+          {customAddToText}
+        </Text>
         {displayIcon()}
       </Box>
     </Box>
