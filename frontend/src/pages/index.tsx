@@ -1,14 +1,14 @@
-import {useEffect} from 'react'
-import {NextRouter, useRouter} from 'next/router'
+import { useEffect } from "react";
+import { NextRouter, useRouter } from "next/router";
 
 const Index = () => {
-    const router: NextRouter = useRouter()
+  const router: NextRouter = useRouter();
 
-    useEffect(() => {
-        router.replace('/home');
-    }, [router])
+  useEffect(() => {
+      router.replace('/home');
+  }, [router])
 
-    return null;
-}
+  return null;
+};
 
-export default Index
+export default Index;
