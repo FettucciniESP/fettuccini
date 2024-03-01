@@ -1,12 +1,12 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import InputLabelIconCustom from "@/app/components/design-system/control/inputs/input-label-custom/InputLabelIconCustom";
 
 describe("InputLabelIconCustom Component - Mounting", () => {
   it("should mount the component with required props", () => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
 
     cy.mount(
       <InputLabelIconCustom
@@ -22,17 +22,17 @@ describe("InputLabelIconCustom Component - Mounting", () => {
   });
 
   it("should mount the component with optional props", () => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
-    const type = "text";
-    const iconValue = "PEN";
-    const iconLabel = "PEN";
-    const isUpperCase = true;
-    const disabled = false;
-    const customInputProps = {};
-    const customAddToText = "Custom Additional Text";
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
+    const type: string = "text";
+    const iconValue: string = "PEN";
+    const iconLabel: string = "PEN";
+    const isUpperCase: boolean = true;
+    const disabled: boolean = false;
+    const customInputProps: object = {};
+    const customAddToText: string = "Custom Additional Text";
 
     cy.mount(
       <InputLabelIconCustom
@@ -57,10 +57,10 @@ describe("InputLabelIconCustom Component - Mounting", () => {
 
 describe("InputLabelIconCustom Component Tests", () => {
   beforeEach(() => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
 
     cy.mount(
       <InputLabelIconCustom
@@ -84,10 +84,10 @@ describe("InputLabelIconCustom Component Tests", () => {
 
 describe("InputLabelIconCustom Component - Required Props", () => {
   it("should render with required props", () => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
 
     cy.mount(
       <InputLabelIconCustom
@@ -105,17 +105,17 @@ describe("InputLabelIconCustom Component - Required Props", () => {
 
 describe("InputLabelIconCustom Component - Optional Props", () => {
   it("should render with optional props", () => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
-    const type = "text";
-    const iconValue = "PEN";
-    const iconLabel = "PEN";
-    const isUpperCase = true;
-    const disabled = false;
-    const customInputProps = {};
-    const customAddToText = "Custom Additional Text";
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
+    const type: string = "text";
+    const iconValue: string = "PEN";
+    const iconLabel: string = "PEN";
+    const isUpperCase: boolean = true;
+    const disabled: boolean = false;
+    const customInputProps: object = {};
+    const customAddToText: string = "Custom Additional Text";
 
     cy.mount(
       <InputLabelIconCustom
@@ -140,11 +140,11 @@ describe("InputLabelIconCustom Component - Optional Props", () => {
 
 describe("InputLabelIconCustom Component - Styling", () => {
   it("should apply uppercase style to label", () => {
-    const currentValue = "Test Value";
-    const labelValue = "Label Value";
-    const handleChangeCurrentValue = () => {};
-    const handleChangeLabel = () => {};
-    const isUpperCase = true;
+    const currentValue: string = "Test Value";
+    const labelValue: string = "Label Value";
+    const handleChangeCurrentValue: () => void = (): void => {};
+    const handleChangeLabel: () => void = (): void => {};
+    const isUpperCase: boolean = true;
 
     cy.mount(
       <InputLabelIconCustom

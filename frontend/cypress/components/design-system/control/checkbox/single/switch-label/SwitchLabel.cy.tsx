@@ -3,8 +3,8 @@ import SwitchLabel from "@/app/components/design-system/control/checkbox/single/
 
 describe("SwitchLabel Component - Mounting", () => {
   it("should mount the component with required props", () => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <SwitchLabel
@@ -18,11 +18,11 @@ describe("SwitchLabel Component - Mounting", () => {
   });
 
   it("should mount the component with optional props", () => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
-    const label = "Switch Label";
-    const isUpperCase = true;
-    const disabled = false;
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
+    const label: string = "Switch Label";
+    const isUpperCase: boolean = true;
+    const disabled: boolean = false;
 
     cy.mount(
       <SwitchLabel
@@ -41,8 +41,8 @@ describe("SwitchLabel Component - Mounting", () => {
 
 describe("SwitchLabel Component Tests", () => {
   beforeEach(() => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <SwitchLabel
@@ -60,8 +60,8 @@ describe("SwitchLabel Component Tests", () => {
 
 describe("SwitchLabel Component - Required Props", () => {
   it("should render with required props", () => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <SwitchLabel
@@ -77,11 +77,11 @@ describe("SwitchLabel Component - Required Props", () => {
 
 describe("SwitchLabel Component - Optional Props", () => {
   it("should render with optional props", () => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
-    const label = "Switch Label";
-    const isUpperCase = true;
-    const disabled = false;
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
+    const label: string = "Switch Label";
+    const isUpperCase: boolean = true;
+    const disabled: boolean = false;
 
     cy.mount(
       <SwitchLabel
@@ -100,10 +100,10 @@ describe("SwitchLabel Component - Optional Props", () => {
 
 describe("SwitchLabel Component - Styling", () => {
   it("should apply uppercase style to label", () => {
-    const currentValue = true;
-    const handleChangeCurrentValue = () => {};
-    const label = "Switch Label";
-    const isUpperCase = true;
+    const currentValue: boolean = true;
+    const handleChangeCurrentValue: () => void = () => {};
+    const label: string = "Switch Label";
+    const isUpperCase: boolean = true;
 
     cy.mount(
       <SwitchLabel

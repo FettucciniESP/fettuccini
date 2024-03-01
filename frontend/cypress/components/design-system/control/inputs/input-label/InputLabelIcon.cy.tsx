@@ -3,8 +3,8 @@ import InputLabelIcon from "@/app/components/design-system/control/inputs/input-
 
 describe("InputLabelIcon Component - Mounting", () => {
   it("should mount the component with required props", () => {
-    const currentValue = "Test Value";
-    const handleChangeCurrentValue = () => {};
+    const currentValue: string = "Test Value";
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <InputLabelIcon
@@ -18,14 +18,14 @@ describe("InputLabelIcon Component - Mounting", () => {
   });
 
   it("should mount the component with optional props", () => {
-    const currentValue = "Test Value";
-    const handleChangeCurrentValue = () => {};
-    const type = "text";
-    const label = "Custom Label";
-    const isUpperCase = true;
-    const disabled = false;
-    const customInputProps = {};
-    const customAddToText = "Custom Additional Text";
+    const currentValue: string = "Test Value";
+    const handleChangeCurrentValue: () => void = () => {};
+    const type: string = "text";
+    const label: string = "Custom Label";
+    const isUpperCase: boolean = true;
+    const disabled: boolean = false;
+    const customInputProps: object = {};
+    const customAddToText: string = "Custom Additional Text";
 
     cy.mount(
       <InputLabelIcon
@@ -48,8 +48,8 @@ describe("InputLabelIcon Component - Mounting", () => {
 describe("InputLabelIcon Component Tests", () => {
   // Montez le composant avant chaque test
   beforeEach(() => {
-    const currentValue = "Test Value";
-    const handleChangeCurrentValue = () => {};
+    const currentValue: string = "Test Value";
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <InputLabelIcon
@@ -71,8 +71,8 @@ describe("InputLabelIcon Component Tests", () => {
 
 describe("InputLabelIcon Component - Required Props", () => {
   it("should render with required props", () => {
-    const currentValue = "Test Value";
-    const handleChangeCurrentValue = () => {};
+    const currentValue: string = "Test Value";
+    const handleChangeCurrentValue: () => void = () => {};
 
     cy.mount(
       <InputLabelIcon
@@ -89,14 +89,14 @@ describe("InputLabelIcon Component - Required Props", () => {
 
 // describe("InputLabelIcon Component - Optional Props", () => {
 //   it("should render with optional props", () => {
-//     const currentValue = "Test Value";
-//     const handleChangeCurrentValue = () => {};
-//     const type = "text";
-//     const label = "Custom Label";
-//     const isUpperCase = true;
-//     const disabled = false;
-//     const customInputProps = {};
-//     const customAddToText = "Custom Additional Text";
+//     const currentValue: string = "Test Value";
+//     const handleChangeCurrentValue: () => void = () => {};
+//     const type: string = "text";
+//     const label: string = "Custom Label";
+//     const isUpperCase: boolean = true;
+//     const disabled: boolean = false;
+//     const customInputProps: object = {};
+//     const customAddToText: string = "Custom Additional Text";
 
 //     cy.mount(
 //       <InputLabelIcon
@@ -118,8 +118,8 @@ describe("InputLabelIcon Component - Required Props", () => {
 
 // describe("InputLabelIcon Component - User Interaction", () => {
 //   it("should update input value when handleChangeCurrentValue is called", () => {
-//     const currentValue = "Test Value";
-//     const handleChangeCurrentValue = cy.stub().as("handleChangeCurrentValue");
+//     const currentValue: string = "Test Value";
+//     const handleChangeCurrentValue: () => void = cy.stub().as("handleChangeCurrentValue");
 
 //     cy.mount(
 //       <InputLabelIcon
@@ -128,7 +128,7 @@ describe("InputLabelIcon Component - Required Props", () => {
 //       />
 //     );
 
-//     const newValue = "New Test Value";
+//     const newValue: string = "New Test Value";
 //     cy.get('[id_cy="inputValue"]').clear().type(newValue);
 
 //     cy.wait(100).then(() => {
