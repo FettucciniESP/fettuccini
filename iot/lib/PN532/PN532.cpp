@@ -312,12 +312,12 @@ bool PN532::SAMConfig(void)
 
 /**************************************************************************/
 /*!
-    @brief  Turn the module into power mode  will wake up on I2C or SPI request
+    @brief  Turn the module into power mode  will wake up on I2C or SPI request 
 */
 /**************************************************************************/
 bool PN532::powerDownMode()
 {
-    pn532_packetbuffer[0] = PN532_COMMAND_POWERDOWN;
+    pn532_packetbuffer[0] = PN532_COMMAND_POWERDOWN; 
     pn532_packetbuffer[1] = 0xC0; // I2C or SPI Wakeup
     pn532_packetbuffer[2] = 0x00; // no IRQ
 
@@ -357,13 +357,13 @@ bool PN532::setPassiveActivationRetries(uint8_t maxRetries)
 /*!
     Sets the RFon/off uint8_t of the RFConfiguration register
 
-    @param  autoRFCA    0x00 No check of the external field before
+    @param  autoRFCA    0x00 No check of the external field before 
+                        activation 
+                        
+                        0x02 Check the external field before 
                         activation
 
-                        0x02 Check the external field before
-                        activation
-
-    @param  rFOnOff     0x00 Switch the RF field off, 0x01 switch the RF
+    @param  rFOnOff     0x00 Switch the RF field off, 0x01 switch the RF 
                         field on
 
     @returns    1 if everything executed properly, 0 for an error
@@ -374,7 +374,7 @@ bool PN532::setRFField(uint8_t autoRFCA, uint8_t rFOnOff)
 {
     pn532_packetbuffer[0] = PN532_COMMAND_RFCONFIGURATION;
     pn532_packetbuffer[1] = 1;
-    pn532_packetbuffer[2] = 0x00 | autoRFCA | rFOnOff;
+    pn532_packetbuffer[2] = 0x00 | autoRFCA | rFOnOff;  
 
     if (HAL(writeCommand)(pn532_packetbuffer, 3)) {
         return 0x0;  // command failed
@@ -950,7 +950,7 @@ bool PN532::inListPassiveTarget()
 }
 
 int8_t PN532::tgInitAsTarget(const uint8_t* command, const uint8_t len, const uint16_t timeout){
-
+  
   int8_t status = HAL(writeCommand)(command, len);
     if (status < 0) {
         return -1;
