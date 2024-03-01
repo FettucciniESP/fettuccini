@@ -3,11 +3,15 @@ import GameInformations from "@/app/components/information-panel/game-informatio
 import { GameActionEnum } from '@/app/enums/GameAction.enum';
 import { RoundStepEnum } from '@/app/enums/RoundStep.enum';
 import { RoundInfosModel } from '@/app/models/RoundInfos.model';
+import { LevelInfosModel } from '@/app/models/LevelInfos.model';
+import { PlayerHandInfosModel } from "@/app/models/PlayerHandInfos.model";
 import { RoundPlayersActionsHistoryModel } from '@/app/models/RoundPlayersActionsHistory.model';
+import { PlayerActionModel } from '@/app/models/PlayerAction.model';
+import { PlayerInfosModel } from '@/app/models/PlayerInfos.model';
 
 describe('Game Informations', () => {
     
-    const playerInfos = {
+    const playerInfos : PlayerInfosModel = {
         name: 'Bobby',
         seatIndex: 3,
         balance: 1000
@@ -16,7 +20,7 @@ describe('Game Informations', () => {
     const gameAction = GameActionEnum.BET
     const roundStep = RoundStepEnum.FLOP
 
-    const playerAction = {
+    const playerAction : PlayerActionModel = {
         actionType: gameAction,
         amount: 30,
         seatIndex: 2,
@@ -30,7 +34,7 @@ describe('Game Informations', () => {
         river:  [playerAction]
     };
 
-    const playerHandInfos = {
+    const playerHandInfos : PlayerHandInfosModel = {
         lastAction: playerAction,
         player: playerInfos
     };
@@ -47,7 +51,7 @@ describe('Game Informations', () => {
         gameStartedDatetime: new Date()
     };
 
-    const currentLevelInfo = {
+    const currentLevelInfo : LevelInfosModel = {
         smallBlind: 10,
         bigBlind: 20,
         ante: 3,
@@ -55,7 +59,7 @@ describe('Game Informations', () => {
         levelIndex: 1
     };
 
-    const nextLevelInfos = {
+    const nextLevelInfos : LevelInfosModel = {
         smallBlind: 15,
         bigBlind: 30,
         ante: 4,
