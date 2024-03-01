@@ -5,8 +5,8 @@ const Index = () => {
   const router: NextRouter = useRouter();
 
   useEffect(() => {
-    router.replace("/home");
-  }, []);
+      router.replace('/home');
+  }, [router])
 
   return null;
 };
