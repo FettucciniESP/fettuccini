@@ -1,14 +1,14 @@
-#include "../include/NfcReader.h"
+#include "../include/NfcTokenReader.h"
 
 
-NfcReader::NfcReader(){
+NfcTokenReader::NfcTokenReader(){
     Serial2.begin(115200,SERIAL_8N1,5,17);//TODO: mettre le port série en paramètre
     this->pair = true;
     this->trame = new std::vector<byte>();
 }
 
 
-bool NfcReader::init(){
+bool NfcTokenReader::init(){
     const std::vector<std::vector<byte>> INIT_TRAMES = {INIT_TRAM_0, INIT_TRAM_1, INIT_TRAM_2, INIT_TRAM_3, INIT_TRAM_4, INIT_TRAM_5, INIT_TRAM_6, INIT_TRAM_7};
     const std::vector<std::vector<byte>> REP_TRAMES = {REP_TRAM_0, REP_TRAM_1, REP_TRAM_2, REP_TRAM_3, REP_TRAM_4, REP_TRAM_5, REP_TRAM_6, REP_TRAM_7};
     int repnb = 0;
@@ -30,7 +30,7 @@ bool NfcReader::init(){
     return true;
 }
 
-void NfcReader::refresh(){
+void NfcTokenReader::refresh(){
     this->trame->clear();
     std::vector<byte> trame = READ_TRAM_0;
     if (this->pair){
@@ -48,7 +48,7 @@ void NfcReader::refresh(){
 }
 
 
-String NfcReader::digitify(int number){
+String NfcTokenReader::digitify(int number){
     String sortie = "";
 
     if(number <= 0xF){

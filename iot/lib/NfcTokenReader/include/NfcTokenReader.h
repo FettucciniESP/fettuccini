@@ -7,9 +7,9 @@
 
 #include "TrameList.h"
 
-class NfcReader{
+class NfcTokenReader{
 public:
-    NfcReader();
+    NfcTokenReader();
 
     /**
      * @brief initialise le lecteur NFC
