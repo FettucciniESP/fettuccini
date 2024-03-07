@@ -2,7 +2,7 @@
 
 
 NfcTokenReader::NfcTokenReader(){
-    Serial2.begin(115200,SERIAL_8N1,5,17);//TODO: mettre le port série en paramètre
+    Serial2.begin(115200,SERIAL_8N1,16,17);//TODO: mettre le port série en paramètre
     this->pair = true;
     this->trame = new std::vector<byte>();
 }
@@ -62,7 +62,7 @@ String NfcTokenReader::digitify(int number){
 }
 
 
-void NfcReader::printTrame(){
+void NfcTokenReader::printTrame(){
     for(byte i: *this->trame){
         Serial.print(this->digitify(i));
         Serial.print(" ");
@@ -70,6 +70,6 @@ void NfcReader::printTrame(){
     Serial.println();
 }
 
-int NfcReader::getNbTags(){
+int NfcTokenReader::getNbTags(){
     return this->trame->at(8);
 }

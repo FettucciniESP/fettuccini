@@ -33,7 +33,7 @@ Program::Program() {
 
 //    //this->screen->welcome();
     // this->NFC = new NfcReader(new SoftwareSerial(5,17));
-    this->NFC = new NfcReader();
+    this->NFC = new NfcTokenReader();
     Serial.println("pouet");
     this->NFC->init();
     Serial.println("pouet");
