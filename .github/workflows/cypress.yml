@@ -35,6 +35,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --lockfile-only
       - name: Run Cypress Component Tests with Environment Variable
-        run: pnpm run cross-env NODE_ENV=test cypress run --component
+        run: pnpm exec cross-env NODE_ENV=test cypress run --component
       - name: Generate Coverage Report
         run: pnpm nyc report --reporter=html
