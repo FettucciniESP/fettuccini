@@ -33,7 +33,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Cypress Component Tests with Environment Variable
         run: pnpm run test:cypress:components
       - name: Generate Coverage Report
