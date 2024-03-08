@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PokerEvaluatorServiceTests {
     @Test
-    @Disabled("Disabled until PokerEvaluatorService fix")
     public void testEvaluateHand() {
         PokerEvaluatorService service = new PokerEvaluatorService();
 
@@ -30,64 +29,64 @@ public class PokerEvaluatorServiceTests {
         communityCards.add(new Card(CardType.CLUBS, CardValue.TEN));
         communityCards.add(new Card(CardType.CLUBS, CardValue.THREE));
 
-        int royalFlushScore = service.evaluateHand(playerHand1, communityCards);
+        Long royalFlushScore = service.evaluateHand(playerHand1, communityCards);
 
         // Straight Flush
         HashSet<Card> playerHand2 = new HashSet<>();
         playerHand2.add(new Card(CardType.HEARTS, CardValue.KING));
         playerHand2.add(new Card(CardType.HEARTS, CardValue.NINE));
 
-        int straightFlushScore = service.evaluateHand(playerHand2, communityCards);
+        Long straightFlushScore = service.evaluateHand(playerHand2, communityCards);
 
         // Four of a Kind qui plante et deviens plus fort que le Straight Flush
         // les aces et les rois sont trop fort.
         HashSet<Card> playerHand3 = new HashSet<>();
-        playerHand3.add(new Card(CardType.HEARTS, CardValue.ACE));
-        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.ACE ));
+        playerHand3.add(new Card(CardType.SPADES, CardValue.TEN));
+        playerHand3.add(new Card(CardType.DIAMONDS, CardValue.TEN));
 
-        int fourOfAKindScore = service.evaluateHand(playerHand3, communityCards);
+        Long fourOfAKindScore = service.evaluateHand(playerHand3, communityCards);
 
         // Full House
         HashSet<Card> playerHand4 = new HashSet<>();
-        playerHand4.add(new Card(CardType.HEARTS, CardValue.JACK));
+        playerHand4.add(new Card(CardType.CLUBS, CardValue.JACK));
         playerHand4.add(new Card(CardType.DIAMONDS, CardValue.JACK));
 
-        int fullHouseScore = service.evaluateHand(playerHand4, communityCards);
+        Long fullHouseScore = service.evaluateHand(playerHand4, communityCards);
 
         // Flush
         HashSet<Card> playerHand5 = new HashSet<>();
         playerHand5.add(new Card(CardType.HEARTS, CardValue.ACE));
-        playerHand5.add(new Card(CardType.HEARTS, CardValue.KING));
+        playerHand5.add(new Card(CardType.HEARTS, CardValue.TWO));
 
-        int flushScore = service.evaluateHand(playerHand5, communityCards);
+        Long flushScore = service.evaluateHand(playerHand5, communityCards);
 
         // Straight
         HashSet<Card> playerHand6 = new HashSet<>();
         playerHand6.add(new Card(CardType.DIAMONDS, CardValue.ACE));
         playerHand6.add(new Card(CardType.DIAMONDS, CardValue.KING));
 
-        int straightScore = service.evaluateHand(playerHand6, communityCards);
+        Long straightScore = service.evaluateHand(playerHand6, communityCards);
 
         // Three of a Kind
         HashSet<Card> playerHand7 = new HashSet<>();
         playerHand7.add(new Card(CardType.HEARTS, CardValue.TWO));
         playerHand7.add(new Card(CardType.DIAMONDS, CardValue.TEN));
 
-        int threeOfAKindScore = service.evaluateHand(playerHand7, communityCards);
+        Long threeOfAKindScore = service.evaluateHand(playerHand7, communityCards);
 
         // Two Pair
         HashSet<Card> playerHand8 = new HashSet<>();
         playerHand8.add(new Card(CardType.HEARTS, CardValue.TWO));
         playerHand8.add(new Card(CardType.DIAMONDS, CardValue.TWO));
 
-        int twoPairScore = service.evaluateHand(playerHand8, communityCards);
+        Long twoPairScore = service.evaluateHand(playerHand8, communityCards);
 
         // Pair
         HashSet<Card> playerHand9 = new HashSet<>();
-        playerHand9.add(new Card(CardType.HEARTS, CardValue.TWO));
-        playerHand9.add(new Card(CardType.DIAMONDS, CardValue.TWO));
+        playerHand9.add(new Card(CardType.HEARTS, CardValue.SEVEN));
+        playerHand9.add(new Card(CardType.DIAMONDS, CardValue.EIGHT));
 
-        int pairScore = service.evaluateHand(playerHand9, communityCards);
+        Long pairScore = service.evaluateHand(playerHand9, communityCards);
 
         System.out.println(royalFlushScore + ": royalFlushScore");
         System.out.println(straightFlushScore + ": straightFlushScore");

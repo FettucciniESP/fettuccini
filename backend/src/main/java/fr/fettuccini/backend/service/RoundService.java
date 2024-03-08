@@ -100,19 +100,19 @@ public class RoundService {
      */
     private void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
         HashSet<Card> communityCards = new HashSet<>(currentRound.getBoard().getCommunityCards());
-        Map<Player, Integer> playerScores = new HashMap<>();
+        Map<Player, Long> playerScores = new HashMap<>();
 
         // Evaluate the hand for each player
         for (Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)) {
             HashSet<Card> playerHand = new HashSet<>(player.getHand());
-            int handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
+            Long handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
             playerScores.put(player, handScore);
         }
 
         // Find the highest score
-        int highestScore = playerScores.values().stream()
-                .max(Integer::compare)
-                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score"));
+        Long highestScore = (long) Math.toIntExact(playerScores.values().stream()
+                .max(Long::compare)
+                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score")));
 
         // Identify all players with the highest score
         List<Player> winners = playerScores.entrySet().stream()
