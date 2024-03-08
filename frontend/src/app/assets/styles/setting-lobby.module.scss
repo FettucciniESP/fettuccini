@@ -1,19 +1,19 @@
 @import 'variables';
-.container {
+.mainContainer {
     min-height: 100vh;
     max-height: 100vh;
-    width: 130vh;
+    width: auto;
     justify-content: space-between;
     background-image: url(../images/background_gm.svg);
     background-size: 200vh;
-    background-repeat: repeat;
     padding: 50px 40px;
 }
 
 .settingContainer {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    min-height: 70vh
 }
 
 .titlePage {
@@ -46,6 +46,7 @@
 
 .inputContainer {
     width: 600px;
+    margin: 20px
 }
 
 .sectionContainer {
@@ -55,6 +56,7 @@
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.2);
     padding: 40px 20px;
+    margin: 20px
 }
 
 .singleButtonContainer {

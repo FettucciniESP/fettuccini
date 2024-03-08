@@ -1,7 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import InputLabelIcon from "@/app/components/design-system/control/inputs/input-label/InputLabelIcon";
-import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
+// import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
 
@@ -56,7 +56,7 @@ export default function SettingLobby() {
 
   const hangdleOnClickButtonRegistration = () => {
     console.log("registration open modal");
-    setRegistrationMax("TEST REGISTRATION");
+    handleChangeRegistrationMax("TEST REGISTRATION");
   };
 
   const hangdleOnClickButtonLoad = () => {
@@ -122,56 +122,58 @@ export default function SettingLobby() {
   };
 
   return (
-    <Box className={styles.container}>
+    <Box className={styles.mainContainer}>
       <Box>
         <Text className={styles.titlePage}>{titles.TITLE_PAGE}</Text>
       </Box>
-      <Box className={styles.settingContainer}>
-        <Box className={styles.inputContainer}>
-          <InputLabelIcon
-            label={labels.STRUCTURE}
-            hangdleOnClick={hangdleOnClickButtonStructure}
-            currentValue={stucture}
-            type={InputLabelIcon.types.BUTTON}
-            isUpperCase
-          />
+      <Box className={styles.mainSettingContainer}>
+        <Box className={styles.settingContainer}>
+          <Box className={styles.inputContainer}>
+            <InputLabelIcon
+              label={labels.STRUCTURE}
+              hangdleOnClick={hangdleOnClickButtonStructure}
+              currentValue={stucture}
+              type={InputLabelIcon.types.BUTTON}
+              isUpperCase
+            />
 
-          <InputLabelIcon
-            label={labels.STACKS}
-            handleChangeCurrentValue={handleChangeStacks}
-            currentValue={stacks}
-            type={InputLabelIcon.types.NUMBER}
-          />
+            <InputLabelIcon
+              label={labels.STACKS}
+              handleChangeCurrentValue={handleChangeStacks}
+              currentValue={stacks}
+              type={InputLabelIcon.types.NUMBER}
+            />
 
-          <InputLabelIcon
-            label={labels.REGISTRATION_MAX}
-            hangdleOnClick={hangdleOnClickButtonRegistration}
-            currentValue={registrationMax}
-            type={InputLabelIcon.types.BUTTON}
-          />
+            <InputLabelIcon
+              label={labels.REGISTRATION_MAX}
+              hangdleOnClick={hangdleOnClickButtonRegistration}
+              currentValue={registrationMax}
+              type={InputLabelIcon.types.BUTTON}
+            />
 
-          {/* <SwitchLabel
+            {/* <SwitchLabel
             label={labels.MULTI_TABLE}
             handleChangeCurrentValue={handleChangesetMultiTable}
             currentValue={multiTable}
           /> */}
 
-          <InputLabelIcon
-            label={labels.COST_ENTRY}
-            handleChangeCurrentValue={handleChangeCostEntry}
-            currentValue={costEntry}
-            type={InputLabelIcon.types.NUMBER}
-            customAddToText={"€"}
-          />
-        </Box>
-
-        <Box className={styles.sectionContainer}>
-          <Text className={styles.titleSection}>{titles.TITLE_SECTION}</Text>
-          <Box className={styles.settingSectionContainer}>
-            {renderSettingsSection()}
+            <InputLabelIcon
+              label={labels.COST_ENTRY}
+              handleChangeCurrentValue={handleChangeCostEntry}
+              currentValue={costEntry}
+              type={InputLabelIcon.types.NUMBER}
+              customAddToText={"€"}
+            />
           </Box>
-          <Box className={styles.buttonSectionContainer}>
-            {renderButtonSection()}
+
+          <Box className={styles.sectionContainer}>
+            <Text className={styles.titleSection}>{titles.TITLE_SECTION}</Text>
+            <Box className={styles.settingSectionContainer}>
+              {renderSettingsSection()}
+            </Box>
+            <Box className={styles.buttonSectionContainer}>
+              {renderButtonSection()}
+            </Box>
           </Box>
         </Box>
       </Box>
