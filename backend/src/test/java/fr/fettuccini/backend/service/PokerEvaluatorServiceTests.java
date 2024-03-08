@@ -4,7 +4,6 @@ import fr.fettuccini.backend.enums.CardType;
 import fr.fettuccini.backend.enums.CardValue;
 import fr.fettuccini.backend.model.poker.Card;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

@@ -18,6 +18,10 @@ public class PokerEvaluatorService {
         var combinedHand = new HashSet<>(playerHand);
         combinedHand.addAll(communityCards);
 
+        if(combinedHand.size() != 7) {
+            throw new IllegalArgumentException("Invalid hand or community cards size : no card duplication permitted");
+        }
+
         var combinedHandList = new ArrayList<>(combinedHand);
         var allCombinations = generateCombinations(combinedHandList);
 
