@@ -1,10 +1,12 @@
 #include "../include/NfcTokenReader.h"
 
 
-NfcTokenReader::NfcTokenReader(){
-    Serial2.begin(115200,SERIAL_8N1,16,17);//TODO: mettre le port série en paramètre
+NfcTokenReader::NfcTokenReader(HardwareSerial& serial){
     this->pair = true;
     this->trame = new std::vector<byte>();
+    this->iso_18000 = new std::vector<std::vector<byte>>();
+    this->iso_14443 = new std::vector<std::vector<byte>>();
+    this->iso_15693 = new std::vector<std::vector<byte>>();
 }
 
 
@@ -31,6 +33,9 @@ bool NfcTokenReader::init(){
 }
 
 void NfcTokenReader::refresh(){
+    this->iso_14443->clear();
+    this->iso_18000->clear();
+    this->iso_15693->clear();
     this->trame->clear();
     std::vector<byte> trame = READ_TRAM_0;
     if (this->pair){
@@ -72,4 +77,54 @@ void NfcTokenReader::printTrame(){
 
 int NfcTokenReader::getNbTags(){
     return this->trame->at(8);
+}
+
+void NfcTokenReader::shortToken(){
+    if(this->getNbTags() == 0){
+        return;
+    }
+    auto tokentypeIt = this->trame->begin();
+    tokentypeIt += 11;
+
+    for(int i = 0; i < this->getNbTags(); i++){
+        std::vector<byte>* type = new std::vector<byte>();
+        for (int j  = 0; j < ISO_18000.size(); j ++){
+            type->push_back(*tokentypeIt);
+            tokentypeIt++;
+        }
+        if(*type == ISO_18000){
+            this->iso_18000->push_back(std::vector<byte>(tokentypeIt, tokentypeIt+12));
+            tokentypeIt += 12;
+        }else if(*type == ISO_14443){
+            this->iso_14443->push_back(std::vector<byte>(tokentypeIt, tokentypeIt+7));
+            tokentypeIt += 7;
+        }else if(*type == ISO_15693){
+            this->iso_15693->push_back(std::vector<byte>(tokentypeIt, tokentypeIt+8));
+            tokentypeIt += 9;
+        }else{
+            Serial.println("Error token type");
+        }
+    }
+}
+
+std::vector<std::vector<byte>>* NfcTokenReader::GetIso18000Tokens(){
+    return this->iso_18000;
+}
+
+std::vector<std::vector<byte>>* NfcTokenReader::GetIso15693Tokens(){
+    return this->iso_15693;
+}
+
+std::vector<std::vector<byte>>* NfcTokenReader::GetIso14443Tokens(){
+    return this->iso_14443;
+}
+
+String NfcTokenReader::stringifyId(std::vector<byte>* id){
+    String sortie = "";
+    for(auto it : *id){
+        sortie += this->digitify(it);
+        sortie += ":";
+    }
+    sortie = sortie.substring(0,sortie.length()-1);
+    return sortie;
 }

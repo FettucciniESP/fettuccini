@@ -3,13 +3,14 @@
 
 #include <Arduino.h>
 #include <vector>
+
 // #include <SoftwareSerial.h>
 
 #include "TrameList.h"
 
 class NfcTokenReader{
 public:
-    NfcTokenReader();
+    NfcTokenReader(HardwareSerial& serial);
 
     /**
      * @brief initialise le lecteur NFC
@@ -38,6 +39,40 @@ public:
      */
     int getNbTags();
 
+    /**
+     * @brief retourne un vecteur avec tout les tags split
+     *
+     * @return std::vector<byte> tableau avec tout les tags
+     */
+    void shortToken();
+
+    /**
+     * @brief Get the Iso18000 Tokens object
+     *
+     * @return std::vector<std::vector<byte>>*
+     */
+    std::vector<std::vector<byte>>* GetIso18000Tokens();
+
+    /**
+     * @brief Get the Iso15693 Tokens object
+     *
+     * @return std::vector<std::vector<byte>>*
+     */
+    std::vector<std::vector<byte>>* GetIso15693Tokens();
+
+    /**
+     * @brief Get the Iso14443 Tokens object
+     *
+     * @return std::vector<std::vector<byte>>*
+     */
+    std::vector<std::vector<byte>>* GetIso14443Tokens();
+
+    /**
+     * @brief
+     *
+     * @return * String
+     */
+    String stringifyId(std::vector<byte>* id);
 private:
 
     /**
@@ -61,6 +96,10 @@ private:
     std::vector<byte>* trame;
 
     // SoftwareSerial* serial;
+    std::vector<std::vector<byte>>* iso_18000;
+    std::vector<std::vector<byte>>* iso_14443;
+    std::vector<std::vector<byte>>* iso_15693;
+
 };
 
 
