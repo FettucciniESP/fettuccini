@@ -38,6 +38,8 @@ void Program::loop() {
         Serial.println(val);
         oldVal = val;
         String cards[] = {val,"23892B"};
+        String jetons[] = {val,"23892B"};
         this->api->sendCard(cards);
+        this->api->sendJetons(jetons);
     }
 }

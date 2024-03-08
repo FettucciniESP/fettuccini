@@ -20,11 +20,18 @@ public:
     /**
      * @brief send the id of the player card
      *
-     * @param seat id of the seat on the table
      * @param card[2] the card of the player
      * @return true if the transaction is a success
      */
     bool sendCard(String card[]);
+
+    /**
+     * @brief send the id of the player card
+     *
+     * @param jeton[x] the jetons of the player
+     * @return true if the transaction is a success
+    */
+    bool sendJetons(String jetons[]);
 
     /**
      * @brief receive value from the card of the consumer account to the connected account

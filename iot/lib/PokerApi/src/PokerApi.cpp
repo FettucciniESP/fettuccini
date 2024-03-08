@@ -39,6 +39,26 @@ bool PokerApi::sendCard(String card[]) {
     return sortie;
 }
 
+bool PokerApi::sendJetons(String jetons[]) {
+    bool sortie = true;
+    this->http->begin(*this->client, this->ip, this->port, API_CHIP);
+    this->http->addHeader("Authorization", "Bearer " + this->token);
+    this->http->addHeader("Content-Type", "application/json");
+    JSONVar body;
+    for (int i = 0; jetons[i] != null; i++) {
+        body["chipsId"][i] = jetons[i];
+    }
+    int resp = this->http->POST(JSON.stringify(body));
+    if (resp == 401) {  // 401 = Unauthorized
+        this->login();
+        this->sendJetons(jetons);
+    } else if (resp != 201) {
+        sortie = false;
+    }
+    this->http->end();
+    return sortie;
+}
+
 bool PokerApi::receiveFromNFC(String NFCID, int amount) {
     bool sortie = true;
 //     this->http->begin(*this->client, this->ip, this->port, URL_CARD + NFCID + URL_PAYMENT);
