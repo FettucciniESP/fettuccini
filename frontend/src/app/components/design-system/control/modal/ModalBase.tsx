@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import {
   Modal,
@@ -6,9 +5,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
-  Text,
 } from "@chakra-ui/react";
-import styles from "./ModalBase.module.scss";
 
 interface ModalBaseProps {
   isOpen: boolean;
