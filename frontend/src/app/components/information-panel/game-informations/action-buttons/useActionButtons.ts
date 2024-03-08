@@ -47,7 +47,7 @@ export default function useActionButtons() {
           playerAction = isCheckOrCall(player, roundInfos);
           break;
         case GameActionEnum.BET: {
-          if (amount !== undefined && amount !== null) {
+          if (amount !== undefined && amount !== null && !Number.isNaN(amount)) {
             playerAction.amount = amount;
           } else {
             return;

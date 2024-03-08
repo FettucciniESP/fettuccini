@@ -10,8 +10,9 @@ describe('Calculator', () => {
 
   
   beforeEach(() => {
-    const handleActionButtonClickStub = cy.stub().as('handleActionButtonClickStub');
-    cy.mount(<Calculator openCalculator={true} handleActionButtonClick={handleActionButtonClickStub} />)
+    const handleNumberStub = cy.stub().as('handleNumberStub');
+    const closeCalculatorStub = cy.stub().as('closeCalculatorStub');
+    cy.mount(<Calculator openCalculator={true} closeCalculator={closeCalculatorStub} handleNumber={handleNumberStub} />)
   });
 
 
@@ -57,6 +58,9 @@ describe('Calculator', () => {
     cy.get('[id="idButtonSubmit"]').click();
 
     // Check if the value is submitted
-    cy.get('@handleActionButtonClickStub').should('be.calledWith', parseInt('0123456789'));
+    cy.get('@handleNumberStub').should('be.calledWith', parseInt('0123456789'));
+
+    // Close the calculator
+    cy.get('@closeCalculatorStub').should('be.called');
   });
 })

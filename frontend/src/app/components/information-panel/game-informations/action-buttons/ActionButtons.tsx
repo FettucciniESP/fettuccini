@@ -11,16 +11,29 @@ export default function ActionButtons({
 }: {
   readonly playerInfos: PlayerInfosModel;
 }) {
-    let [showCalculatorModal, setShowCalculatorModal] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const {
         handleActionButtonClick,
         buttonIsDisabled,
     } = useActionButtons()
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    }
+
+    const closeModal = () => { 
+        setIsModalOpen(false);
+    }
+
+    const handleBet = (amount: number) => {
+        handleActionButtonClick(playerInfos, GameActionEnum.BET, amount)
+    }
+
     return (
         <Box className={styles.actionButtonsContainer}>
-            {showCalculatorModal && (
-                <Calculator openCalculator={showCalculatorModal} handleActionButtonClick={(amount: number) => handleActionButtonClick(playerInfos, GameActionEnum.BET, amount)} />
+            {isModalOpen && (
+                <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} />
             )}
             <Box className={styles.actionButtonsLine}>
                 <Button
@@ -47,7 +60,7 @@ export default function ActionButtons({
                     isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.BET)}
                     className={styles.button}
                     onClick={() =>
-                        setShowCalculatorModal(true)
+                        openModal()
                     }
                 >
                     BET

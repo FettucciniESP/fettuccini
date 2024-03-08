@@ -13,20 +13,20 @@ import { useState } from 'react';
 
 interface CalculatorProps {
   openCalculator: boolean;
-  handleActionButtonClick?: (amount: number) => void;
+  closeCalculator: () => void;
+  handleNumber?: (amount: number) => void;
 }
 
-export default function Calculator({openCalculator, handleActionButtonClick}: CalculatorProps) {
+export default function Calculator({openCalculator, closeCalculator, handleNumber}: CalculatorProps) {
   const [code, setCode] = useState("");
-  const [isOpen, setIsOpen] = useState(openCalculator);
 
   const handleChange = (value: number) => {
     setCode(code + value);
   };
 
   const handleSubmit = () => {
-    handleActionButtonClick && handleActionButtonClick(parseInt(code));
-    setIsOpen(false);
+    handleNumber && handleNumber(parseInt(code));
+    closeCalculator();
   };
 
   const handleDelete = () => {
@@ -64,7 +64,7 @@ export default function Calculator({openCalculator, handleActionButtonClick}: Ca
 
   return ( 
     <Box>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal isOpen={openCalculator} onClose={() => closeCalculator()}>
         <ModalOverlay />
         <ModalContent className={styles.CalculatorContent}>
           <ModalCloseButton color="#F7F0E1"/>
