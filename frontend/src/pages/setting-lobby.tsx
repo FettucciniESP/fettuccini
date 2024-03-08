@@ -4,6 +4,7 @@ import InputLabelIcon from "@/app/components/design-system/control/inputs/input-
 // import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
+import BaseModal from "@/app/components/design-system/control/modal/ModalBase";
 
 const labels = {
   STRUCTURE: "STRUCTURE",
@@ -26,6 +27,8 @@ const buttonTitles = {
 
 export default function SettingLobby() {
   const [isSettingDone, setIsSettingDone] = useState(false);
+
+  const [isModalOpen, setIsOpenModal] = useState(true);
 
   const [stucture, setStructure] = useState("");
   const [stacks, setStacks] = useState(null);
@@ -51,7 +54,8 @@ export default function SettingLobby() {
 
   const hangdleOnClickButtonStructure = () => {
     console.log("structure openstructure openstructure open modal");
-    handleChangeStructure("TEST STRUCTURE");
+    setIsOpenModal(!isModalOpen);
+    // handleChangeStructure("TEST STRUCTURE");
   };
 
   const hangdleOnClickButtonRegistration = () => {
@@ -121,8 +125,20 @@ export default function SettingLobby() {
     );
   };
 
+  // Modal management
+
+  const handleChangeModalStatus = (bool: boolean) => {
+    setIsOpenModal(bool);
+  };
+
   return (
     <Box className={styles.mainContainer}>
+      {isModalOpen ? (
+        <BaseModal
+          isOpen={isModalOpen}
+          handleCloseModal={handleChangeModalStatus}
+        />
+      ) : null}
       <Box>
         <Text className={styles.titlePage}>{titles.TITLE_PAGE}</Text>
       </Box>
