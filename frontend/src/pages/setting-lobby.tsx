@@ -4,7 +4,7 @@ import InputLabelIcon from "@/app/components/design-system/control/inputs/input-
 // import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
-import BaseModal from "@/app/components/design-system/control/modal/ModalBase";
+import ModalStructure from "@/app/components/design-system/control/modal/structure/ModalStructure";
 
 const labels = {
   STRUCTURE: "STRUCTURE",
@@ -134,7 +134,7 @@ export default function SettingLobby() {
   return (
     <Box className={styles.mainContainer}>
       {isModalOpen ? (
-        <BaseModal
+        <ModalStructure
           isOpen={isModalOpen}
           handleCloseModal={handleChangeModalStatus}
         />
