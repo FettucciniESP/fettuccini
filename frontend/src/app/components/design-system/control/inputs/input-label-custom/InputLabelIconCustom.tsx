@@ -18,7 +18,7 @@ const defaultProps = {
 
 interface InputLabelIconCustomProps {
   // Required
-  currentValue: string;
+  currentValue: string | number | null;
   labelValue: string;
   handleChangeLabel: (text: string | undefined) => void;
   handleChangeCurrentValue: (text: string | undefined) => void;

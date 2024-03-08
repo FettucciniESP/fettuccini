@@ -1,0 +1,71 @@
+@import 'variables';
+.container {
+    min-height: 100vh;
+    max-height: 100vh;
+    width: 130vh;
+    justify-content: space-between;
+    background-image: url(../images/background_gm.svg);
+    background-size: 200vh;
+    background-repeat: repeat;
+    padding: 50px 40px;
+}
+
+.settingContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titlePage {
+  font-size: 30px;
+  color: $white-color;
+}
+
+.titleSection {
+    font-size: 20px;
+    font-weight: 400;
+    color: $white-color;
+    align-self: center;
+}
+
+.settingSectionContainer {
+    padding: 60px 0;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.textSetting {
+    color: $white-color;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.buttonSectionContainer {
+    
+}
+
+.inputContainer {
+    width: 600px;
+}
+
+.sectionContainer {
+    width: 500px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 40px 20px;
+}
+
+.singleButtonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+.multiButtonContainer {
+    display: flex;
+    flex: 1;
+}
