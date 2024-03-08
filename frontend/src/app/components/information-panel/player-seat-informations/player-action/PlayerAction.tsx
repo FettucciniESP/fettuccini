@@ -12,29 +12,29 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
 
     const foldActionContent = () => {
         return (
-            <Box className={styles.foldContainer}>
-                <Text className={styles.actionValue}>FOLD</Text>
+            <Box id={"fold_action"} className={styles.foldContainer}>
+                <Text id={"fold_text"} className={styles.actionValue}>FOLD</Text>
             </Box>
         );
     }
 
     const allInActionContent = () => {
         return (
-            <Box className={styles.allInContainer}>
-                <Text className={styles.actionValue}>{playerHandInfos.lastAction ? playerHandInfos.lastAction.amount : 'ALL IN'}</Text>
+            <Box id={"allIn_action"} className={styles.allInContainer}>
+                <Text id={"allIn_text"} className={styles.actionValue}>{playerHandInfos.lastAction ? playerHandInfos.lastAction.amount : 'ALL IN'}</Text>
             </Box>
         );
     }
 
     const checkActionContent = () => {
-        return <Image src={CHECK_IMAGE} alt="Check" className={styles.imgLastAction} />;
+        return <Image id={"check_action"} src={CHECK_IMAGE} alt="Check" className={styles.imgLastAction} />;
     }
 
     const betActionContent = () => {
         return (
             <>
-                <Image src={BLUE_TOKEN_IMAGE} alt="Bet/Call" className={styles.imgLastActionWithAmount} />
-                <Text className={styles.lastActionAmountValue}>{playerHandInfos.lastAction?.amount}</Text>
+                <Image id={"bet_action"} src={BLUE_TOKEN_IMAGE} alt="Bet/Call" className={styles.imgLastActionWithAmount} />
+                <Text id={"bet_text"} className={styles.lastActionAmountValue}>{playerHandInfos.lastAction?.amount}</Text>
             </>
         );
     }
@@ -60,7 +60,7 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
     };
 
     return (
-        <Box className={styles.playerAction}>
+        <Box id={"action_content"} className={styles.playerAction}>
             {renderActionContent()}
         </Box>
     );

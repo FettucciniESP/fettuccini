@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "test:cypress:components": "cross-env NODE_ENV=test cypress run --component"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
@@ -18,21 +19,25 @@
     "axios": "^1.6.2",
     "eslint-config-prettier": "^9.0.0",
     "framer-motion": "^10.16.5",
+    "istanbul-lib-coverage": "^3.2.2",
     "next": "^14.0.3",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
     "react-countdown": "^2.3.5",
     "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
     "rxjs": "^7.8.1",
     "sass": "^1.69.5",
     "sharp": "^0.32.6"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.12.11",
+    "@cypress/code-coverage": "^3.12.24",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",
+    "babel-plugin-istanbul": "^6.1.1",
+    "cross-env": "^7.0.3",
     "cypress": "^13.6.0",
     "eslint": "^8.54.0",
     "eslint-config-next": "^14.0.3",

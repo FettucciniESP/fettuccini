@@ -11,26 +11,26 @@ export const TimerCountDown = () => {
     const [startTime, setStartTime] = useState<Date>();
     const [timeRemaining, setTimeRemaining] = useState<number>();
 
-    function calculateTimeRemaining(): number {
-        if (!startTime || !levelsStructure) {
+    useEffect(() => {
+        function calculateTimeRemaining(): number {
+            if (!startTime || !levelsStructure) {
+                return 0;
+            }
+
+            const now: number = new Date().getTime();
+            const startTimeMillis: number = new Date(startTime).getTime();
+            let elapsedTime: number = (now - startTimeMillis) / 1000 / 60;
+
+            let totalTime: number = 0;
+            for (let level of levelsStructure) {
+                totalTime += level.duration;
+                if (elapsedTime < totalTime) {
+                    return (totalTime - elapsedTime) * 60 * 1000;
+                }
+            }
             return 0;
         }
 
-        const now: number = new Date().getTime();
-        const startTimeMillis: number = new Date(startTime).getTime();
-        let elapsedTime: number = (now - startTimeMillis) / 1000 / 60;
-
-        let totalTime: number = 0;
-        for (let level of levelsStructure) {
-            totalTime += level.duration;
-            if (elapsedTime < totalTime) {
-                return (totalTime - elapsedTime) * 60 * 1000;
-            }
-        }
-        return 0;
-    }
-
-    useEffect(() => {
         const interval = setInterval(() => {
             setTimeRemaining(calculateTimeRemaining());
         }, 1000);

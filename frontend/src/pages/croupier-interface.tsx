@@ -12,7 +12,7 @@ export default function CroupierInterface() {
     if (!croupierLoadingService.getSessionId()){
       router.push('/home');
     }
-  }, []);
+  }, [router]);
 
   return (
     <ChakraProvider>

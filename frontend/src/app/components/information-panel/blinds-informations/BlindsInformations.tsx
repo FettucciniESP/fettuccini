@@ -8,33 +8,33 @@ const WHITE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.p
 export default function BlindsInformations({currentLevelInfos}: { readonly currentLevelInfos: LevelInfosModel}) {
 
     return (
-        <Box>
-            {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+        <Box id={"blindsInformations"}>
+            {currentLevelInfos && <Box id={"ante_img"} className={styles.levelsInformationsContainer}>
                 <Image
                     src={WHITE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />
-                <Text className={styles.levelInformationTitle}>Ante :</Text>
-                <Text className={styles.levelInformationValue}>{currentLevelInfos.ante}</Text>
+                <Text id={"ante"} className={styles.levelInformationTitle}>Ante :</Text>
+                <Text id={"ante_value"} className={styles.levelInformationValue}>{currentLevelInfos.ante}</Text>
             </Box>}
-            {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+            {currentLevelInfos && <Box id={"big_blind_img"} className={styles.levelsInformationsContainer}>
                 <Image
                     src={BLUE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />
-                <Text className={styles.levelInformationTitle}>Big Blind :</Text>
-                <Text className={styles.levelInformationValue}>{currentLevelInfos.bigBlind}</Text>
+                <Text id={"big_blind"} className={styles.levelInformationTitle}>Big Blind :</Text>
+                <Text id={"big_blind_value"} className={styles.levelInformationValue}>{currentLevelInfos.bigBlind}</Text>
             </Box>}
-            {currentLevelInfos && <Box className={styles.levelsInformationsContainer}>
+            {currentLevelInfos && <Box id={"small_blind_img"} className={styles.levelsInformationsContainer}>
                 <Image
                     src={WHITE_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgLevelInformation}
                 />
-                <Text className={styles.levelInformationTitle}>Small Blind :</Text>
-                <Text className={styles.levelInformationValue}>{currentLevelInfos.smallBlind}</Text>
+                <Text id={"small_blind"} className={styles.levelInformationTitle}>Small Blind :</Text>
+                <Text id={"small_blind_value"} className={styles.levelInformationValue}>{currentLevelInfos.smallBlind}</Text>
             </Box>}
         </Box>
     )

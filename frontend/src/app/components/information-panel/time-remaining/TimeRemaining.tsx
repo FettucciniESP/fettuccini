@@ -6,7 +6,7 @@ import {TimerCountDown} from '@/app/components/information-panel/time-remaining/
 export default function TimeRemaining() {
     return (
         <InformationContainer>
-            <Box className={styles.container}>
+            <Box id={"timer"} className={styles.container}>
                 <TimerCountDown/>
             </Box>
         </InformationContainer>
