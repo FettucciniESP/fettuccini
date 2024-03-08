@@ -1,4 +1,4 @@
-import { Box, Text, Input, InputProps } from "@chakra-ui/react";
+import { Box, Text, Input, Button, InputProps } from "@chakra-ui/react";
 import { GoPencil } from "react-icons/go";
 import styles from "./InputLabelIcon.module.scss";
 import commonStyles from "../styles/InputCommonStyle.module.scss";
@@ -10,6 +10,7 @@ const icons = {
 const types = {
   TEXT: "text",
   NUMBER: "number",
+  BUTTON: "button",
 };
 
 const defaultProps = {
@@ -20,8 +21,9 @@ const defaultProps = {
 interface InputLabelIconProps {
   // Required
   currentValue: string | number | null;
-  handleChangeCurrentValue: (value: string | number | null | any) => void;
+  handleChangeCurrentValue?: (value: string | number | null | any) => void;
   // Optional
+  hangdleOnClick?: () => void;
   type?: (typeof types)[keyof typeof types];
   icon?: any;
   label?: string;
@@ -42,6 +44,9 @@ function InputLabelIcon(props: InputLabelIconProps) {
     customAddToText,
   } = props;
   const ref = useRef();
+  const customUpperStyle = {
+    textTransform: isUpperCase ? "uppercase" : "none",
+  };
   const handleChange = (event: any) => {
     const { handleChangeCurrentValue } = props;
     let value;
@@ -57,7 +62,6 @@ function InputLabelIcon(props: InputLabelIconProps) {
     }
     handleChangeCurrentValue(value);
   };
-
   const displayIcon = () => {
     const { icon } = props;
     let currentIcon;
@@ -82,8 +86,65 @@ function InputLabelIcon(props: InputLabelIconProps) {
     return currentIcon;
   };
 
-  const customUpperStyle = {
-    textTransform: isUpperCase ? "uppercase" : "none",
+  const displayContent = () => {
+    const { type, hangdleOnClick } = props;
+    switch (type) {
+      case types.TEXT:
+      case types.NUMBER:
+        return (
+          <Input
+            id_cy="inputValue"
+            ref={ref}
+            value={currentValue}
+            onChange={handleChange}
+            textAlign={"right"}
+            className={styles.inputText}
+            variant="unstyled"
+            isDisabled={disabled}
+            type={type}
+            {...customInputProps}
+            {...customUpperStyle}
+          />
+        );
+      case types.BUTTON:
+        const baseButtonConfig = {
+          size: "sm",
+          width: "auto",
+          variant: "ghost",
+          isActive: false,
+          _hover: { bg: "none" },
+        };
+        return (
+          <Button
+            onClick={hangdleOnClick}
+            className={styles.buttonStyle}
+            textAlign="right"
+            padding={0}
+            margin={0}
+            {...baseButtonConfig}
+          >
+            <Text className={styles.textButtonStyle} style={customUpperStyle}>
+              {currentValue}
+            </Text>
+          </Button>
+        );
+      default:
+        return (
+          <Input
+            id_cy="inputValue"
+            ref={ref}
+            value={currentValue}
+            onChange={handleChange}
+            textAlign={"right"}
+            className={styles.inputText}
+            variant="unstyled"
+            isDisabled={disabled}
+            type={type}
+            {...customInputProps}
+            {...customUpperStyle}
+          />
+        );
+    }
   };
 
   return (
@@ -98,19 +159,7 @@ function InputLabelIcon(props: InputLabelIconProps) {
         </Text>
       </Box>
       <Box className={styles.inputContainer}>
-        <Input
-          id_cy="inputValue"
-          ref={ref}
-          value={currentValue}
-          onChange={handleChange}
-          textAlign={"right"}
-          className={styles.inputText}
-          variant="unstyled"
-          isDisabled={disabled}
-          type={type}
-          {...customInputProps}
-          {...customUpperStyle}
-        />
+        {displayContent()}
         <Text id_cy="customTextValue" className={commonStyles.addCustomText}>
           {customAddToText}
         </Text>

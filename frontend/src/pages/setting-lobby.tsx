@@ -18,6 +18,12 @@ const titles = {
   TITLE_SECTION: "PARAMÈTRES UTILISÉS",
 };
 
+const buttonTitles = {
+  LOAD: "CHARGER",
+  SAVE: "ENREGISTRER",
+  START: "COMMENCER",
+};
+
 export default function SettingLobby() {
   const [isSettingDone, setIsSettingDone] = useState(false);
 
@@ -43,6 +49,16 @@ export default function SettingLobby() {
     setCostEntry(value);
   };
 
+  const hangdleOnClickButtonStructure = () => {
+    console.log("structure openstructure openstructure open modal");
+    handleChangeStructure("TEST STRUCTURE");
+  };
+
+  const hangdleOnClickButtonRegistration = () => {
+    console.log("registration open modal");
+    setRegistrationMax("TEST REGISTRATION");
+  };
+
   const hangdleOnClickButtonLoad = () => {
     console.log("load button");
   };
@@ -60,7 +76,10 @@ export default function SettingLobby() {
       { title: labels.STRUCTURE, value: stucture },
       { title: labels.STACKS, value: stacks },
       { title: labels.REGISTRATION_MAX, value: registrationMax },
-      { title: labels.COST_ENTRY, value: costEntry },
+      {
+        title: labels.COST_ENTRY,
+        value: costEntry ? `${costEntry + " €"}` : costEntry,
+      },
     ];
 
     return (
@@ -82,19 +101,19 @@ export default function SettingLobby() {
       <Box>
         <Box className={styles.singleButtonContainer}>
           <ButtonIcon
-            label="CHARGER"
+            label={buttonTitles.LOAD}
             hangdleOnClick={hangdleOnClickButtonLoad}
             icon={ButtonIcon.icons.LOAD}
           />
           <ButtonIcon
-            label="ENREGISTRER"
+            label={buttonTitles.SAVE}
             hangdleOnClick={hangdleOnClickButtonSave}
             icon={ButtonIcon.icons.SAVE}
           />
         </Box>
         <Box className={styles.multiButtonContainer}>
           <ButtonIcon
-            label="COMMENCER"
+            label={buttonTitles.START}
             hangdleOnClick={hangdleOnClickButtonStart}
           />
         </Box>
@@ -111,9 +130,9 @@ export default function SettingLobby() {
         <Box className={styles.inputContainer}>
           <InputLabelIcon
             label={labels.STRUCTURE}
-            handleChangeCurrentValue={handleChangeStructure}
+            hangdleOnClick={hangdleOnClickButtonStructure}
             currentValue={stucture}
-            type={InputLabelIcon.types.TEXT}
+            type={InputLabelIcon.types.BUTTON}
             isUpperCase
           />
 
@@ -126,9 +145,9 @@ export default function SettingLobby() {
 
           <InputLabelIcon
             label={labels.REGISTRATION_MAX}
-            handleChangeCurrentValue={handleChangeRegistrationMax}
+            hangdleOnClick={hangdleOnClickButtonRegistration}
             currentValue={registrationMax}
-            type={InputLabelIcon.types.TEXT}
+            type={InputLabelIcon.types.BUTTON}
           />
 
           {/* <SwitchLabel
@@ -142,7 +161,7 @@ export default function SettingLobby() {
             handleChangeCurrentValue={handleChangeCostEntry}
             currentValue={costEntry}
             type={InputLabelIcon.types.NUMBER}
-            customAddToText={"$"}
+            customAddToText={"€"}
           />
         </Box>
 
