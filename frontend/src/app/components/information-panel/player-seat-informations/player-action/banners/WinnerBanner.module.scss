@@ -1,29 +1,42 @@
 .winnerContainer{
-    height: 10vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    filter: none !important;
-    border: #F7F5E4 1px solid;
-    box-shadow: #182E3B 0px 3px 5px 0;
-    color: #FFFFFF;
-    font-size: 5vw;
-  }
-
-  .winnerContainer {
-    background-color: #12AB46;
-  }
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  filter: none !important;
+  border: #F7F5E4 1px solid;
+  box-shadow: #182E3B 0px 3px 5px 0;
+  color: #FFFFFF;
+  font-size: 2vw;
+  margin-right: 1vw;
+  background-color: #12AB46;
+  backdrop-filter: blur(10px);
+  margin-top: 7vh;
+  margin-bottom: 1vh;
+}
   
-  .imgWhiteToken {
-    width: 8vh;
-    height: 8vh;
-    margin-right: 1vw;
-  }
+.imgWhiteTokenLeft {
+  width: 4vh;
+  height: 4vh;
+  margin-right: 2vw;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
 
-  .crown {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+.imgWhiteTokenRight {
+  width: 4vh;
+  height: 4vh;
+  margin-left: 2vw;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.crown {
+  width: 10vh;
+  height: 10vh;
+  position: absolute;
+  bottom: 55%;
+  left: 50%;
+  transform: translateX(-50%);
+}

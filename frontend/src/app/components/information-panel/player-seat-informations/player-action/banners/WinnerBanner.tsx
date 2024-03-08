@@ -8,11 +8,13 @@ const CROWN_IMAGE = require('../../../../../assets/images/crown.png');
 
 export default function WinnerBanner({ammountWin}: { readonly ammountWin: number }) {
     return (
-        <Box id={"winner_box"} className={styles.winnerContainer}>
-                <Image id={"crown"} src={CROWN_IMAGE} alt="crown winner" className={styles.crown} />
-                <Image id={"winner_token1"} src={WHITE_TOKEN_IMAGE} alt="White token" className={styles.imgWhiteToken} />
-                <Text id={"winner_text"} className={styles.actionValue}>{ammountWin}</Text>
-                <Image id={"winner_token2"} src={WHITE_TOKEN_IMAGE} alt="White token" className={styles.imgWhiteToken} />
+        <Box>
+            <Box id={"winner_box"} className={styles.winnerContainer}>
+                    <Image id={"crown"} src={CROWN_IMAGE} alt="crown winner" className={styles.crown} />
+                    <Image id={"winner_token1"} src={WHITE_TOKEN_IMAGE} alt="White token" className={styles.imgWhiteTokenLeft} />
+                    <Text id={"winner_text"} className={styles.actionValue}>{ammountWin}</Text>
+                    <Image id={"winner_token2"} src={WHITE_TOKEN_IMAGE} alt="White token" className={styles.imgWhiteTokenRight} />
+            </Box>
         </Box>
     );
 }
