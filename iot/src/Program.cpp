@@ -37,9 +37,26 @@ void Program::loop() {
     NFC->refresh();
     NFC->shortToken();
     NFC->printTrame();
-    for(auto it: *NFC->GetIso14443Tokens()){
-        Serial.println(NFC->stringifyId(&it));
+
+    Serial.println(NFC->getNbTags());
+
+    Serial.print("ISO_15693 tags :");
+    if(NFC->getNbTags() != 0){
+        Serial.println(NFC->GetIso15693Tokens()->size());
+        for(auto it: *NFC->GetIso15693Tokens()){
+            Serial.println(NFC->stringifyId(&it));
+        }
+        Serial.print("ISO_18000 tags :");
+        Serial.println(NFC->GetIso18000Tokens()->size());
+        for(auto it: *NFC->GetIso18000Tokens()){
+            Serial.println(NFC->stringifyId(&it));
+        }
+        Serial.print("ISO_14443 tags :");
+        Serial.println(NFC->GetIso14443Tokens()->size());
+        for(auto it: *NFC->GetIso14443Tokens()){
+            Serial.println(NFC->stringifyId(&it));
+        }
     }
     Serial.println();
-    delay(200);
+    // delay(200);
 }
