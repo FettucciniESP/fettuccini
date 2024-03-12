@@ -5,7 +5,7 @@
     width: auto;
     justify-content: space-between;
     background-image: url(../images/background_gm.svg);
-    background-size: 200vh;
+    background-size: 100%;
     padding: 50px 40px;
 }
 
@@ -54,7 +54,7 @@
     border-radius: 30px;
     display: flex;
     flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: $white-color-low-opacity;
     padding: 40px 20px;
     margin: 20px
 }

@@ -1,8 +1,8 @@
 @import '../../../assets/styles/variables.scss';
 
 .container {
-  border: 1px solid $white-color;
-  border-radius: 5px;
+  border: 1px solid transparent;
+  border-radius: $border-players-card-radius;
   width: 100%;
 }
 

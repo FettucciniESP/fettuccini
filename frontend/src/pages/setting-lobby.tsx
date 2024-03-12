@@ -4,6 +4,10 @@ import InputLabelIcon from "@/app/components/design-system/control/inputs/input-
 // import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
+import {croupierLoadingService} from "@/app/services/croupier-loading.service";
+import {StartGameResponseModel} from "@/app/models/StartGameResponse.model";
+import {croupierService} from "@/app/services/croupier.service";
+import {NextRouter, useRouter} from "next/router";
 
 const labels = {
   STRUCTURE: "STRUCTURE",
@@ -26,6 +30,8 @@ const buttonTitles = {
 
 export default function SettingLobby() {
   const [isSettingDone, setIsSettingDone] = useState(false);
+
+  const router: NextRouter = useRouter();
 
   const [stucture, setStructure] = useState("");
   const [stacks, setStacks] = useState(null);
@@ -68,7 +74,12 @@ export default function SettingLobby() {
   };
 
   const hangdleOnClickButtonStart = () => {
-    console.log("start button");
+    croupierLoadingService
+        .startNewGame()
+        .then((startGameResponse: StartGameResponseModel) => {
+          croupierService.getGameInformations(startGameResponse);
+          router.push("/croupier-interface");
+        });
   };
 
   const renderSettingsSection = () => {

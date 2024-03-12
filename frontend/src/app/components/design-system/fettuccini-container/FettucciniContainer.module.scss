@@ -6,8 +6,8 @@
   width: 100%;
   height: 100%;
   margin-bottom: 5vh;
-  background-color: $back-players-blue-color;
-  box-shadow: $dark-blue-color 3px 3px 3px 3px;
+  background-color: $white-color-low-opacity;
+  box-shadow: $black-color-low-opacity 3px 3px 3px 3px;
   overflow-y: hidden;
   overflow-x: hidden;
 }
@@ -28,11 +28,11 @@
   width: 100%;
   height: 100%;
   margin-bottom: 5vh;
-  background-color: $white-color;
-  box-shadow: $transparent-white-color 5px 5px 5px 5px;
+  background-color: $white-color-high-opacity;
+  box-shadow: $white-color-low-opacity 5px 5px 5px 5px;
 }
 
 .isSelected > * {
   padding: 5px;
-  color: $dark-blue-color;
+  color: $white-color;
 }
