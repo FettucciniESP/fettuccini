@@ -52,7 +52,7 @@ export default function Calculator({openCalculator, closeCalculator, handleNumbe
 
   return ( 
     <Modal isOpen={openCalculator} onClose={() => closeCalculator()} isCentered size={'sm'}>
-      <ModalOverlay />
+      <ModalOverlay backdropFilter='blur(5px)' />
       <ModalContent className={styles.calculatorContent} maxW="40vw">
         <ModalCloseButton color="#F7F0E1"/>
         <ModalBody className={styles.calculatorBody}>
