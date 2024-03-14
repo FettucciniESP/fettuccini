@@ -5,6 +5,7 @@ import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
+import fr.fettuccini.backend.model.request.StartGameRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
@@ -20,7 +21,9 @@ public class PokerService {
     private final GameSessionRepository gameSessionRepository;
     private final RoundService roundService;
 
-    public StartGameResponse startGame(List<Level> levels) throws IOException {
+    public StartGameResponse startGame(StartGameRequest startGameRequest) throws IOException {
+        List<Level> levels = startGameRequest.getLevels();
+
         var gameSession = new GameSession();
         gameSession.startGame();
         gameSession.setLevelsStructure(levels);

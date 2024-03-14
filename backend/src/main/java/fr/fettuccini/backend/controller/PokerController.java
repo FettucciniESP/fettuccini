@@ -38,8 +38,7 @@ public class PokerController {
 
     @PostMapping("/start")
     public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException {
-        List<Level> levels = startGameRequest.getLevels();
-        return pokerService.startGame(levels);
+        return pokerService.startGame(startGameRequest);
     }
 
     @PostMapping("/playRound/{sessionId}")

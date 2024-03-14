@@ -31,8 +31,7 @@ public class RoundService {
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
 
         Level currentLevel = PokerUtils.getCurrentLevelByTime(currentGame);
-        assert currentLevel != null;
-        if (currentLevel.getRoundIndex() == 0) {
+        if (currentLevel != null && currentLevel.getRoundIndex().equals(0)) {
             return buildBreakResponse(currentGame, currentLevel);
         }
 
@@ -86,8 +85,8 @@ public class RoundService {
         PlayerActionResponse breakResponse = new PlayerActionResponse();
         breakResponse.setSessionId(currentGame.getId());
         breakResponse.setGameStartedDatetime(currentGame.getDateGameStarted());
-        breakResponse.setBreak(true);
-        breakResponse.setLabel(currentLevel.getLabel());
+        breakResponse.setBreakTime(true);
+        breakResponse.setLevelLabel(currentLevel.getLabel());
         return breakResponse;
     }
 
