@@ -5,10 +5,8 @@ import fr.fettuccini.backend.mapper.PlayerCardsRequestMapper;
 import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
-import fr.fettuccini.backend.model.request.BoardCardsRequest;
-import fr.fettuccini.backend.model.request.PlayerActionRequest;
-import fr.fettuccini.backend.model.request.PlayerCardsRequest;
-import fr.fettuccini.backend.model.request.PlayerChipsRequest;
+import fr.fettuccini.backend.model.poker.Level;
+import fr.fettuccini.backend.model.request.*;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.service.PokerService;
@@ -22,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/poker")
@@ -38,8 +37,8 @@ public class PokerController {
     private final BoardCardsRequestMapper boardCardsRequestMapper;
 
     @PostMapping("/start")
-    public StartGameResponse startGame() throws IOException {
-        return pokerService.startGame();
+    public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException {
+        return pokerService.startGame(startGameRequest);
     }
 
     @PostMapping("/playRound/{sessionId}")

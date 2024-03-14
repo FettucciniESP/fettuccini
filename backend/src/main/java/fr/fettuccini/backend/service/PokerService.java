@@ -1,36 +1,32 @@
 package fr.fettuccini.backend.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
+import fr.fettuccini.backend.model.request.StartGameRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class PokerService {
     private final GameSessionRepository gameSessionRepository;
-    private final PokerEvaluatorService pokerEvaluatorService;
     private final RoundService roundService;
-    @Value("${defaultLevelsStructureFilePath}")
-    private String defaultLevelsStructureFilePath;
 
-    public StartGameResponse startGame() throws IOException {
+    public StartGameResponse startGame(StartGameRequest startGameRequest) throws IOException {
+        List<Level> levels = startGameRequest.getLevels();
+
         var gameSession = new GameSession();
         gameSession.startGame();
-        gameSession.setLevelsStructure(initializeLevelsStructureFromJson());
+        gameSession.setLevelsStructure(levels);
 
         gameSessionRepository.save(gameSession);
 
@@ -71,16 +67,5 @@ public class PokerService {
 
         gameSessionRepository.save(gameSession);
         return playerActionResponse;
-    }
-
-    public List<Level> initializeLevelsStructureFromJson() throws IOException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(defaultLevelsStructureFilePath);
-        if (inputStream == null) {
-            throw new IOException("Le fichier de structure de niveau par défaut est introuvable");
-        }
-        return (mapper.readValue(inputStream, new TypeReference<>() {
-        }));
     }
 }

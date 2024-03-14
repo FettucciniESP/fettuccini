@@ -20,4 +20,6 @@ public class PlayerActionResponse {
     Player currentButtonUser;
     RoundStep roundStep;
     List<PlayerLastAction> playersLastActions;
+    boolean isBreakTime;
+    String levelLabel;
 }
