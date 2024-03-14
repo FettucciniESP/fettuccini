@@ -3,13 +3,13 @@
 .container {
   border: 1px solid transparent;
   border-radius: $border-players-card-radius;
-  width: 100%;
+  width: auto;
 }
 
 .timer {
   display: flex;
   font-weight: bold;
-  font-size: 3ch;
+  font-size: 5vh;
   text-align: center;
   justify-content: center;
 }

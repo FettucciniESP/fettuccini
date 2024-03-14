@@ -10,6 +10,12 @@
   display: flex;
 }
 
+@media only screen and (max-height:700px) {
+  .playerAction {
+    height: 15vh;
+  }
+}
+
 .lastActionAmountValue {
   font-size: $font-size-main-informations;
   font-weight: bold;
@@ -39,6 +45,7 @@
 
 .foldContainer {
   background-color: $white-color-high-opacity;
+  color: $black-color;
 }
 
 .allInContainer {
