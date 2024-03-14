@@ -1,17 +1,17 @@
-@import '../../assets/styles/variables.scss';
-.CalculatorContent{
+@import 'src/app/assets/styles/variables';
+.calculatorContent{
     border-radius: 13px !important;
     scale : 1.35;
     height: 65vh;
 }
-.CalculatorBody {
+.calculatorBody {
   background-color: #182E3B;
   border-radius: 10px !important;
 }
 
 $widthButton: 8vw;
 
-.ButtonNumber{
+.buttonNumber{
     background-color: #F7F0E1 !important;
     color: #142530;
     font-size: 32px !important;
@@ -20,7 +20,7 @@ $widthButton: 8vw;
     margin: 5px;
 }
 
-.ButtonZero{
+.zeroButton{
     background-color: #F7F0E1 !important;
     color: #142530;
     font-size: 32px !important;
@@ -29,7 +29,7 @@ $widthButton: 8vw;
     margin: 5px;
 }
 
-.ButtonSubmit{
+.submitButton{
     background-color: #182E3B !important;
     color: #F7F0E1 !important;
     border: 1px #12AB46 solid !important;

@@ -4,7 +4,7 @@ import styles from './ActionButtons.module.scss'
 import useActionButtons from './useActionButtons'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import { useState } from 'react'
-import Calculator from '@/app/components/calculator-modal/Calculator'
+import Calculator from '@/app/components/design-system/calculator-modal/Calculator'
 
 export default function ActionButtons({
   playerInfos,

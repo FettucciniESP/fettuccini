@@ -1,5 +1,5 @@
 import React from 'react'
-import Calculator from '@/app/components/calculator-modal/Calculator';
+import Calculator from '@/app/components/design-system/calculator-modal/Calculator';
 
 describe('Calculator', () => {
   const playerInfos = {
