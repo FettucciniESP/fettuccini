@@ -30,7 +30,6 @@ public class PokerUtils {
         List<Level> levels = currentGame
                 .getLevelsStructure()
                 .stream()
-                .sorted(Comparator.comparingInt(Level::getRoundIndex))
                 .toList();
 
         for (Level level : levels) {
@@ -222,7 +221,6 @@ public class PokerUtils {
      */
     public static Integer getRoundIndex(GameSession currentGame) {
         Optional<Round> lastRound = getLastRound(currentGame);
-
         return lastRound.map(round -> round.getRoundIndex() + 1).orElse(1);
     }
 

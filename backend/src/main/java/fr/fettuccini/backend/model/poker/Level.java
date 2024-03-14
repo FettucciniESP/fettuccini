@@ -8,6 +8,9 @@ public class Level {
     @JsonProperty("levelIndex")
     private Integer roundIndex;
 
+    @JsonProperty("label")
+    private String label;
+
     @JsonProperty("bigBlind")
     private Integer bigBlindAmount;
 

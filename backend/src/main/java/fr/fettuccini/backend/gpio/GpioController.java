@@ -16,7 +16,7 @@ public class GpioController {
     private final Context pi4jContext;
     private DigitalOutput ledOutput;
 
-    @PostConstruct
+    //@PostConstruct
     public void initializeLed() {
         int ledPin = 1;
         try {

@@ -18,7 +18,7 @@ public class CardReadingService {
     private final RC522Client rc522Client;
     private ExecutorService executorService;
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         executorService = Executors.newVirtualThreadPerTaskExecutor();
         executorService.submit(this::readCardLoop);
