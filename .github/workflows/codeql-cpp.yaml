@@ -15,7 +15,7 @@ on:
   push:
     branches: [ "main", "develop" ]
     paths: 
-      - backend/**
+      - iot/**
   pull_request:
     branches: [ "main", "develop" ]
   schedule:
@@ -70,8 +70,16 @@ jobs:
 
     # Autobuild attempts to build any compiled languages (C/C++, C#, Go, Java, or Swift).
     # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+    - name: Build
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+      
+    - name: Install PlatformIO Core
+      run: pip install --upgrade platformio
+
+    - name: Build PlatformIO Project
+      run: pio run
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
