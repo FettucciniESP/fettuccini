@@ -67,7 +67,7 @@ export default function InformationPanel() {
       roundInfos_subscribe.unsubscribe();
       errorValue_subscribe.unsubscribe();
     };
-  }, []);
+  }, [toast, toastOptions]);
 
   return (
     <Box className={styles.informationPanel}>

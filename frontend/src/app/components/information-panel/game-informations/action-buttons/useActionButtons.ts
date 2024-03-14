@@ -29,7 +29,8 @@ export default function useActionButtons() {
 
   async function handleActionButtonClick(
     player: PlayerInfosModel,
-    action: GameActionEnum
+    action: GameActionEnum,
+    amount?: number,
   ): Promise<void> {
     try {
       if (!roundInfos) {
@@ -46,9 +47,8 @@ export default function useActionButtons() {
           playerAction = isCheckOrCall(player, roundInfos);
           break;
         case GameActionEnum.BET: {
-          const betAmount = prompt("Entrez le montant du pari :", "10");
-          if (betAmount !== null) {
-            playerAction.amount = parseInt(betAmount);
+          if (amount !== undefined && amount !== null && !Number.isNaN(amount)) {
+            playerAction.amount = amount;
           } else {
             return;
           }

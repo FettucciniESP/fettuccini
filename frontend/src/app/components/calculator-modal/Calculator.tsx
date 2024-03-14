@@ -1,0 +1,84 @@
+import {Button,
+  Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Box,} from '@chakra-ui/react'
+import {ArrowBackIcon} from '@chakra-ui/icons'
+import styles from './Calculator.module.scss'
+import { useState } from 'react';
+
+interface CalculatorProps {
+  openCalculator: boolean;
+  closeCalculator: () => void;
+  handleNumber?: (amount: number) => void;
+}
+
+export default function Calculator({openCalculator, closeCalculator, handleNumber}: CalculatorProps) {
+  const [code, setCode] = useState("");
+
+  const handleChange = (value: number) => {
+    setCode(code + value);
+  };
+
+  const handleSubmit = () => {
+    handleNumber && handleNumber(parseInt(code));
+    closeCalculator();
+  };
+
+  const handleDelete = () => {
+    setCode(code.slice(0, -1));
+  };
+
+  const renderButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= 9; i += 3) {
+      buttons.push(
+        <Flex key={i} mt={2}>
+          <Button id={"idButtonNumber"+i} onClick={() => handleChange(i)} className={styles.ButtonNumber}>
+            {i}
+          </Button>
+          <Button id={"idButtonNumber"+(i+1)} onClick={() => handleChange(i + 1)} className={styles.ButtonNumber}>
+            {i + 1}
+          </Button>
+          <Button id={"idButtonNumber"+(i+2)} onClick={() => handleChange(i + 2)} className={styles.ButtonNumber}>
+            {i + 2}
+          </Button>
+        </Flex>
+      );
+    }
+    buttons.push(
+      <Flex key={0} mt={2}>
+        <Button id="idButtonNumber0" onClick={() => handleChange(0)} className={styles.ButtonZero}>
+          0
+        </Button>
+        <Button id="idButtonDelete" onClick={handleDelete} leftIcon={<ArrowBackIcon />} className={styles.ButtonNumber}>
+        </Button>
+      </Flex>
+    );
+    return buttons;
+  };
+
+  return ( 
+    <Modal isOpen={openCalculator} onClose={() => closeCalculator()} isCentered size={'sm'}>
+      <ModalOverlay />
+      <ModalContent className={styles.CalculatorContent} maxW="40vw">
+        <ModalCloseButton color="#F7F0E1"/>
+        <ModalBody className={styles.CalculatorBody}>
+          <Flex direction="column" align="center">
+            <Box mb={2}>
+              <input id="idResult" value={code} disabled className={styles.inputCalculator}/>
+            </Box>
+            {renderButtons()}
+            <Button id="idButtonSubmit" onClick={handleSubmit} mt={2} className={styles.ButtonSubmit}>
+              Valider
+            </Button>
+          </Flex>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};

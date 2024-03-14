@@ -11,38 +11,38 @@ export default function GameInformations({roundInfos, currentLevelInfos, nextLev
 
     return (
         <FettucciniContainer>
-            <Box className={styles.centeredContainer}>
+            <Box id={"timer"} className={styles.centeredContainer}>
                 <Box className={styles.timeRemainingContainer}>
                     <TimeRemaining/>
                 </Box>
             </Box>
             <Box className={styles.spaceBetweenContainer}>
-                <Box className={styles.totalTimeContainer}>
+                <Box id={"totalTime"} className={styles.totalTimeContainer}>
                     <TotalTime/>
                 </Box>
-                <Box className={styles.levelsInformationsContainer}>
-                    <Text className={styles.levelInformationTitle}>Pot :</Text>
-                    <Text className={styles.potAmount}>{roundInfos.currentPotAmount}</Text>
+                <Box id={"pot"} className={styles.levelsInformationsContainer}>
+                    <Text id={"pot2"} className={styles.levelInformationTitle}>Pot :</Text>
+                    <Text id={"pot_value"} className={styles.potAmount}>{roundInfos.currentPotAmount}</Text>
                 </Box>
             </Box>
             <Box className={styles.spaceBetweenContainer}>
-                <Box className={styles.levelsInformationsContainer}>
-                    <Text className={styles.levelInformationTitle}>Niveau en cours :</Text>
-                    <Text className={styles.levelInformationValue}>{currentLevelInfos.levelIndex}</Text>
+                <Box id={"currentLevel"}className={styles.levelsInformationsContainer}>
+                    <Text id={"currentLevel2"}className={styles.levelInformationTitle}>Niveau en cours :</Text>
+                    <Text id={"currentLevel_value"}className={styles.levelInformationValue}>{currentLevelInfos.levelIndex}</Text>
                 </Box>
-                <Box className={styles.levelsInformationsContainer}>
-                    <Text className={styles.levelInformationTitle}>Niveau suivant :</Text>
-                    <Text className={styles.levelInformationValue}>{nextLevelInfos.levelIndex}</Text>
+                <Box id={"nextLevel"} className={styles.levelsInformationsContainer}>
+                    <Text id={"nextLevel2"} className={styles.levelInformationTitle}>Niveau suivant :</Text>
+                    <Text id={"nextLevel_value"} className={styles.levelInformationValue}>{nextLevelInfos.levelIndex}</Text>
                 </Box>
             </Box>
             <Box className={styles.spaceBetweenContainer}>
-                <Box className={styles.levelsInformationsContainer}>
-                    <Text className={styles.levelInformationTitle}>Temps du niveau :</Text>
-                    <Text className={styles.levelInformationValue}>{nextLevelInfos.duration} minutes</Text>
+                <Box id={"levelTime"} className={styles.levelsInformationsContainer}>
+                    <Text id={"levelTime2"} className={styles.levelInformationTitle}>Temps du niveau :</Text>
+                    <Text id={"levelTime_value"} className={styles.levelInformationValue}>{nextLevelInfos.duration} minutes</Text>
                 </Box>
             </Box>
-            <Box className={styles.actionsButtonsContainer}>
-                <ActionButtons playerInfos={roundInfos.currentPlayingUser}></ActionButtons>
+            <Box id={"actionButtons"} className={styles.actionsButtonsContainer}>
+                <ActionButtons playerInfos={roundInfos.currentPlayingUser} />
             </Box>
         </FettucciniContainer>
     )
