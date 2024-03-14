@@ -1,0 +1,48 @@
+@import '../../assets/styles/variables.scss';
+.CalculatorContent{
+    border-radius: 13px !important;
+    scale : 1.35;
+    height: 65vh;
+}
+.CalculatorBody {
+  background-color: #182E3B;
+  border-radius: 10px !important;
+}
+
+$widthButton: 8vw;
+
+.ButtonNumber{
+    background-color: #F7F0E1 !important;
+    color: #142530;
+    font-size: 32px !important;
+    height: 8vh !important;
+    width: $widthButton !important;
+    margin: 5px;
+}
+
+.ButtonZero{
+    background-color: #F7F0E1 !important;
+    color: #142530;
+    font-size: 32px !important;
+    height: 8vh !important;
+    width: calc(2*$widthButton + 10px) !important;
+    margin: 5px;
+}
+
+.ButtonSubmit{
+    background-color: #182E3B !important;
+    color: #F7F0E1 !important;
+    border: 1px #12AB46 solid !important;
+    width: calc(3*$widthButton + 20px) !important;
+    height: 7vh !important;
+}
+
+.inputCalculator{
+    background-color: transparent !important;
+    color: #F7F0E1 !important;
+    font-size: 2.5vw;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #F7F0E1 !important;
+    max-width: 50vh;
+}
