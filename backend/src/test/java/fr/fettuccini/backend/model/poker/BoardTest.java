@@ -81,9 +81,7 @@ class BoardTest {
     void failToAddTurnCardsWithoutFlop() {
         Set<Card> turnCards = Set.of(Mockito.mock(Card.class));
 
-        PokerException exception = assertThrows(PokerException.class, () -> {
-            board.addCards(turnCards, CommunityCardType.TURN);
-        });
+        PokerException exception = assertThrows(PokerException.class, () -> board.addCards(turnCards, CommunityCardType.TURN));
 
         assertTrue(exception.getMessage().contains("Invalid sequence of community card types."), "Should fail to add TURN cards without FLOP.");
     }
@@ -111,9 +109,7 @@ class BoardTest {
 
         Set<Card> riverCards = Set.of(Mockito.mock(Card.class));
 
-        PokerException exception = assertThrows(PokerException.class, () -> {
-            board.addCards(riverCards, CommunityCardType.RIVER);
-        });
+        PokerException exception = assertThrows(PokerException.class, () -> board.addCards(riverCards, CommunityCardType.RIVER));
 
         assertTrue(exception.getMessage().contains("Invalid sequence of community card types."), "Should fail to add RIVER cards without TURN.");
     }

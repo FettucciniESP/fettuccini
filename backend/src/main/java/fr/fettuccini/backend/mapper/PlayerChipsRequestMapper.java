@@ -1,7 +1,5 @@
 package fr.fettuccini.backend.mapper;
 
-import fr.fettuccini.backend.enums.PokerExceptionType;
-import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.PlayerChips;
 import fr.fettuccini.backend.model.request.PlayerChipsRequest;
 import fr.fettuccini.backend.repository.SeatRepository;
