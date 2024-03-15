@@ -16,8 +16,9 @@ public class PlayerCardsRequestMapper {
     private final CardMapperRepository cardMapperRepository;
 
     public PlayerCards map(PlayerCardsRequest request, String ip) {
-        var seat = seatRepository.findByIp(ip).orElseThrow();
-        var playerCards = new PlayerCards(seat.getSeatNumber());
+        var seat = seatRepository.findByIp(ip);
+        var seatNumber = seat.isPresent() ? seat.get().getSeatNumber() : request.getSeat();
+        var playerCards = new PlayerCards(seatNumber);
 
         request.getCardsId().forEach(cardId -> {
             var card = cardMapperRepository.findByNfcId(cardId).orElseThrow();

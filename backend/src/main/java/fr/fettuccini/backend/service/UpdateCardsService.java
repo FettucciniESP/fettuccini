@@ -2,6 +2,7 @@ package fr.fettuccini.backend.service;
 
 import fr.fettuccini.backend.model.poker.PlayerCards;
 import fr.fettuccini.backend.repository.GameSessionRepository;
+import fr.fettuccini.backend.repository.SeatRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UpdateCardsService {
 
-    private GameSessionRepository gameSessionRepository;
+    private final GameSessionRepository gameSessionRepository;
 
     /**
      * Update the cards of a player

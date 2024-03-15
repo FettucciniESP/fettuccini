@@ -7,5 +7,6 @@ import java.util.List;
 
 @Getter
 public class PlayerCardsRequest implements Serializable {
+    private int seat;
     private List<String> cardsId;
 }
