@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum PokerExceptionType {
 
+    IMPOSSIBLE_COMMUNITY_CARD_TYPE("Impossible to add card %s"),
     GAME_NOT_FOUND("Game with session id %s not found"),
     ROUND_NOT_FOUND("Round with id %s not found"),
     BAD_ROUND("Round with id %s is not the current round"),
@@ -15,6 +16,7 @@ public enum PokerExceptionType {
     PLAYER_ALREADY_FOLD("Player seat %s already fold"),
     EXPECTED_OTHER_PLAYER_ACTION("Expected player seat %s to make action"),
     IMPOSSIBLE_MAPPING("Impossible to map card or chip to value"),
+    TOKEN_NOT_FOUND("Token not found"),
     ;
 
     private final String message;

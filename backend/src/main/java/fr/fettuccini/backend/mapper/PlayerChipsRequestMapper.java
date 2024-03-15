@@ -1,5 +1,7 @@
 package fr.fettuccini.backend.mapper;
 
+import fr.fettuccini.backend.enums.PokerExceptionType;
+import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.PlayerChips;
 import fr.fettuccini.backend.model.request.PlayerChipsRequest;
 import fr.fettuccini.backend.repository.SeatRepository;
@@ -24,9 +26,9 @@ public class PlayerChipsRequestMapper {
      */
     public PlayerChips map(PlayerChipsRequest request, String ip) {
         var playerChips = new PlayerChips();
-        var seat = seatRepository.findByIp(ip).orElseThrow();
+        var seat = seatRepository.findByIp(ip);
 
-        playerChips.setSeatIndex(seat.getSeatNumber());
+        playerChips.setSeatIndex(seat.isPresent() ? seat.get().getSeatNumber() : request.getSeat());
         request.getChipsId().forEach(chipId -> {
             var tokenMapper = tokenMapperRepository.findById(chipId).orElseThrow();
             playerChips.addChip(tokenMapper.getValue());
