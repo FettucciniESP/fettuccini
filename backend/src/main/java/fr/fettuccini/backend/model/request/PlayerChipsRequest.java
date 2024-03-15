@@ -7,5 +7,6 @@ import java.util.List;
 
 @Getter
 public class PlayerChipsRequest implements Serializable {
+    private int seat;
     private List<String> chipsId;
 }

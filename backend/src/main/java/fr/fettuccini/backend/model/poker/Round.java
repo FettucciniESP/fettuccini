@@ -23,9 +23,6 @@ public class Round {
     public void addAction(Action action) {
         actions.add(action);
     }
-    public void updateBoard(Card card) {
-        board.addCard(card);
-    }
 
     public Round startRound(String id, String gameId, Integer buttonSeatIndex) {
         this.id = id;
