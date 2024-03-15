@@ -10,6 +10,12 @@
   display: flex;
 }
 
+@media only screen and (max-height:700px) {
+  .playerAction {
+    height: 15vh;
+  }
+}
+
 .lastActionAmountValue {
   font-size: $font-size-main-informations;
   font-weight: bold;
@@ -35,11 +41,11 @@
   width: 100%;
   filter: none !important;
   border: $white-color 1px solid;
-  box-shadow: $dark-blue-color 3px 3px 3px 3px;
 }
 
 .foldContainer {
-  background-color: $dark-blue-color;
+  background-color: $white-color-high-opacity;
+  color: $black-color;
 }
 
 .allInContainer {

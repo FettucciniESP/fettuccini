@@ -2,10 +2,10 @@
 
 .buttonStyle {
     flex: 1;
-    background-color: rgba(255, 255, 255, 0.21);
+    background-color: $white-color-low-opacity;
     padding: 15px 20px;
-    -webkit-box-shadow: 2px 5px 8px -2px rgba(0,0,0,0.67); 
-    box-shadow: 2px 5px 8px -2px rgba(0,0,0,0.67);
+    -webkit-box-shadow: 2px 5px 8px -2px $black-color;
+    box-shadow: 2px 5px 8px -2px $black-color;
     margin: 5px;
 }
 
