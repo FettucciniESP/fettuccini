@@ -1,8 +1,7 @@
 import { Box, Text, Input, Button, InputProps } from "@chakra-ui/react";
 import { GoPencil } from "react-icons/go";
-import styles from "./InputLabelIcon.module.scss";
 import commonStyles from "../styles/InputCommonStyle.module.scss";
-import { useRef } from "react";
+import styles from "./InputLabelIcon.module.scss";
 
 const icons = {
   PEN: "PEN",
@@ -30,7 +29,7 @@ interface InputLabelIconProps {
   isUpperCase?: boolean;
   disabled?: boolean;
   customInputProps?: InputProps;
-  customAddToText?: any;
+  customAddToText?: string | null;
 }
 
 function InputLabelIcon(props: InputLabelIconProps) {
@@ -43,7 +42,6 @@ function InputLabelIcon(props: InputLabelIconProps) {
     customInputProps,
     customAddToText,
   } = props;
-  const ref = useRef();
   const customUpperStyle = {
     textTransform: isUpperCase ? "uppercase" : "none",
   };
@@ -94,7 +92,6 @@ function InputLabelIcon(props: InputLabelIconProps) {
         return (
           <Input
             id_cy="inputValue"
-            ref={ref}
             value={currentValue}
             onChange={handleChange}
             textAlign={"right"}
@@ -132,7 +129,6 @@ function InputLabelIcon(props: InputLabelIconProps) {
         return (
           <Input
             id_cy="inputValue"
-            ref={ref}
             value={currentValue}
             onChange={handleChange}
             textAlign={"right"}
@@ -172,5 +168,4 @@ function InputLabelIcon(props: InputLabelIconProps) {
 InputLabelIcon.icons = icons;
 InputLabelIcon.types = types;
 InputLabelIcon.defaultProps = defaultProps;
-
 export default InputLabelIcon;

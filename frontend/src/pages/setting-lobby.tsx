@@ -1,40 +1,25 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import {
+  InputLabels,
+  ButtonLabels,
+  InputEndTextLabels,
+} from "@/app/enums/Labels.enum";
+import { Titles } from "@/app/enums/Titles.enum";
+
 import InputLabelIcon from "@/app/components/design-system/control/inputs/input-label/InputLabelIcon";
-// import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
 import ModalStructure from "@/app/components/design-system/control/modal/structure/ModalStructure";
 
-const labels = {
-  STRUCTURE: "STRUCTURE",
-  STACKS: "STACKS",
-  REGISTRATION_MAX: "TEMPS D'INSCRIPTION MAX",
-  MULTI_TABLE: "PLUSIEURS TABLES",
-  COST_ENTRY: "COÛT D'ENTRÉE",
-};
-
-const titles = {
-  TITLE_PAGE: "PARAMÈTRES DE LA PARTIE",
-  TITLE_SECTION: "PARAMÈTRES UTILISÉS",
-};
-
-const buttonTitles = {
-  LOAD: "CHARGER",
-  SAVE: "ENREGISTRER",
-  START: "COMMENCER",
-};
-
 export default function SettingLobby() {
-  const [isSettingDone, setIsSettingDone] = useState(false);
-
-  const [isModalOpen, setIsOpenModal] = useState(true);
-
-  const [stucture, setStructure] = useState("");
-  const [stacks, setStacks] = useState(null);
-  const [registrationMax, setRegistrationMax] = useState("");
+  const [isSettingDone, setIsSettingDone] = useState<boolean>(false);
+  const [isModalOpen, setIsOpenModal] = useState<boolean>(true);
+  const [stucture, setStructure] = useState<null | string>(null);
+  const [stacks, setStacks] = useState<null | string>(null);
+  const [registrationMax, setRegistrationMax] = useState<null | string>(null);
+  const [costEntry, setCostEntry] = useState<null | string>(null);
   // const [multiTable, setMultiTable] = useState(false);
-  const [costEntry, setCostEntry] = useState(null);
 
   const handleChangeStructure = (value: string): void => {
     setStructure(value);
@@ -51,38 +36,93 @@ export default function SettingLobby() {
   const handleChangeCostEntry = (value: number): void => {
     setCostEntry(value);
   };
-
   const hangdleOnClickButtonStructure = () => {
-    console.log("structure openstructure openstructure open modal");
     setIsOpenModal(!isModalOpen);
     // handleChangeStructure("TEST STRUCTURE");
   };
-
   const hangdleOnClickButtonRegistration = () => {
     console.log("registration open modal");
     handleChangeRegistrationMax("TEST REGISTRATION");
   };
-
   const hangdleOnClickButtonLoad = () => {
     console.log("load button");
   };
-
   const hangdleOnClickButtonSave = () => {
     console.log("save button");
   };
-
   const hangdleOnClickButtonStart = () => {
     console.log("start button");
   };
+  const handleChangeModalStatus = (bool: boolean) => {
+    setIsOpenModal(bool);
+  };
 
+  const renderInputContent = () => {
+    return (
+      <Box className={styles.inputContainer}>
+        <InputLabelIcon
+          label={InputLabels.STRUCTURE}
+          hangdleOnClick={hangdleOnClickButtonStructure}
+          currentValue={stucture}
+          type={InputLabelIcon.types.BUTTON}
+          isUpperCase
+        />
+
+        <InputLabelIcon
+          label={InputLabels.STACKS}
+          handleChangeCurrentValue={handleChangeStacks}
+          currentValue={stacks}
+          type={InputLabelIcon.types.NUMBER}
+        />
+
+        <InputLabelIcon
+          label={InputLabels.REGISTRATION_MAX}
+          hangdleOnClick={hangdleOnClickButtonRegistration}
+          currentValue={registrationMax}
+          type={InputLabelIcon.types.BUTTON}
+        />
+
+        {/* <SwitchLabel
+            label={InputLabels.MULTI_TABLE}
+            handleChangeCurrentValue={handleChangesetMultiTable}
+            currentValue={multiTable}
+          /> */}
+
+        <InputLabelIcon
+          label={InputLabels.COST_ENTRY}
+          handleChangeCurrentValue={handleChangeCostEntry}
+          currentValue={costEntry}
+          type={InputLabelIcon.types.NUMBER}
+          customAddToText={"€"}
+        />
+      </Box>
+    );
+  };
+  const renderSettingContent = () => {
+    return (
+      <Box className={styles.sectionContainer}>
+        <Text className={styles.titleSection}>
+          {Titles.SETTING_LOBBY_TITLE_SECTION}
+        </Text>
+        <Box className={styles.settingSectionContainer}>
+          {renderSettingsSection()}
+        </Box>
+        <Box className={styles.buttonSectionContainer}>
+          {renderButtonSection()}
+        </Box>
+      </Box>
+    );
+  };
   const renderSettingsSection = () => {
     const sectionContent = [
-      { title: labels.STRUCTURE, value: stucture },
-      { title: labels.STACKS, value: stacks },
-      { title: labels.REGISTRATION_MAX, value: registrationMax },
+      { title: InputLabels.STRUCTURE, value: stucture },
+      { title: InputLabels.STACKS, value: stacks },
+      { title: InputLabels.REGISTRATION_MAX, value: registrationMax },
       {
-        title: labels.COST_ENTRY,
-        value: costEntry ? `${costEntry + " €"}` : costEntry,
+        title: InputLabels.COST_ENTRY,
+        value: costEntry
+          ? `${costEntry} ${InputEndTextLabels.EURO}}`
+          : costEntry,
       },
     ];
 
@@ -99,36 +139,32 @@ export default function SettingLobby() {
       </Box>
     );
   };
-
   const renderButtonSection = () => {
     return (
       <Box>
         <Box className={styles.singleButtonContainer}>
           <ButtonIcon
-            label={buttonTitles.LOAD}
+            label={ButtonLabels.LOAD}
             hangdleOnClick={hangdleOnClickButtonLoad}
+            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
             icon={ButtonIcon.icons.LOAD}
           />
           <ButtonIcon
-            label={buttonTitles.SAVE}
+            label={ButtonLabels.SAVE}
             hangdleOnClick={hangdleOnClickButtonSave}
+            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
             icon={ButtonIcon.icons.SAVE}
           />
         </Box>
         <Box className={styles.multiButtonContainer}>
           <ButtonIcon
-            label={buttonTitles.START}
+            label={ButtonLabels.START}
+            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
             hangdleOnClick={hangdleOnClickButtonStart}
           />
         </Box>
       </Box>
     );
-  };
-
-  // Modal management
-
-  const handleChangeModalStatus = (bool: boolean) => {
-    setIsOpenModal(bool);
   };
 
   return (
@@ -140,57 +176,14 @@ export default function SettingLobby() {
         />
       ) : null}
       <Box>
-        <Text className={styles.titlePage}>{titles.TITLE_PAGE}</Text>
+        <Text className={styles.titlePage}>
+          {Titles.SETTING_LOBBY_TITLE_PAGE}
+        </Text>
       </Box>
       <Box className={styles.mainSettingContainer}>
         <Box className={styles.settingContainer}>
-          <Box className={styles.inputContainer}>
-            <InputLabelIcon
-              label={labels.STRUCTURE}
-              hangdleOnClick={hangdleOnClickButtonStructure}
-              currentValue={stucture}
-              type={InputLabelIcon.types.BUTTON}
-              isUpperCase
-            />
-
-            <InputLabelIcon
-              label={labels.STACKS}
-              handleChangeCurrentValue={handleChangeStacks}
-              currentValue={stacks}
-              type={InputLabelIcon.types.NUMBER}
-            />
-
-            <InputLabelIcon
-              label={labels.REGISTRATION_MAX}
-              hangdleOnClick={hangdleOnClickButtonRegistration}
-              currentValue={registrationMax}
-              type={InputLabelIcon.types.BUTTON}
-            />
-
-            {/* <SwitchLabel
-            label={labels.MULTI_TABLE}
-            handleChangeCurrentValue={handleChangesetMultiTable}
-            currentValue={multiTable}
-          /> */}
-
-            <InputLabelIcon
-              label={labels.COST_ENTRY}
-              handleChangeCurrentValue={handleChangeCostEntry}
-              currentValue={costEntry}
-              type={InputLabelIcon.types.NUMBER}
-              customAddToText={"€"}
-            />
-          </Box>
-
-          <Box className={styles.sectionContainer}>
-            <Text className={styles.titleSection}>{titles.TITLE_SECTION}</Text>
-            <Box className={styles.settingSectionContainer}>
-              {renderSettingsSection()}
-            </Box>
-            <Box className={styles.buttonSectionContainer}>
-              {renderButtonSection()}
-            </Box>
-          </Box>
+          {renderInputContent()}
+          {renderSettingContent()}
         </Box>
       </Box>
     </Box>

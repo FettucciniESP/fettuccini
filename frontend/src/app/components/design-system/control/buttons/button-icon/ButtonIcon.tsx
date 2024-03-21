@@ -1,4 +1,4 @@
-import { Box, Button, Text, ButtonProps } from "@chakra-ui/react";
+import { Button, Text, ButtonProps } from "@chakra-ui/react";
 import { FaRegSave } from "react-icons/fa";
 import { IoReload } from "react-icons/io5";
 import { IoMdPlay } from "react-icons/io";
@@ -10,6 +10,15 @@ const icons = {
   PLAY: "PLAY",
 };
 
+const customStyles = {
+  SETTING_LOBBY: "SETTING_LOBBY",
+  SETTING_STRUCTURE: "SETTING_STRUCTURE",
+};
+
+const defaultProps = {
+  customStyle: customStyles.SETTING_LOBBY as keyof typeof customStyles,
+};
+
 interface ButtonIconProps {
   // Required
   label: string;
@@ -18,10 +27,11 @@ interface ButtonIconProps {
   icon?: any;
   isUpperCase?: boolean;
   disabled?: boolean;
+  customStyle?: (typeof customStyles)[keyof typeof customStyles];
 }
 
 function ButtonIcon(props: ButtonIconProps & ButtonProps) {
-  const { hangdleOnClick, label, disabled, isUpperCase } = props;
+  const { hangdleOnClick, label } = props;
 
   const displayIcon = () => {
     const { icon } = props;
@@ -52,20 +62,36 @@ function ButtonIcon(props: ButtonIconProps & ButtonProps) {
     return currentIcon;
   };
 
-  const buttonIcon = displayIcon();
+  const getCustomStyle = () => {
+    const { customStyle } = props;
+
+    if (customStyle) {
+      switch (customStyle) {
+        case customStyles.SETTING_LOBBY:
+          return styles.buttonLobbyStyle;
+        case customStyles.SETTING_STRUCTURE:
+          return styles.buttonStructureStyle;
+      }
+    }
+    return styles.buttonLobbyStyle;
+  };
+
   const baseButtonConfig = {
     size: "sm",
     variant: "ghost",
     isActive: false,
-    borderRadius: "30px",
+    borderRadius: "15px",
     _hover: { bg: "none" },
   };
+
+  const buttonIcon = displayIcon();
+  const buttonStyle = getCustomStyle();
 
   return (
     <Button
       onClick={hangdleOnClick}
       leftIcon={buttonIcon}
-      className={styles.buttonStyle}
+      className={buttonStyle}
       {...baseButtonConfig}
       {...props}
     >
@@ -75,5 +101,6 @@ function ButtonIcon(props: ButtonIconProps & ButtonProps) {
 }
 
 ButtonIcon.icons = icons;
-
+ButtonIcon.customStyles = customStyles;
+ButtonIcon.defaultProps = defaultProps;
 export default ButtonIcon;

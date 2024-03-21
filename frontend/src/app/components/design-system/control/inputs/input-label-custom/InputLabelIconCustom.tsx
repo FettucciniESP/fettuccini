@@ -2,7 +2,6 @@ import { Box, Text, Input, InputProps } from "@chakra-ui/react";
 import { GoPencil } from "react-icons/go";
 import styles from "./InputLabelIconCustom.module.scss";
 import commonStyles from "../styles/InputCommonStyle.module.scss";
-import { useRef } from "react";
 
 const icons = {
   PEN: "PEN",
@@ -19,9 +18,9 @@ const defaultProps = {
 interface InputLabelIconCustomProps {
   // Required
   currentValue: string | number | null;
-  labelValue: string;
-  handleChangeLabel: (text: string | undefined) => void;
-  handleChangeCurrentValue: (text: string | undefined) => void;
+  labelValue: string | null;
+  handleChangeLabel: (text: string | number | null | any) => void;
+  handleChangeCurrentValue: (text: string | number | null | any) => void;
   // Optional
   type?: (typeof types)[keyof typeof types];
   iconValue?: any;
@@ -42,8 +41,6 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
     customInputProps,
     customAddToText,
   } = props;
-  const ref = useRef();
-
   const handleChangeLabel = (event: any) => {
     const { handleChangeLabel } = props;
     let value;
@@ -59,7 +56,6 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
     }
     handleChangeLabel(value);
   };
-
   const handleChangeValue = (event: any) => {
     const { handleChangeCurrentValue } = props;
     let value;
@@ -99,7 +95,6 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
 
     return currentIcon;
   };
-
   const displayValueIcon = () => {
     const { iconValue } = props;
     let currentIcon;
@@ -134,7 +129,6 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
         {displayLabelIcon()}
         <Input
           id_cy="labelValue"
-          ref={ref}
           value={labelValue}
           onChange={handleChangeLabel}
           textAlign={"left"}
@@ -149,7 +143,6 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
       <Box className={styles.inputContainer}>
         <Input
           id_cy="inputValue"
-          ref={ref}
           value={currentValue}
           onChange={handleChangeValue}
           textAlign={"right"}
@@ -172,5 +165,4 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
 InputLabelIconCustom.icons = icons;
 InputLabelIconCustom.types = types;
 InputLabelIconCustom.defaultProps = defaultProps;
-
 export default InputLabelIconCustom;

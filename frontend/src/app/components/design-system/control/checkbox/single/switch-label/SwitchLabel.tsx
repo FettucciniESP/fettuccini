@@ -1,6 +1,5 @@
 import { Box, Text, Switch, SwitchProps } from "@chakra-ui/react";
 import styles from "./SwitchLabel.module.scss";
-import { useRef } from "react";
 
 interface SwitchLabelProps {
   // Required
@@ -14,8 +13,7 @@ interface SwitchLabelProps {
 }
 
 function SwitchLabel(props: SwitchLabelProps) {
-  const { label, currentValue, disabled, isUpperCase, customInputProps } =
-    props;
+  const { label, currentValue, disabled, isUpperCase } = props;
 
   const handleChange = (event: any) => {
     const { handleChangeCurrentValue } = props;
