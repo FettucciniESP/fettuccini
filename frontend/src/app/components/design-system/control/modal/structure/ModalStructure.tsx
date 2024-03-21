@@ -47,7 +47,6 @@ function ModalStructure(props: ModalBaseProps) {
   const handleChangeDuration = (value: number | null): void => {
     setDuration(value);
   };
-
   const handleChangeBreakName = (value: string | null): void => {
     setBreakName(value);
   };
@@ -55,9 +54,13 @@ function ModalStructure(props: ModalBaseProps) {
     setBreakDuration(value);
   };
 
-  const renderSettingLobby = () => {
+  const hangdleOnClickLoadButton = () => {};
+  const hangdleOnClickSaveButton = () => {};
+  const hangdleOnClickContinueButton = () => {};
+
+  const renderSettingLobbyContent = () => {
     return (
-      <Box>
+      <Box className={styles.inputContainer}>
         <InputLabelIcon
           label={InputLabels.SMALL_BLIND}
           handleChangeCurrentValue={handleChangeSmallBlind}
@@ -94,19 +97,21 @@ function ModalStructure(props: ModalBaseProps) {
     );
   };
 
-  const renderSettingBreak = () => {
+  const renderSettingBreakContent = () => {
     return (
-      <InputLabelIconCustom
-        handleChangeLabel={handleChangeBreakName}
-        handleChangeCurrentValue={handleChangeBreakDuration}
-        iconLabel={InputLabelIconCustom.icons.PEN}
-        iconValue={InputLabelIconCustom.icons.PEN}
-        labelValue={breakName}
-        currentValue={breakDuration}
-        type={InputLabelIcon.types.NUMBER}
-        customAddToText={"MIN"}
-        isUpperCase
-      />
+      <Box className={styles.inputContainer}>
+        <InputLabelIconCustom
+          handleChangeLabel={handleChangeBreakName}
+          handleChangeCurrentValue={handleChangeBreakDuration}
+          iconLabel={InputLabelIconCustom.icons.PEN}
+          iconValue={InputLabelIconCustom.icons.PEN}
+          labelValue={breakName}
+          currentValue={breakDuration}
+          type={InputLabelIcon.types.NUMBER}
+          customAddToText={InputEndTextLabels.MIN}
+          isUpperCase
+        />
+      </Box>
     );
   };
 
@@ -115,19 +120,19 @@ function ModalStructure(props: ModalBaseProps) {
       <Box className={styles.buttonSettingContainer}>
         <ButtonIcon
           label={ButtonLabels.LOAD}
-          hangdleOnClick={() => console.log("load")}
+          hangdleOnClick={hangdleOnClickLoadButton}
           icon={ButtonIcon.icons.LOAD}
           customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
         />
         <ButtonIcon
           label={ButtonLabels.SAVE}
-          hangdleOnClick={() => console.log("save")}
+          hangdleOnClick={hangdleOnClickSaveButton}
           icon={ButtonIcon.icons.SAVE}
           customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
         />
         <ButtonIcon
           label={ButtonLabels.CONTINUE}
-          hangdleOnClick={() => console.log("continue")}
+          hangdleOnClick={hangdleOnClickContinueButton}
           icon={ButtonIcon.icons.PLAY}
           customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
         />
@@ -140,7 +145,7 @@ function ModalStructure(props: ModalBaseProps) {
       <Box className={styles.buttonSettingContainer}>
         <ButtonIcon
           label={ButtonLabels.CONTINUE}
-          hangdleOnClick={() => console.log("continue")}
+          hangdleOnClick={hangdleOnClickContinueButton}
           icon={ButtonIcon.icons.PLAY}
           customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
         />
@@ -160,7 +165,7 @@ function ModalStructure(props: ModalBaseProps) {
           handleChangeCurrentValue={handleChangeIsBreak}
           currentValue={isBreak}
         />
-        {isBreak ? renderSettingBreak() : renderSettingLobby()}
+        {isBreak ? renderSettingBreakContent() : renderSettingLobbyContent()}
         {isBreak ? renderButtonSettingBreak() : renderButtonSettingLobby()}
       </Box>
     </ModalBase>
