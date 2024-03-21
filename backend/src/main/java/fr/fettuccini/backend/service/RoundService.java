@@ -98,7 +98,7 @@ public class RoundService {
      * @param gameSession The current game session containing the round and player information.
      * @param currentRound The current round where the showdown occurs.
      */
-    private void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
+    void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
         HashSet<Card> communityCards = new HashSet<>(currentRound.getBoard().getCommunityCards());
         Map<Player, Long> playerScores = new HashMap<>();
 
@@ -147,7 +147,7 @@ public class RoundService {
      * @return The found round.
      * @throws PokerException if the round is not found.
      */
-    private Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
+    Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
         return gameSession.getRounds().stream()
                 .filter(round -> round.getId().equals(roundId))
                 .findFirst()

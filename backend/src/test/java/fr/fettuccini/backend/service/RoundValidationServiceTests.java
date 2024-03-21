@@ -1,5 +1,6 @@
 package fr.fettuccini.backend.service;
 
+import fr.fettuccini.backend.TestUtils;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
@@ -30,7 +31,7 @@ public class RoundValidationServiceTests {
 
         this.gameSession = new GameSession();
         gameSession.startGame();
-        gameSession.setLevelsStructure(createLevelsStructure());
+        gameSession.setLevelsStructure(TestUtils.createLevelsStructure());
 
         round = new Round();
         round.setId("roundId");
@@ -42,47 +43,15 @@ public class RoundValidationServiceTests {
         gameSession.addRound(round);
     }
 
-    public List<Level> createLevelsStructure(){
-        Level level1 = new Level();
-        level1.setRoundIndex(1);
-        level1.setBigBlindAmount(10);
-        level1.setSmallBlindAmount(5);
-        level1.setAnteAmount(0);
-        level1.setDuration(15);
 
-        Level level2 = new Level();
-        level2.setRoundIndex(2);
-        level2.setBigBlindAmount(20);
-        level2.setSmallBlindAmount(10);
-        level2.setAnteAmount(0);
-        level2.setDuration(15);
-
-        List<Level> levels = new ArrayList<>();
-        levels.add(level1);
-        levels.add(level2);
-
-        return levels;
-    }
-
-    public PlayerActionRequest createPlayerActionRequest(RoundStep roundStep,
-                                                         Action.ActionType actionType,
-                                                         Integer amount,
-                                                         Integer seatIndex) {
-        Action action = new Action(actionType, amount, seatIndex, roundStep);
-
-        PlayerActionRequest playerActionRequest = new PlayerActionRequest();
-        playerActionRequest.setRoundId(round.getId());
-        playerActionRequest.setAction(action);
-        return playerActionRequest;
-    }
 
     @Test
     public void testPlayerActionSameRoundStepThanExpected() {
-        var playerActionRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1);
+                1,
+                round);
 
         Assertions.assertDoesNotThrow(() -> {
             roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, round);
@@ -91,11 +60,12 @@ public class RoundValidationServiceTests {
 
     @Test
     public void testPlayerActionDifferentRoundStepThanExpected() {
-        var playerActionRequest = createPlayerActionRequest(
-                RoundStep.FLOP,
+        var playerActionRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1);
+                1,
+                round,
+                RoundStep.FLOP);
 
         Exception exception = assertThrows(PokerException.class,
                 () -> {
@@ -107,11 +77,11 @@ public class RoundValidationServiceTests {
 
     @Test
     public void testIsPlayerActionForRoundAlreadyFinished() {
-        var playerActionRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1);
+                1,
+                round);
 
         round.setRoundStep(RoundStep.SHOWDOWN);
 
@@ -125,11 +95,11 @@ public class RoundValidationServiceTests {
 
     @Test
     public void testIsPlayerActionSamePlayerThanExpected() {
-        var playerActionRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                2);
+                2,
+                round);
 
         Exception exception = assertThrows(PokerException.class,
                 () -> {
@@ -141,11 +111,11 @@ public class RoundValidationServiceTests {
 
     @Test
     public void testIsPlayerStillInTheRound() {
-        var playerActionRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1);
+                1,
+                round);
 
         Action foldAction = new Action(
                 Action.ActionType.FOLD,
@@ -175,21 +145,21 @@ public class RoundValidationServiceTests {
 
         round.addAction(betAction);
 
-        var playerActionFoldRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionFoldRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1);
+                1,
+                round);
 
         assertDoesNotThrow(
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionFoldRequest, gameSession, round)
         );
 
-        var playerActionBetUnderBigBlindValueRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionBetUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.BET,
                 8,
-                1);
+                1,
+                round);
 
         Exception exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionBetUnderBigBlindValueRequest, gameSession, round)
@@ -197,11 +167,11 @@ public class RoundValidationServiceTests {
 
         assertEquals("BAD_BET_AMOUNT : Minimum bet amount is 10", exception.getMessage());
 
-        var playerActionBetIncreaseUnderBigBlindValueRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionBetIncreaseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.BET,
                 12,
-                1);
+                1,
+                round);
 
         exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionBetIncreaseUnderBigBlindValueRequest, gameSession, round)
@@ -209,11 +179,11 @@ public class RoundValidationServiceTests {
 
         assertEquals("BAD_BET_AMOUNT : Minimum bet amount is 10", exception.getMessage());
 
-        var playerActionCallUnderRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionCallUnderRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 5,
-                1);
+                1,
+                round);
 
         exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionCallUnderRequest, gameSession, round)
@@ -221,11 +191,11 @@ public class RoundValidationServiceTests {
 
         assertEquals("BAD_BET_AMOUNT : Minimum bet amount is 10", exception.getMessage());
 
-        var playerActionCallHigherRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionCallHigherRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 15,
-                1);
+                1,
+                round);
 
         exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionCallHigherRequest, gameSession, round)
@@ -233,31 +203,31 @@ public class RoundValidationServiceTests {
 
         assertEquals("BAD_BET_AMOUNT : Minimum bet amount is 10", exception.getMessage());
 
-        var playerActionCallLegitRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionCallLegitRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 10,
-                1);
+                1,
+                round);
 
         assertDoesNotThrow(
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionCallLegitRequest, gameSession, round)
         );
 
-        var playerActionRaiseLegitRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRaiseLegitRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 100,
-                1);
+                1,
+                round);
 
         assertDoesNotThrow(
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionRaiseLegitRequest, gameSession, round)
         );
 
-        var playerActionRaiseUnderBigBlindValueRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRaiseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 8,
-                1);
+                1,
+                round);
 
         exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionRaiseUnderBigBlindValueRequest, gameSession, round)
@@ -265,11 +235,11 @@ public class RoundValidationServiceTests {
 
         assertEquals("BAD_BET_AMOUNT : Minimum bet amount is 10", exception.getMessage());
 
-        var playerActionRaiseIncreaseUnderBigBlindValueRequest = createPlayerActionRequest(
-                RoundStep.PREFLOP,
+        var playerActionRaiseIncreaseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 14,
-                1);
+                1,
+                round);
 
         exception = assertThrows(PokerException.class,
                 () -> roundValidationService.validatePayerActionRoundStep(playerActionRaiseIncreaseUnderBigBlindValueRequest, gameSession, round)
