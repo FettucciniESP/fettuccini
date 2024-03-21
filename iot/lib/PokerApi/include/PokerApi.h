@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <WiFiClient.h>
+#include <vector>
 
 class PokerApi {
 public:
@@ -25,6 +26,8 @@ public:
      * @return true if the transaction is a success
      */
     bool sendCard(String card[]);
+
+    bool decidingSendChips(std::vector<String> chips, bool canSend);
 
     /**
      * @brief receive value from the card of the consumer account to the connected account
@@ -56,6 +59,20 @@ private:
 
     HTTPClient* http;
     WiFiClient* client;
+
+    //Chips call setting
+    bool canSendChips = false;
+    std::vector<String>* chips = {};
+    unsigned long lastUpTimeChip;
+
+        /**
+     * @brief send the id of the player card
+     *
+     * @param seat id of the seat on the table
+     * @param chips[x] the jetons of the player
+     * @return true if the transaction is a success
+     */
+    bool sendChips(std::vector<String> chips);
 
 };
 

@@ -7,6 +7,8 @@ NfcTokenReader::NfcTokenReader(HardwareSerial& serial){
     this->iso_18000 = new std::vector<std::vector<byte>>();
     this->iso_14443 = new std::vector<std::vector<byte>>();
     this->iso_15693 = new std::vector<std::vector<byte>>();
+    this->chips = new std::vector<String>();
+    this->mise = false;
 }
 
 
@@ -37,6 +39,7 @@ void NfcTokenReader::refresh(){
     this->iso_18000->clear();
     this->iso_15693->clear();
     this->trame->clear();
+    this->chips->clear();
     std::vector<byte> trame = READ_TRAM_0;
     if (this->pair){
         trame = READ_TRAM_1;
@@ -76,7 +79,12 @@ void NfcTokenReader::printTrame(){
 }
 
 int NfcTokenReader::getNbTags(){
+    
+    int number = this->trame->at(8);
+
+    this->chipsPresent = number != 0;
     return this->trame->at(8);
+
 }
 
 void NfcTokenReader::shortToken(){
@@ -127,4 +135,13 @@ String NfcTokenReader::stringifyId(std::vector<byte>* id){
     }
     sortie = sortie.substring(0,sortie.length()-1);
     return sortie;
+}
+
+
+void NfcTokenReader::pushBackChips(String chip) {
+    for(int i = 0; i < this->chips->size(); i++) {
+        if (this->chips->at(i) == chip)
+            return;
+    }
+    this->chips->push_back(chip);
 }

@@ -73,6 +73,14 @@ public:
      * @return * String
      */
     String stringifyId(std::vector<byte>* id);
+
+    void pushBackChips(String chip);
+
+    //Tableau de jetons
+    std::vector<String>* chips;
+
+    bool chipsPresent;
+
 private:
 
     /**
@@ -99,10 +107,6 @@ private:
     std::vector<std::vector<byte>>* iso_18000;
     std::vector<std::vector<byte>>* iso_14443;
     std::vector<std::vector<byte>>* iso_15693;
-
 };
-
-
-
 
 #endif
