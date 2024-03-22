@@ -3,15 +3,26 @@ import FettucciniContainer from '@/app/components/design-system/fettuccini-conta
 import { VariantStyleEnum } from '@/app/enums/VariantStyle.enum';
 
 describe('FettucciniContainer', () => {
-const variantStyle = VariantStyleEnum.DEFAULT
+const variantStyleIsSelected = VariantStyleEnum.IS_SELECTED
+const variantStyleIsBlur = VariantStyleEnum.BLUR
+const variantStyleIsDefault = VariantStyleEnum.DEFAULT
 
   
-  beforeEach(() => {
-    cy.mount(<FettucciniContainer children variantStyle={variantStyle} />)
+  it('renders correctly', () => {
+    cy.mount(<FettucciniContainer children variantStyle={variantStyleIsDefault} />)
+    // Check if the container is visible
+    cy.get('[id="box"]').should('be.visible');
   });
 
-  it('renders correctly', () => {
-    // Check if the calculator is visible
+  it('renders correctly blur', () => {
+    cy.mount(<FettucciniContainer children variantStyle={variantStyleIsBlur} />)
+    // Check if the container is visible
+    cy.get('[id="box"]').should('be.visible');
+  });
+
+  it('renders correctly isSelected', () => {
+    cy.mount(<FettucciniContainer children variantStyle={variantStyleIsSelected} />)
+    // Check if the container is visible
     cy.get('[id="box"]').should('be.visible');
   });
 })
