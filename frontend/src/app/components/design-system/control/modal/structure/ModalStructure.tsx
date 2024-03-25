@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Box, Text } from "@chakra-ui/react";
-import styles from "./ModalStructure.module.scss";
+import { Box } from "@chakra-ui/react";
 import ModalBase from "../ModalBase";
 import InputLabelIcon from "../../inputs/input-label/InputLabelIcon";
 import SwitchLabel from "../../checkbox/single/switch-label/SwitchLabel";
@@ -12,6 +11,7 @@ import {
   InputEndTextLabels,
 } from "../../../../../enums/Labels.enum";
 import { Titles } from "../../../../../enums/Titles.enum";
+import styles from "./ModalStructure.module.scss";
 
 interface ModalBaseProps {
   isOpen: boolean;

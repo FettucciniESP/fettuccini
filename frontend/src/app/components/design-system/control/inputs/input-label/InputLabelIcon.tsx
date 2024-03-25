@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Box, Text, Input, Button, InputProps } from "@chakra-ui/react";
 import { GoPencil } from "react-icons/go";
 import commonStyles from "../styles/InputCommonStyle.module.scss";
 import styles from "./InputLabelIcon.module.scss";
+import KeyboardComponent from "../../Keyboard/Keyboard";
 
 const icons = {
   PEN: "PEN",
@@ -42,9 +44,9 @@ function InputLabelIcon(props: InputLabelIconProps) {
     customInputProps,
     customAddToText,
   } = props;
-  const customUpperStyle = {
-    textTransform: isUpperCase ? "uppercase" : "none",
-  };
+
+  const [openKeyboard, setOpenKeyboard] = useState(false);
+
   const handleChange = (event: any) => {
     const { handleChangeCurrentValue } = props;
     let value;
@@ -59,6 +61,9 @@ function InputLabelIcon(props: InputLabelIconProps) {
         break;
     }
     handleChangeCurrentValue(value);
+  };
+  const handleClick = () => {
+    setOpenKeyboard(true);
   };
   const displayIcon = () => {
     const { icon } = props;
@@ -94,6 +99,7 @@ function InputLabelIcon(props: InputLabelIconProps) {
             id_cy="inputValue"
             value={currentValue}
             onChange={handleChange}
+            onClick={handleClick}
             textAlign={"right"}
             className={styles.inputText}
             variant="unstyled"
@@ -143,8 +149,13 @@ function InputLabelIcon(props: InputLabelIconProps) {
     }
   };
 
+  const customUpperStyle = {
+    textTransform: isUpperCase ? "uppercase" : "none",
+  };
+
   return (
     <Box className={commonStyles.container}>
+      {openKeyboard && <KeyboardComponent />}
       <Box className={styles.inputLabelContainer}>
         <Text
           id_cy="labelValue"
