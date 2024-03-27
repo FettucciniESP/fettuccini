@@ -27,7 +27,9 @@ public class RoundService {
      */
     public PlayerActionResponse initializeRoundForGame(GameSession currentGame) throws PokerException {
         if (currentGame.getPlayers().size() == 1) {
-            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(PokerExceptionType.GAME_ENDED.getMessage()));
+            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(
+                    PokerExceptionType.GAME_ENDED.getMessage(), currentGame.getPlayers().getFirst().getName()
+            ));
         }
 
         String id = UUID.randomUUID().toString();
