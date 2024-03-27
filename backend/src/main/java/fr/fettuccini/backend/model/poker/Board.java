@@ -18,7 +18,7 @@ public class Board {
     private static final int TURN_SIZE = 1;
     private static final int RIVER_SIZE = 1;
 
-    private final Set<Card> communityCards = new HashSet<>();
+    private Set<Card> communityCards = new HashSet<>();
     private CommunityCardType lastAddedType = null;
 
     /**

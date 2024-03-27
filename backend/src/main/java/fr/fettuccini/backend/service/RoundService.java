@@ -25,7 +25,11 @@ public class RoundService {
      * @param currentGame The current game session.
      * @return PlayerActionResponse containing details of the new round.
      */
-    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) {
+    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) throws PokerException {
+        if (currentGame.getPlayers().size() == 1) {
+            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(PokerExceptionType.GAME_ENDED.getMessage()));
+        }
+
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
@@ -345,11 +349,7 @@ public class RoundService {
      * @param currentGame The current game session.
      * @param round       The round whose progression is to be managed.
      */
-    public void manageRoundStepProgression(GameSession currentGame, Round round) throws PokerException {
-        if (currentGame.getPlayers().size() == 1) {
-            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(PokerExceptionType.GAME_ENDED.getMessage()));
-        }
-
+    public void manageRoundStepProgression(GameSession currentGame, Round round) {
         if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame)) {
             if (round.getRoundStep().equals(RoundStep.PREFLOP)) {
                 round.setRoundStep(RoundStep.FLOP);
