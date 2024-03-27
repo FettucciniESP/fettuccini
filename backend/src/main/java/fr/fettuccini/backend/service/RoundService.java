@@ -25,7 +25,13 @@ public class RoundService {
      * @param currentGame The current game session.
      * @return PlayerActionResponse containing details of the new round.
      */
-    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) {
+    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) throws PokerException {
+        if (currentGame.getPlayers().size() == 1) {
+            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(
+                    PokerExceptionType.GAME_ENDED.getMessage(), currentGame.getPlayers().getFirst().getName()
+            ));
+        }
+
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
@@ -122,21 +128,21 @@ public class RoundService {
      * @param gameSession  The current game session containing the round and player information.
      * @param currentRound The current round where the showdown occurs.
      */
-    private void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
+    void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
         HashSet<Card> communityCards = new HashSet<>(currentRound.getBoard().getCommunityCards());
-        Map<Player, Integer> playerScores = new HashMap<>();
+        Map<Player, Long> playerScores = new HashMap<>();
 
         // Evaluate the hand for each player
         for (Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)) {
             HashSet<Card> playerHand = new HashSet<>(player.getHand());
-            int handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
+            Long handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
             playerScores.put(player, handScore);
         }
 
         // Find the highest score
-        int highestScore = playerScores.values().stream()
-                .max(Integer::compare)
-                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score"));
+        Long highestScore = (long) Math.toIntExact(playerScores.values().stream()
+                .max(Long::compare)
+                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score")));
 
         // Identify all players with the highest score
         List<Player> winners = playerScores.entrySet().stream()
@@ -170,7 +176,7 @@ public class RoundService {
      * @return The found round.
      * @throws PokerException if the round is not found.
      */
-    private Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
+    Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
         return gameSession.getRounds().stream()
                 .filter(round -> round.getId().equals(roundId))
                 .findFirst()
