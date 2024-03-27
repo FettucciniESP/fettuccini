@@ -345,7 +345,11 @@ public class RoundService {
      * @param currentGame The current game session.
      * @param round       The round whose progression is to be managed.
      */
-    public void manageRoundStepProgression(GameSession currentGame, Round round) {
+    public void manageRoundStepProgression(GameSession currentGame, Round round) throws PokerException {
+        if (currentGame.getPlayers().size() == 1) {
+            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(PokerExceptionType.GAME_ENDED.getMessage()));
+        }
+
         if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame)) {
             if (round.getRoundStep().equals(RoundStep.PREFLOP)) {
                 round.setRoundStep(RoundStep.FLOP);

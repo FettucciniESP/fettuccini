@@ -177,6 +177,19 @@ public class RoundServiceTests {
             gameSession.addRound(round);
             roundService.manageRoundStepProgression(gameSession, round);
             assertEquals(RoundStep.FLOP, round.getRoundStep());
+
+            // Arrange
+            GameSession gameSession2 = new GameSession();
+            Round round2 = new Round();
+            gameSession2.setPlayers(Collections.singletonList(new Player()));
+            gameSession2.setRounds(Collections.singletonList(round));
+
+            System.out.println(gameSession2.getPlayers().size());
+            // Act and Assert
+            assertThrows(PokerException.class, () -> roundService.manageRoundStepProgression(gameSession2, round2),
+                    "Expected manageRoundStepProgression to throw PokerException when there is only one player, but it didn't");
+        } catch (PokerException e) {
+            throw new RuntimeException(e);
         }
     }
 
