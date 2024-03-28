@@ -1,0 +1,22 @@
+@import '../../../../assets/styles/variables.scss';
+
+.actionButtonsContainer {
+  width: 100%;
+}
+
+.actionButtonsLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  margin-bottom: 1vh;
+}
+
+.button {
+  width: 48%;
+  height: auto !important;
+  background-color: $white-color-medium-opacity !important;
+  color: $white-color !important;
+  font-size: $font-size-primary-informations !important;
+}

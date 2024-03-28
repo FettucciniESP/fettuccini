@@ -8,6 +8,12 @@ public class Level {
     @JsonProperty("levelIndex")
     private Integer roundIndex;
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/model/poker/Level.java
+=======
+    @JsonProperty("label")
+    private String label;
+
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/model/poker/Level.java
     @JsonProperty("bigBlind")
     private Integer bigBlindAmount;
 

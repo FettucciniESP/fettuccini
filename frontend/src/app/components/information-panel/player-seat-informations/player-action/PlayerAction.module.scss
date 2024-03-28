@@ -1,0 +1,57 @@
+@import '../../../../assets/styles/variables.scss';
+
+.playerAction {
+  height: 20vh;
+  justify-content: center;
+  align-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  filter: none !important;
+  display: flex;
+}
+
+@media only screen and (max-height:700px) {
+  .playerAction {
+    height: 15vh;
+  }
+}
+
+.lastActionAmountValue {
+  font-size: $font-size-main-informations;
+  font-weight: bold;
+  margin-left: 1vw;
+}
+
+.imgLastAction {
+  width: 20vh;
+  height: 20vh;
+}
+
+.imgLastActionWithAmount {
+  width: 8vh;
+  height: 8vh;
+  margin-right: 1vw;
+}
+
+.foldContainer, .allInContainer{
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  filter: none !important;
+  border: $white-color 1px solid;
+}
+
+.foldContainer {
+  background-color: $white-color-high-opacity;
+  color: $black-color;
+}
+
+.allInContainer {
+  background-color: $red-color;
+}
+
+.actionValue {
+  font-size: $font-size-primary-informations;
+}

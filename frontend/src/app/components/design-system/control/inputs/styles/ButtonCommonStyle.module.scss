@@ -1,0 +1,18 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+    border-radius: 30px;
+    background-color: $white-color-low-opacity;
+    padding: 15px 20px;
+    -webkit-box-shadow: 2px 5px 8px -2px $black-color;
+    box-shadow: 2px 5px 8px -2px $black-color;
+}
+
+.addCustomText {
+    color: $white-color;
+    margin-left: 5px;
+}

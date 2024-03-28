@@ -29,6 +29,10 @@ public class Deck {
     }
 
     public Card drawCard() {
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/model/poker/Deck.java
         return cards.isEmpty() ? null : cards.remove(0);
+=======
+        return cards.isEmpty() ? null : cards.removeFirst();
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/model/poker/Deck.java
     }
 }

@@ -12,9 +12,6 @@ void initWiFi() {
     Serial.println(WiFi.localIP());
 }
 
-
-
-
 Program::Program() {
     // Startup
     Serial.begin(MONITOR_SPEED);
@@ -58,6 +55,9 @@ Program::Program() {
     }
 
 }
+
+String oldVal = "";
+String oldVal2 = "";
 
 void Program::loop() {
     // NFC->refresh();

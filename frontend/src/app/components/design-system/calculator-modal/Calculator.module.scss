@@ -1,0 +1,48 @@
+@import 'src/app/assets/styles/variables';
+.calculatorContent{
+    border-radius: 13px !important;
+    scale : 1.35;
+    height: 65vh;
+    background: transparent !important;
+}
+.calculatorBody {
+  background-color: $white-color-medium-opacity !important;
+  border-radius: 10px !important;
+}
+
+$widthButton: 8vw;
+
+.buttonNumber{
+    background-color: $black-color-medium-opacity !important;
+    color: $white-color !important;
+    font-size: 32px !important;
+    height: 8vh !important;
+    width: $widthButton !important;
+    margin: 5px;
+}
+
+.zeroButton{
+    background-color: $black-color-medium-opacity !important;
+    color: $white-color !important;
+    font-size: 32px !important;
+    height: 8vh !important;
+    width: calc(2*$widthButton + 10px) !important;
+    margin: 5px;
+}
+
+.submitButton{
+    background-color: $black-color-medium-opacity !important;
+    color: $white-color !important;
+    width: calc(3*$widthButton + 20px) !important;
+    height: 7vh !important;
+}
+
+.inputCalculator{
+    background-color: transparent !important;
+    color: $white-color !important;
+    font-size: 2.5vw;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid $white-color !important;
+    max-width: 50vh;
+}

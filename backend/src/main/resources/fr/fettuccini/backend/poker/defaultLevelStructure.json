@@ -1,0 +1,33 @@
+{
+    "levels": [
+        { "levelIndex": 1, "smallBlind": 5, "bigBlind": 10, "ante": 0, "duration" : 15 },
+        { "levelIndex": 2, "smallBlind": 10, "bigBlind": 15, "ante": 0, "duration" : 15 },
+        { "levelIndex": 3, "smallBlind": 15, "bigBlind": 20, "ante": 0, "duration" : 15 },
+        { "levelIndex": 4, "smallBlind": 20, "bigBlind": 25, "ante": 0, "duration" : 15 },
+        { "levelIndex": 5, "smallBlind": 25, "bigBlind": 30, "ante": 0, "duration" : 15 },
+        { "levelIndex": 0, "label": "Ceci est la première pause", "duration" : 30 },
+        { "levelIndex": 6, "smallBlind": 30, "bigBlind": 35, "ante": 0, "duration" : 15 },
+        { "levelIndex": 7, "smallBlind": 35, "bigBlind": 40, "ante": 0, "duration" : 15 },
+        { "levelIndex": 8, "smallBlind": 40, "bigBlind": 45, "ante": 0, "duration" : 15 },
+        { "levelIndex": 9, "smallBlind": 45, "bigBlind": 50, "ante": 0, "duration" : 15 },
+        { "levelIndex": 10, "smallBlind": 50, "bigBlind": 60, "ante": 0, "duration" : 15 },
+        { "levelIndex": 0, "label": "Ceci est la deuxième pause", "duration" : 30 },
+        { "levelIndex": 11, "smallBlind": 60, "bigBlind": 70, "ante": 0, "duration" : 15 },
+        { "levelIndex": 12, "smallBlind": 70, "bigBlind": 80, "ante": 0, "duration" : 15 },
+        { "levelIndex": 13, "smallBlind": 80, "bigBlind": 90, "ante": 0, "duration" : 15 },
+        { "levelIndex": 14, "smallBlind": 90, "bigBlind": 100, "ante": 0, "duration" : 15 },
+        { "levelIndex": 15, "smallBlind": 100, "bigBlind": 150, "ante": 0, "duration" : 15 },
+        { "levelIndex": 0, "label": "Ceci est la troisième pause", "duration" : 30 },
+        { "levelIndex": 16, "smallBlind": 150, "bigBlind": 200, "ante": 0, "duration" : 15 },
+        { "levelIndex": 17, "smallBlind": 200, "bigBlind": 250, "ante": 0, "duration" : 15 },
+        { "levelIndex": 18, "smallBlind": 250, "bigBlind": 300, "ante": 0, "duration" : 15 },
+        { "levelIndex": 19, "smallBlind": 300, "bigBlind": 350, "ante": 0, "duration" : 15 },
+        { "levelIndex": 20, "smallBlind": 350, "bigBlind": 400, "ante": 0, "duration" : 15 },
+        { "levelIndex": 0, "label": "Ceci est la quatrième pause", "duration" : 30 },
+        { "levelIndex": 21, "smallBlind": 400, "bigBlind": 450, "ante": 0, "duration" : 15 },
+        { "levelIndex": 22, "smallBlind": 450, "bigBlind": 500, "ante": 0, "duration" : 15 },
+        { "levelIndex": 23, "smallBlind": 500, "bigBlind": 600, "ante": 0, "duration" : 15 },
+        { "levelIndex": 24, "smallBlind": 600, "bigBlind": 700, "ante": 0, "duration" : 15 },
+        { "levelIndex": 25, "smallBlind": 700, "bigBlind": 800, "ante": 0, "duration" : 15 }
+    ]
+}

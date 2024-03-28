@@ -20,4 +20,9 @@ public class PlayerActionResponse {
     Player currentButtonUser;
     RoundStep roundStep;
     List<PlayerLastAction> playersLastActions;
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/model/response/PlayerActionResponse.java
+=======
+    boolean isBreakTime;
+    String levelLabel;
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/model/response/PlayerActionResponse.java
 }

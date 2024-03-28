@@ -2,11 +2,17 @@ package fr.fettuccini.backend.model.poker;
 
 import fr.fettuccini.backend.enums.HandType;
 import lombok.Data;
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/model/poker/GameSession.java
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.IOException;
+=======
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/model/poker/GameSession.java
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

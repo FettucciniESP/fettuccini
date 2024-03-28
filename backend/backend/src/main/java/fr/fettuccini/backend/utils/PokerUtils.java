@@ -6,7 +6,14 @@ import fr.fettuccini.backend.model.poker.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
 import java.util.*;
+=======
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
 
 @Component
 public class PokerUtils {
@@ -27,7 +34,10 @@ public class PokerUtils {
         List<Level> levels = currentGame
                 .getLevelsStructure()
                 .stream()
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
                 .sorted(Comparator.comparingInt(Level::getRoundIndex))
+=======
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
                 .toList();
 
         for (Level level : levels) {
@@ -219,7 +229,10 @@ public class PokerUtils {
      */
     public static Integer getRoundIndex(GameSession currentGame) {
         Optional<Round> lastRound = getLastRound(currentGame);
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
 
+=======
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/utils/PokerUtils.java
         return lastRound.map(round -> round.getRoundIndex() + 1).orElse(1);
     }
 

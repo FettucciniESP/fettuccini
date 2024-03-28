@@ -23,9 +23,12 @@ public class Round {
     public void addAction(Action action) {
         actions.add(action);
     }
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/model/poker/Round.java
     public void updateBoard(Card card) {
         board.addCard(card);
     }
+=======
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/model/poker/Round.java
 
     public Round startRound(String id, String gameId, Integer buttonSeatIndex) {
         this.id = id;

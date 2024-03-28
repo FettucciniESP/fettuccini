@@ -24,9 +24,15 @@ public class PlayerChipsRequestMapper {
      */
     public PlayerChips map(PlayerChipsRequest request, String ip) {
         var playerChips = new PlayerChips();
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/mapper/PlayerChipsRequestMapper.java
         var seat = seatRepository.findByIp(ip).orElseThrow();
 
         playerChips.setSeatIndex(seat.getSeatNumber());
+=======
+        var seat = seatRepository.findByIp(ip);
+
+        playerChips.setSeatIndex(seat.isPresent() ? seat.get().getSeatNumber() : request.getSeat());
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/mapper/PlayerChipsRequestMapper.java
         request.getChipsId().forEach(chipId -> {
             var tokenMapper = tokenMapperRepository.findById(chipId).orElseThrow();
             playerChips.addChip(tokenMapper.getValue());

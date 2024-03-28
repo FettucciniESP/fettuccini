@@ -6,6 +6,10 @@ import lombok.Getter;
 @Getter
 public enum PokerExceptionType {
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/enums/PokerExceptionType.java
+=======
+    IMPOSSIBLE_COMMUNITY_CARD_TYPE("Impossible to add card %s"),
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/enums/PokerExceptionType.java
     GAME_NOT_FOUND("Game with session id %s not found"),
     ROUND_NOT_FOUND("Round with id %s not found"),
     BAD_ROUND("Round with id %s is not the current round"),
@@ -15,6 +19,10 @@ public enum PokerExceptionType {
     PLAYER_ALREADY_FOLD("Player seat %s already fold"),
     EXPECTED_OTHER_PLAYER_ACTION("Expected player seat %s to make action"),
     IMPOSSIBLE_MAPPING("Impossible to map card or chip to value"),
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/enums/PokerExceptionType.java
+=======
+    TOKEN_NOT_FOUND("Token not found"),
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/enums/PokerExceptionType.java
     ;
 
     private final String message;

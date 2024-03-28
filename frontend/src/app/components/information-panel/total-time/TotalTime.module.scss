@@ -1,0 +1,15 @@
+@import '../../../assets/styles/variables.scss';
+
+.container {
+  border: 1px solid transparent;
+  border-radius: $border-players-card-radius;
+  width: auto;
+}
+
+.timer {
+  display: flex;
+  font-weight: bold;
+  font-size: 5vh;
+  text-align: center;
+  justify-content: center;
+}

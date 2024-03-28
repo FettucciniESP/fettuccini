@@ -1,12 +1,19 @@
 package fr.fettuccini.backend.service;
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
+=======
+import fr.fettuccini.backend.enums.PokerExceptionType;
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Round;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.utils.PokerUtils;
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
 import fr.fettuccini.backend.enums.PokerExceptionType;
+=======
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
 import org.springframework.stereotype.Service;
 
 @Service
@@ -143,8 +150,14 @@ public class RoundValidationService {
 
         boolean isBetLowerThanHighest = highestBetValue != 0 && betAmount < highestBetValue;
         boolean isBetLowerThanBigBlind = highestBetValue == 0 && betAmount < bigBlindAmount;
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
 
         if(isBetLowerThanHighest || isBetLowerThanBigBlind) {
+=======
+        boolean isBetIncreaseAmountLessThanBigBlind = highestBetValue != 0 && betAmount - highestBetValue < bigBlindAmount;
+
+        if(isBetLowerThanHighest || isBetLowerThanBigBlind || isBetIncreaseAmountLessThanBigBlind){
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/RoundValidationService.java
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
                     String.format(PokerExceptionType.BAD_BET_AMOUNT.getMessage(), highestBetValue));
         }

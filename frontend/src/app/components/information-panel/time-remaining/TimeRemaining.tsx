@@ -1,42 +1,13 @@
-import {Box, Text} from '@chakra-ui/react'
+import {Box} from '@chakra-ui/react'
 import styles from './TimeRemaining.module.scss'
-import InformationContainer from '@/app/components/information-container/InformationContainer'
-import {Timer} from './timer/Timer'
-import {LevelInfosModel} from '@/app/models/LevelInfos.model'
-import {RoundInfosModel} from "@/app/models/RoundInfos.model";
+import InformationContainer from '@/app/components/design-system/information-container/InformationContainer'
+import {TimerCountDown} from '@/app/components/information-panel/time-remaining/timer-count-down/TimerCountDown'
 
-export default function TimeRemaining({
-                                          currentLevelInfos,
-                                          roundInfos,
-                                      }: {
-    currentLevelInfos: LevelInfosModel
-    roundInfos: RoundInfosModel
-}) {
-
+export default function TimeRemaining() {
     return (
         <InformationContainer>
-            <Box className={styles.container}>
-                <Text>Temps restant : </Text>
-                <Timer/>
-                <Box>
-                    <Box className={styles.infoZone}>
-                        <Text className={styles.infoText}>
-                            Small Blind / Big Blind / Ante :
-                        </Text>
-                        <Text>
-                            {currentLevelInfos.smallBlind} /
-                            {currentLevelInfos.bigBlind} /{currentLevelInfos.ante}
-                        </Text>
-                    </Box>
-                    <Box className={styles.infoZone}>
-                        <Text className={styles.infoText}>BTN : </Text>
-                        <Text>{roundInfos.currentButtonUser.name}</Text>
-                    </Box>
-                </Box>
-                <Box className={styles.potTotal}>
-                    <Text>Pot Total :</Text>
-                    <Text className={styles.total}>{roundInfos.currentPotAmount}</Text>
-                </Box>
+            <Box id={"timer"} className={styles.container}>
+                <TimerCountDown/>
             </Box>
         </InformationContainer>
     )

@@ -1,0 +1,30 @@
+@import '../../../../../../assets/styles/variables.scss';
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+    border-radius: 30px;
+    background-color: $white-color-low-opacity;
+    padding: 15px 20px;
+    -webkit-box-shadow: 2px 5px 8px -2px ;
+    box-shadow: 2px 5px 8px -2px $black-color;
+}
+.inputLabelContainer {
+    max-width: 45%;
+    overflow: hidden;
+}
+.inputLabel {
+    font-size: 20;
+    color: $white-color;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.inputContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1;
+    max-width: 50%;
+}

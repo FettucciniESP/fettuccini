@@ -1,10 +1,23 @@
 import { defineConfig } from "cypress";
+import path from "path";
 
 export default defineConfig({
   component: {
+    specPattern: 'cypress/components/**/*.cy.{js,jsx,ts,tsx}',
     devServer: {
       framework: "next",
       bundler: "webpack",
+      webpackConfig: {
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, './src'),
+          },
+        },
+      }
+    },
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config)
+      return config
     },
   },
 

@@ -1,0 +1,56 @@
+@import '../../../assets/styles/variables.scss';
+
+// Globals ontainers
+.centeredContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+.spaceBetweenContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+// TotalTime
+.timeRemainingContainer {
+  width: 100%;
+}
+
+.totalTimeContainer {
+  width: 30%;
+}
+
+// GameInformations
+.potAmount {
+  font-size: $font-size-main-informations;
+  font-weight: bold;
+  margin-left: 1vw;
+}
+
+// LevelsInformations
+.levelsInformationsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.levelInformationTitle {
+  font-weight: bold;
+  font-size: $font-size-secondary-informations;
+}
+
+.levelInformationValue {
+  margin-left: 1vw;
+  font-size: $font-size-secondary-informations;
+}
+
+// Boutons actions
+.actionsButtonsContainer {
+  margin-top: 2vh;
+}

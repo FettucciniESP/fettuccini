@@ -14,13 +14,24 @@ public class UpdatePlayerChipsService {
     /**
      * Update the balance of a player
      * @param playerChips PlayerChips
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/UpdatePlayerChipsService.java
      */
     public void updatePlayerChips(PlayerChips playerChips) {
+=======
+     * @return total amount bet
+     */
+    public int updatePlayerChips(PlayerChips playerChips) {
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/UpdatePlayerChipsService.java
         var gameSession = gameSessionRepository.findFirstByOrderByDateGameStartedDesc().orElseThrow();
         var player = gameSession.getPlayers().get(playerChips.getSeatIndex());
 
         player.setBalance(playerChips.getChips().stream().mapToInt(Integer::intValue).sum()); // Le bet est la somme des jetons
         gameSessionRepository.save(gameSession);
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/UpdatePlayerChipsService.java
+=======
+
+        return player.getBalance();
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/UpdatePlayerChipsService.java
     }
 
 }

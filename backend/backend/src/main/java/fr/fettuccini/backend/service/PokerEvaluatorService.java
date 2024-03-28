@@ -4,16 +4,24 @@ import fr.fettuccini.backend.enums.HandType;
 import fr.fettuccini.backend.model.poker.Card;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+=======
+import java.util.*;
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
 import java.util.stream.Collectors;
 
 @Service
 public class PokerEvaluatorService {
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
     public int evaluateHand(HashSet<Card> playerHand, HashSet<Card> communityCards) {
+=======
+    public long evaluateHand(HashSet<Card> playerHand, HashSet<Card> communityCards) {
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
         if (playerHand.size() != 2 || communityCards.size() != 5) {
             throw new IllegalArgumentException("Invalid hand or community cards size");
         }
@@ -21,6 +29,13 @@ public class PokerEvaluatorService {
         var combinedHand = new HashSet<>(playerHand);
         combinedHand.addAll(communityCards);
 
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
+=======
+        if(combinedHand.size() != 7) {
+            throw new IllegalArgumentException("Invalid hand or community cards size : no card duplication permitted");
+        }
+
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
         var combinedHandList = new ArrayList<>(combinedHand);
         var allCombinations = generateCombinations(combinedHandList);
 
@@ -44,7 +59,11 @@ public class PokerEvaluatorService {
         for (var i = start; i < cards.size(); i++) {
             current.add(cards.get(i));
             generateCombinationsRecursive(cards, n, i + 1, current, combinations);
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
             current.remove(current.size() - 1);
+=======
+            current.removeLast();
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
         }
     }
 
@@ -138,12 +157,20 @@ public class PokerEvaluatorService {
     }
 
     private int calculateScore(HandType handType, List<Card> hand) {
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
         var score = handType.ordinal() * 10000;
+=======
+        var score = handType.ordinal() * 10000000;
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
 
         hand.sort((c1, c2) -> c2.getValue().getValue() - c1.getValue().getValue());
 
         for (var i = 0; i < hand.size(); i++) {
+<<<<<<< HEAD:backend/backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
             score += (hand.get(i).getValue().getValue() * (int) Math.pow(100, hand.size() - i - 1));
+=======
+            score += (hand.get(i).getValue().getValue() * (int) Math.pow(10, hand.size() - i - 1));
+>>>>>>> origin/develop:backend/src/main/java/fr/fettuccini/backend/service/PokerEvaluatorService.java
         }
 
         return score;
