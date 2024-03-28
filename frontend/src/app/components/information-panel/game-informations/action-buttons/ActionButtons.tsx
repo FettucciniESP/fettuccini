@@ -5,6 +5,7 @@ import useActionButtons from './useActionButtons'
 import { GameActionEnum } from '@/app/enums/GameAction.enum'
 import { useState } from 'react'
 import Calculator from '@/app/components/design-system/calculator-modal/Calculator'
+import EndGameModal from "@/app/components/information-panel/end-game-modal/EndGameModal";
 
 export default function ActionButtons({
   playerInfos,
