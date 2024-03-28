@@ -48,32 +48,29 @@ export default function SettingLobby() {
     const handleChangeRegistrationMax = (value: string): void => {
         setRegistrationMax(value);
     };
-    // const handleChangesetMultiTable = (value: boolean): void => {
-    //   setMultiTable(value);
-    // };
     const handleChangeCostEntry = (value: number): void => {
         setCostEntry(value);
     };
 
-    const hangdleOnClickButtonStructure = () => {
+    const handleClickButtonStructure = () => {
         console.log("structure openstructure openstructure open modal");
         handleChangeStructure("TEST STRUCTURE");
     };
 
-    const hangdleOnClickButtonRegistration = () => {
+    const handleClickButtonRegistration = () => {
         console.log("registration open modal");
         handleChangeRegistrationMax("TEST REGISTRATION");
     };
 
-    const hangdleOnClickButtonLoad = () => {
+    const handleClickButtonLoad = () => {
         console.log("load button");
     };
 
-    const hangdleOnClickButtonSave = () => {
+    const handleClickButtonSave = () => {
         console.log("save button");
     };
 
-    const hangdleOnClickButtonStart = () => {
+    const handleClickButtonStart = () => {
         const defaultStructure = {
             levels: [
                 {
@@ -149,19 +146,19 @@ export default function SettingLobby() {
                 <Box className={styles.singleButtonContainer}>
                     <ButtonIcon
                         label={buttonTitles.LOAD}
-                        hangdleOnClick={hangdleOnClickButtonLoad}
+                        handleClick={handleClickButtonLoad}
                         icon={ButtonIcon.icons.LOAD}
                     />
                     <ButtonIcon
                         label={buttonTitles.SAVE}
-                        hangdleOnClick={hangdleOnClickButtonSave}
+                        handleClick={handleClickButtonSave}
                         icon={ButtonIcon.icons.SAVE}
                     />
                 </Box>
                 <Box className={styles.multiButtonContainer}>
                     <ButtonIcon
                         label={buttonTitles.START}
-                        hangdleOnClick={hangdleOnClickButtonStart}
+                        handleClick={handleClickButtonStart}
                     />
                 </Box>
             </Box>
@@ -178,7 +175,7 @@ export default function SettingLobby() {
                     <Box className={styles.inputContainer}>
                         <InputLabelIcon
                             label={labels.STRUCTURE}
-                            hangdleOnClick={hangdleOnClickButtonStructure}
+                            handleClick={handleClickButtonStructure}
                             currentValue={stucture}
                             type={InputLabelIcon.types.BUTTON}
                             isUpperCase
@@ -193,7 +190,7 @@ export default function SettingLobby() {
 
                         <InputLabelIcon
                             label={labels.REGISTRATION_MAX}
-                            hangdleOnClick={hangdleOnClickButtonRegistration}
+                            handleClick={handleClickButtonRegistration}
                             currentValue={registrationMax}
                             type={InputLabelIcon.types.BUTTON}
                         />
