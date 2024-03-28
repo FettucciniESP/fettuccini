@@ -11,6 +11,7 @@
 #include "OledScreen.h"
 #include "NfcTokenReader.h"
 #include "PokerApi.h"
+#include "NfcCardReader.h"
 
 class Program {
 public:
@@ -29,6 +30,10 @@ private:
     OledScreen *screen;
     PokerApi* api;
     NfcTokenReader* NFC;
+
+
+    NfcCardReader* card1;
+    NfcCardReader* card2;
 };
 
 #endif
