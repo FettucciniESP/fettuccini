@@ -14,8 +14,6 @@ import GameInformations from "@/app/components/information-panel/game-informatio
 import BlindsInformations from "@/app/components/information-panel/blinds-informations/BlindsInformations";
 
 export default function InformationPanel() {
-  const toast = useToast();
-  const toastOptions = toastService.setToastOptions();
 
   let [currentLevelInfos, setCurrentLevelInfos] = useState<
     LevelInfosModel | undefined
@@ -50,24 +48,13 @@ export default function InformationPanel() {
         }
       );
 
-    const errorValue_subscribe: Subscription =
-      toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        if (!!errorValue && !!toastOptions) {
-          toast({
-            title: errorValue,
-            ...toastOptions,
-          });
-        }
-      });
-
     return () => {
       currentLevel_subscribe.unsubscribe();
       nextLevel_subscribe.unsubscribe();
       playersHandInfos_subscribe.unsubscribe();
       roundInfos_subscribe.unsubscribe();
-      errorValue_subscribe.unsubscribe();
     };
-  }, [toast, toastOptions]);
+  }, []);
 
   return (
     <Box className={styles.informationPanel}>

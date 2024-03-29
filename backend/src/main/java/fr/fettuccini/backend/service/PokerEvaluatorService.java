@@ -4,22 +4,23 @@ import fr.fettuccini.backend.enums.HandType;
 import fr.fettuccini.backend.model.poker.Card;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class PokerEvaluatorService {
 
-    public int evaluateHand(HashSet<Card> playerHand, HashSet<Card> communityCards) {
+    public long evaluateHand(HashSet<Card> playerHand, HashSet<Card> communityCards) {
         if (playerHand.size() != 2 || communityCards.size() != 5) {
             throw new IllegalArgumentException("Invalid hand or community cards size");
         }
 
         var combinedHand = new HashSet<>(playerHand);
         combinedHand.addAll(communityCards);
+
+        if(combinedHand.size() != 7) {
+            throw new IllegalArgumentException("Invalid hand or community cards size : no card duplication permitted");
+        }
 
         var combinedHandList = new ArrayList<>(combinedHand);
         var allCombinations = generateCombinations(combinedHandList);
@@ -138,12 +139,12 @@ public class PokerEvaluatorService {
     }
 
     private int calculateScore(HandType handType, List<Card> hand) {
-        var score = handType.ordinal() * 10000;
+        var score = handType.ordinal() * 10000000;
 
         hand.sort((c1, c2) -> c2.getValue().getValue() - c1.getValue().getValue());
 
         for (var i = 0; i < hand.size(); i++) {
-            score += (hand.get(i).getValue().getValue() * (int) Math.pow(100, hand.size() - i - 1));
+            score += (hand.get(i).getValue().getValue() * (int) Math.pow(10, hand.size() - i - 1));
         }
 
         return score;
