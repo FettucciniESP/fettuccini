@@ -56,29 +56,8 @@ Program::Program() {
 
 }
 
-// void Program::loop() {
-//     NFCTocken->refresh();
-//     NFCTocken->printTrame();
-//     Serial.println();
-//     Serial.println(NFCTocken->getNbTags());
-//     // this->screen->setTagNB(NFCTocken->getNbTags());
-//     delay(200);
-
-//     String val1 = this->card1->read();
-//     if(val1 != ""){
-//         Serial.print("new card 1 : ");
-//         Serial.println(val1);
-//     }
-
-//     // String val2 = this->card2->read();
-//     // if(val2 != ""){
-//     //     Serial.print("new card 2 : ");
-//     //     Serial.println(val2);
-//     // }
-// }
-
-
 void Program::loop() {
+    //START nfc Token
     NFCTocken->refresh();
     NFCTocken->shortToken();
 
@@ -102,7 +81,21 @@ void Program::loop() {
             this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
             Serial.println(NFCTocken->stringifyId(&it));
         }
-        //api->decidingSendChips(this->NFCTocken->chips, this->NFCTocken->chipsPresent);
+        //api->decidingSendChips(this->NFCTocken->chips, this->NFCTocken->chipsPresent); //XXX
     }
-    Serial.println();
+    // END NFC token
+
+    // START NFC card
+    String val1 = this->card1->read();
+    if(val1 != ""){
+        Serial.print("new card 1 : ");
+        Serial.println(val1);
+    }
+
+    // String val2 = this->card2->read();
+    // if(val2 != ""){
+    //     Serial.print("new card 2 : ");
+    //     Serial.println(val2);
+    // }
+    // END NFC cad
 }
