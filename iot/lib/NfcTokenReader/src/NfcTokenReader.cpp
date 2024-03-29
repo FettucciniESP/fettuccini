@@ -3,6 +3,7 @@
 
 NfcTokenReader::NfcTokenReader(HardwareSerial& serial) {
     this->serial = &serial;
+    this->serial->begin(115200);
     this->pair = true;
     this->trame = new std::vector<byte>();
     this->iso_18000 = new std::vector<std::vector<byte>>();
