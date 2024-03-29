@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import Countdown, {zeroPad} from 'react-countdown';
+import React, { useEffect, useState } from 'react';
+import Countdown, { zeroPad } from 'react-countdown';
 import styles from '../TimeRemaining.module.scss';
-import {LevelInfosModel} from "@/app/models/LevelInfos.model";
-import {levelsService} from "@/app/services/levels.service";
-import {gameService} from "@/app/services/game.service";
-import {Subscription} from "rxjs";
+import { LevelInfosModel } from "@/app/models/LevelInfos.model";
+import { levelsService } from "@/app/services/levels.service";
+import { gameService } from "@/app/services/game.service";
+import { Subscription } from "rxjs";
 
 export const TimerCountDown = () => {
     const [levelsStructure, setLevelsStructure] = useState<LevelInfosModel[]>();
@@ -52,12 +52,12 @@ export const TimerCountDown = () => {
         }
     }, [levelsStructure, startTime]);
 
-    const renderer = ({hours, minutes, seconds}) => {
+    const renderer = ({ hours, minutes, seconds }) => {
         return (
             <span className={styles.timer}>
-        {hours === 0 ? null : zeroPad(hours) + ':'}
+                {hours === 0 ? null : zeroPad(hours) + ':'}
                 {zeroPad(minutes)}:{zeroPad(seconds)}
-      </span>
+            </span>
         );
     };
 

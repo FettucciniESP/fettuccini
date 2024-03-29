@@ -82,7 +82,7 @@ export default function SettingLobby() {
                     smallBlind: 10,
                     bigBlind: 20,
                     ante: 0,
-                    duration: 10,
+                    duration: 1,
                 },
               {
                 levelIndex: 2,
