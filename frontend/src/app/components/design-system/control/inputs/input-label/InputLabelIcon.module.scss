@@ -49,3 +49,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.keyboard {
+    z-index: 1000000;
+    position: absolute
+}

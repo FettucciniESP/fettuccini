@@ -62,6 +62,13 @@ function InputLabelIcon(props: InputLabelIconProps) {
     }
     handleChangeCurrentValue(value);
   };
+
+  const handleConfirmValue = (value: string | number | null) => {
+    const { handleChangeCurrentValue } = props;
+    handleChangeCurrentValue(value);
+    setOpenKeyboard(false);
+  };
+
   const handleClick = () => {
     setOpenKeyboard(true);
   };
@@ -153,26 +160,46 @@ function InputLabelIcon(props: InputLabelIconProps) {
     textTransform: isUpperCase ? "uppercase" : "none",
   };
 
+  const renderKeyboard = () => {
+    return (
+      <Box className={styles.keyboard}>
+        <KeyboardComponent
+          currentValue={currentValue}
+          openKeyboard={openKeyboard}
+          handleKeyboard={setOpenKeyboard}
+          confirmValue={handleConfirmValue}
+          type={
+            type == types.NUMBER
+              ? KeyboardComponent.types.NUMBER
+              : KeyboardComponent.types.BASE
+          }
+        />
+      </Box>
+    );
+  };
+
   return (
-    <Box className={commonStyles.container}>
-      {openKeyboard && <KeyboardComponent />}
-      <Box className={styles.inputLabelContainer}>
-        <Text
-          id_cy="labelValue"
-          className={styles.inputLabel}
-          style={customUpperStyle}
-        >
-          {label}
-        </Text>
+    <>
+      {openKeyboard && renderKeyboard()}
+      <Box className={commonStyles.container}>
+        <Box className={styles.inputLabelContainer}>
+          <Text
+            id_cy="labelValue"
+            className={styles.inputLabel}
+            style={customUpperStyle}
+          >
+            {label}
+          </Text>
+        </Box>
+        <Box className={styles.inputContainer}>
+          {displayContent()}
+          <Text id_cy="customTextValue" className={commonStyles.addCustomText}>
+            {customAddToText}
+          </Text>
+          {displayIcon()}
+        </Box>
       </Box>
-      <Box className={styles.inputContainer}>
-        {displayContent()}
-        <Text id_cy="customTextValue" className={commonStyles.addCustomText}>
-          {customAddToText}
-        </Text>
-        {displayIcon()}
-      </Box>
-    </Box>
+    </>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 } from "../../../../../enums/Labels.enum";
 import { Titles } from "../../../../../enums/Titles.enum";
 import styles from "./ModalStructure.module.scss";
+import KeyboardComponent from "../../Keyboard/Keyboard";
 
 interface ModalBaseProps {
   isOpen: boolean;

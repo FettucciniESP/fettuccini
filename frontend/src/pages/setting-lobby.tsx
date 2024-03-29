@@ -41,7 +41,6 @@ export default function SettingLobby() {
     // handleChangeStructure("TEST STRUCTURE");
   };
   const hangdleOnClickButtonRegistration = () => {
-    console.log("registration open modal");
     handleChangeRegistrationMax("TEST REGISTRATION");
   };
   const hangdleOnClickButtonLoad = () => {
