@@ -120,7 +120,7 @@ export default function SettingLobby() {
       {
         title: InputLabels.COST_ENTRY,
         value: costEntry
-          ? `${costEntry} ${InputEndTextLabels.EURO}}`
+          ? `${costEntry} ${InputEndTextLabels.EURO}`
           : costEntry,
       },
     ];
