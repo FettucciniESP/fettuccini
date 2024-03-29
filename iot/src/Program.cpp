@@ -56,23 +56,53 @@ Program::Program() {
 
 }
 
+// void Program::loop() {
+//     NFCTocken->refresh();
+//     NFCTocken->printTrame();
+//     Serial.println();
+//     Serial.println(NFCTocken->getNbTags());
+//     // this->screen->setTagNB(NFCTocken->getNbTags());
+//     delay(200);
+
+//     String val1 = this->card1->read();
+//     if(val1 != ""){
+//         Serial.print("new card 1 : ");
+//         Serial.println(val1);
+//     }
+
+//     // String val2 = this->card2->read();
+//     // if(val2 != ""){
+//     //     Serial.print("new card 2 : ");
+//     //     Serial.println(val2);
+//     // }
+// }
+
+
 void Program::loop() {
     NFCTocken->refresh();
-    NFCTocken->printTrame();
-    Serial.println();
+    NFCTocken->shortToken();
+
     Serial.println(NFCTocken->getNbTags());
-    // this->screen->setTagNB(NFCTocken->getNbTags());
-    delay(200);
-
-    String val1 = this->card1->read();
-    if(val1 != ""){
-        Serial.print("new card 1 : ");
-        Serial.println(val1);
+    Serial.print("ISO_15693 tags :");
+    if(NFCTocken->getNbTags() != 0){
+        Serial.println(NFCTocken->GetIso15693Tokens()->size());
+        for(auto it: *NFCTocken->GetIso15693Tokens()){
+            this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
+            Serial.println(NFCTocken->stringifyId(&it));
+        }
+        Serial.print("ISO_18000 tags :");
+        Serial.println(NFCTocken->GetIso18000Tokens()->size());
+        for(auto it: *NFCTocken->GetIso18000Tokens()){
+            this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
+            Serial.println(NFCTocken->stringifyId(&it));
+        }
+        Serial.print("ISO_14443 tags :");
+        Serial.println(NFCTocken->GetIso14443Tokens()->size());
+        for(auto it: *NFCTocken->GetIso14443Tokens()){
+            this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
+            Serial.println(NFCTocken->stringifyId(&it));
+        }
+        //api->decidingSendChips(this->NFCTocken->chips, this->NFCTocken->chipsPresent);
     }
-
-    // String val2 = this->card2->read();
-    // if(val2 != ""){
-    //     Serial.print("new card 2 : ");
-    //     Serial.println(val2);
-    // }
+    Serial.println();
 }
