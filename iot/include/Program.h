@@ -11,7 +11,7 @@
 
 // #include "NfcModule.h"
 #include "OledScreen.h"
-//#include "NfcTokenReader.h"//XXX
+#include "NfcTokenReader.h"
 #include "PokerApi.h"
 #include "NfcCardReader.h"
 
@@ -31,8 +31,8 @@ public:
 private:
     OledScreen *screen;
     PokerApi* api;
-    //NfcTokenReader* NFC;
-    //XXX
+
+    NfcTokenReader* NFCTocken;
 
     NfcCardReader* card1;
     NfcCardReader* card2;
