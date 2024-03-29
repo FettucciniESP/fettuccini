@@ -15,8 +15,6 @@ export default function CroupierInterface() {
   useEffect(() => {
     const errorValue_subscribe: Subscription =
       toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        console.log("home error")
-        console.log(errorValue);
         if (!!errorValue && !!toastOptions) {
           toast({
             title: errorValue,
@@ -25,7 +23,6 @@ export default function CroupierInterface() {
         }
       });
       return () => {
-        console.log("unsuscribe")
         errorValue_subscribe.unsubscribe();
       };
     }, [toast, toastOptions])
