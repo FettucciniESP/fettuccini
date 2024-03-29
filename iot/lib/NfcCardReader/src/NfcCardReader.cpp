@@ -64,6 +64,7 @@ String NfcCardReader::read(){
             sortie += this->digitify(uid[i]);
             sortie += ":";
         }
+        sortie = sortie.substring(0,sortie.length()-1);
     }
 
     return sortie;
@@ -79,6 +80,5 @@ String NfcCardReader::digitify(int number){
     }else{
         sortie += String(number,HEX);
     }
-    sortie = sortie.substring(0,sortie.length()-1);
     return sortie;
 }
