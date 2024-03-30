@@ -1,25 +1,21 @@
 import React from 'react';
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-} from '@chakra-ui/react';
 import TimeRemaining from "../../information-panel/time-remaining/TimeRemaining";
+import FetuccinniModal from "../fettuccini-modal/FettucciniModal";
 
-export default function Break(title: string, isOpen: boolean, isClose: () => void) {
+export default function Break({
+    title,
+    isOpen,
+    isClose,
+}: {
+    title: string,
+    isOpen: boolean,
+    readonly isClose: () => void,
+}) {
     return (
         <>
-            <Modal isOpen={isOpen} onClose={isClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{title}</ModalHeader>
-                    <ModalBody>
-                        <TimeRemaining/>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+            <FetuccinniModal modalIsOpen={isOpen} onCloseFunction={isClose} title={title} canCloseModal={false}>
+                <TimeRemaining />
+            </FetuccinniModal>
         </>
     );
 }

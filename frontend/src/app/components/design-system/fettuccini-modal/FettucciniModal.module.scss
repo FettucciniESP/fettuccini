@@ -1,0 +1,11 @@
+@import '../../../assets/styles/variables';
+.calculatorContent{
+  border-radius: 13px !important;
+  scale : 1.35;
+  height: 65vh;
+  background: transparent !important;
+}
+.calculatorBody {
+  background-color: $white-color-medium-opacity !important;
+  border-radius: 10px !important;
+}

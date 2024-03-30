@@ -22,7 +22,12 @@ export const TimerCountDown = () => {
             let elapsedTime: number = (now - startTimeMillis) / 1000 / 60;
 
             let totalTime: number = 0;
+            let lastLevelIndex: number = 0;
             for (let level of levelsStructure) {
+                if (lastLevelIndex !== level.levelIndex) {
+                    lastLevelIndex = level.levelIndex;
+                    levelsService.setCurrentLevel(level);
+                }
                 totalTime += level.duration;
                 if (elapsedTime < totalTime) {
                     return (totalTime - elapsedTime) * 60 * 1000;

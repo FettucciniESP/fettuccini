@@ -72,7 +72,7 @@ export default function useActionButtons() {
             updateInformations(roundInfos);
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } catch (error: any) {
       toastService.pushError(error?.response?.data);
     }
@@ -107,7 +107,7 @@ export default function useActionButtons() {
   function calculateHighestBet(roundInfos: RoundInfosModel): number {
     const actions: PlayerActionModel[] =
       roundInfos.roundPlayersActionsHistory[
-        roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
+      roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
       ];
     return actions.reduce((max, action) => Math.max(max, action.amount), 0);
   }
@@ -118,7 +118,7 @@ export default function useActionButtons() {
   ): number {
     const actions: PlayerActionModel[] =
       roundInfos.roundPlayersActionsHistory[
-        roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
+      roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
       ];
     return actions
       .filter((action) => action.seatIndex === seatIndex)
