@@ -1,65 +1,26 @@
-import { Box, useToast, UseToastOptions } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import styles from "./InformationPanel.module.scss";
 import { LevelInfosModel } from "@/app/models/LevelInfos.model";
 import { PlayerHandInfosModel } from "@/app/models/PlayerHandInfos.model";
 import { RoundInfosModel } from "@/app/models/RoundInfos.model";
-import { levelsService } from "@/app/services/levels.service";
-import { playersService } from "@/app/services/players.service";
-import { roundService } from "@/app/services/round.service";
-import { toastService } from "@/app/services/toast.service";
-import { useEffect, useState } from "react";
-import { Subscription } from "rxjs";
 import PlayerSeatInformations from "@/app/components/information-panel/player-seat-informations/PlayerSeatInformations";
 import GameInformations from "@/app/components/information-panel/game-informations/GameInformations";
 import BlindsInformations from "@/app/components/information-panel/blinds-informations/BlindsInformations";
 
-export default function InformationPanel() {
-
-  let [currentLevelInfos, setCurrentLevelInfos] = useState<
-    LevelInfosModel | undefined
-  >(undefined);
-  let [nextLevelInfos, setNextLevelInfos] = useState<
-    LevelInfosModel | undefined
-  >(undefined);
-  let [playersHandInfos, setPlayersHandInfos] = useState<
-    PlayerHandInfosModel[]
-  >([]);
-  let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
-
-  useEffect(() => {
-    const currentLevel_subscribe: Subscription =
-      levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
-        setCurrentLevelInfos(currentLevel);
-      });
-    const nextLevel_subscribe: Subscription =
-      levelsService.nextLevel$.subscribe((nextLevelInfos: LevelInfosModel) => {
-        setNextLevelInfos(nextLevelInfos);
-      });
-    const playersHandInfos_subscribe: Subscription =
-      playersService.playersHandInfos$.subscribe(
-        (playersHand: PlayerHandInfosModel[]) => {
-          setPlayersHandInfos(playersHand);
-        }
-      );
-    const roundInfos_subscribe: Subscription =
-      roundService.roundInfos$.subscribe(
-        (roundInfos: RoundInfosModel | undefined) => {
-          setRoundInfos(roundInfos);
-        }
-      );
-
-    return () => {
-      currentLevel_subscribe.unsubscribe();
-      nextLevel_subscribe.unsubscribe();
-      playersHandInfos_subscribe.unsubscribe();
-      roundInfos_subscribe.unsubscribe();
-    };
-  }, []);
-
+export default function InformationPanel({
+  playersHandInfos,
+  currentLevelInfos,
+  nextLevelInfos,
+  roundInfos }: {
+    playersHandInfos: PlayerHandInfosModel[],
+    currentLevelInfos: LevelInfosModel | undefined,
+    nextLevelInfos: LevelInfosModel  | undefined,
+    roundInfos: RoundInfosModel | undefined,
+  }) {
   return (
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}>
-        {playersHandInfos[1] && roundInfos && (
+        {playersHandInfos && playersHandInfos[1] && roundInfos && (
           <PlayerSeatInformations
             seatIndex={2}
             playerHandInfos={playersHandInfos[1]}
@@ -67,7 +28,7 @@ export default function InformationPanel() {
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
         )}
-        {playersHandInfos[0] && roundInfos && (
+        {playersHandInfos && playersHandInfos[0] && roundInfos && (
           <PlayerSeatInformations
             seatIndex={1}
             playerHandInfos={playersHandInfos[0]}
@@ -79,7 +40,7 @@ export default function InformationPanel() {
       <Box className={styles.middleInformationPanel}>
         <Box className={styles.playersInformationsContainer}>
           <Box className={styles.playersInformationsCard}>
-            {playersHandInfos[2] && roundInfos && (
+            {playersHandInfos && playersHandInfos[2] && roundInfos && (
               <PlayerSeatInformations
                 seatIndex={3}
                 playerHandInfos={playersHandInfos[2]}
@@ -91,7 +52,7 @@ export default function InformationPanel() {
             )}
           </Box>
           <Box className={styles.playersInformationsCard}>
-            {playersHandInfos[3] && roundInfos && (
+            {playersHandInfos && playersHandInfos[3] && roundInfos && (
               <PlayerSeatInformations
                 seatIndex={4}
                 playerHandInfos={playersHandInfos[3]}
@@ -112,7 +73,7 @@ export default function InformationPanel() {
         )}
       </Box>
       <Box className={styles.rightInformationPanel}>
-        {playersHandInfos[4] && roundInfos && (
+        {playersHandInfos && playersHandInfos[4] && roundInfos && (
           <PlayerSeatInformations
             seatIndex={5}
             playerHandInfos={playersHandInfos[4]}
@@ -120,7 +81,7 @@ export default function InformationPanel() {
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
         )}
-        {playersHandInfos[5] && roundInfos && (
+        {playersHandInfos && playersHandInfos[5] && roundInfos && (
           <PlayerSeatInformations
             seatIndex={6}
             playerHandInfos={playersHandInfos[5]}

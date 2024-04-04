@@ -1,0 +1,10 @@
+@import 'src/app/assets/styles/variables';
+
+.titleBreak {
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: $white-color;
+    margin-bottom: 20px;
+}

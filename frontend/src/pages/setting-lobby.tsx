@@ -1,13 +1,13 @@
-import {Box, Text} from "@chakra-ui/react";
-import {useState} from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import InputLabelIcon from "@/app/components/design-system/control/inputs/input-label/InputLabelIcon";
 // import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
-import {croupierLoadingService} from "@/app/services/croupier-loading.service";
-import {StartGameResponseModel} from "@/app/models/StartGameResponse.model";
-import {croupierService} from "@/app/services/croupier.service";
-import {NextRouter, useRouter} from "next/router";
+import { croupierLoadingService } from "@/app/services/croupier-loading.service";
+import { StartGameResponseModel } from "@/app/models/StartGameResponse.model";
+import { croupierService } from "@/app/services/croupier.service";
+import { NextRouter, useRouter } from "next/router";
 
 const labels = {
     STRUCTURE: "STRUCTURE",
@@ -79,32 +79,32 @@ export default function SettingLobby() {
                     smallBlind: 10,
                     bigBlind: 20,
                     ante: 0,
+                    duration: 1,
+                },
+                {
+                    levelIndex: 0,
+                    label: "Break time 5 minutes",
+                    smallBlind: 15,
+                    bigBlind: 30,
+                    ante: 0,
+                    duration: 1,
+                },
+                {
+                    levelIndex: 3,
+                    label: "",
+                    smallBlind: 20,
+                    bigBlind: 40,
+                    ante: 0,
                     duration: 10,
                 },
-              {
-                levelIndex: 2,
-                label: "",
-                smallBlind: 15,
-                bigBlind: 30,
-                ante: 0,
-                duration: 10,
-              },
-              {
-                levelIndex: 3,
-                label: "",
-                smallBlind: 20,
-                bigBlind: 40,
-                ante: 0,
-                duration: 10,
-              },
-              {
-                levelIndex: 4,
-                label: "",
-                smallBlind: 25,
-                bigBlind: 50,
-                ante: 0,
-                duration: 10,
-              }
+                {
+                    levelIndex: 4,
+                    label: "",
+                    smallBlind: 25,
+                    bigBlind: 50,
+                    ante: 0,
+                    duration: 10,
+                }
             ]
         }
         croupierLoadingService
@@ -117,9 +117,9 @@ export default function SettingLobby() {
 
     const renderSettingsSection = () => {
         const sectionContent = [
-            {title: labels.STRUCTURE, value: stucture},
-            {title: labels.STACKS, value: stacks},
-            {title: labels.REGISTRATION_MAX, value: registrationMax},
+            { title: labels.STRUCTURE, value: stucture },
+            { title: labels.STACKS, value: stacks },
+            { title: labels.REGISTRATION_MAX, value: registrationMax },
             {
                 title: labels.COST_ENTRY,
                 value: costEntry ? `${costEntry + " €"}` : costEntry,
