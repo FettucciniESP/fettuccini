@@ -14,11 +14,11 @@ public class PlayerActionResponse {
     String sessionId;
     String roundId;
     LocalDateTime gameStartedDatetime;
+    RoundStep roundStep;
     Integer currentPotAmount;
     ActionsByRoundStep roundPlayersActionsHistory;
     Player currentPlayingUser;
     Player currentButtonUser;
-    RoundStep roundStep;
     List<PlayerLastAction> playersLastActions;
     boolean isBreakTime;
     String levelLabel;

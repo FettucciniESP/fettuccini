@@ -104,12 +104,60 @@ public class RoundService {
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
 
-        if (currentRound.getRoundStep().equals(RoundStep.SHOWDOWN)) {
+        List<Player> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound);
+
+        if(playersWithoutFold.size() == 1){
+            Player winner = playersWithoutFold.get(0);
+            winner.setBalance(winner.getBalance() + currentRound.getPotAmount());
+            currentRound.setRoundStep(RoundStep.FINISHED);
+        } else if (!areAllCardsReaded(currentRound, gameSession)){
+            currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
+        } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED)) {
             determineWinnerAndAllocatePot(gameSession, currentRound);
         }
 
         updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
+    }
+
+
+    public boolean areAllCardsReaded(Round currentRound, GameSession gameSession) {
+        List<CardMisread> cardMisreads = getCardMisreads(currentRound, gameSession);
+
+        return cardMisreads.isEmpty();
+    }
+
+    public List<CardMisread> getCardMisreads(Round currentRound, GameSession gameSession) {
+        List<CardMisread> cardMisreads = new ArrayList<>();
+        if(!(currentRound.getBoard().getCommunityCards().size() == 5)){
+            cardMisreads.add(PokerUtils.createBoardCardMisread(currentRound.getBoard().getCommunityCards()));
+        }
+
+        PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound).stream()
+                .filter(player -> player.getHand().size() != 2)
+                .forEach(player -> cardMisreads.add(PokerUtils.createPlayerCardMisread(player, player.getHand())));
+
+        return cardMisreads;
+    }
+
+    public PlayerActionResponse replaceCardMisread(CardMisreadRequest cardMisreadRequest, GameSession gameSession) throws PokerException {
+        Round currentRound = findRoundById(cardMisreadRequest.getRoundId(), gameSession);
+        if(!currentRound.getRoundStep().equals(RoundStep.ACTION_NEEDED)){
+            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_ALLOWED, PokerExceptionType.NO_CARD_MISREAD_ALLOWED.getMessage());
+        }
+
+        if(cardMisreadRequest.getPlayerSeatId().equals(0)){
+            currentRound.getBoard().setCommunityCards(cardMisreadRequest.getCards());
+        } else {
+            Player player = PokerUtils.getPlayerBySeatIndex(gameSession, cardMisreadRequest.getSeatIndex());
+            player.setHand(cardMisreadRequest.getCorrectCards());
+        }
+
+        if(areAllCardsReaded(currentRound, gameSession)){
+            currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
+        }
+
+        return buildPlayerActionResponse(gameSession, currentRound, cardMisreadRequest.getAction());
     }
 
     /**
