@@ -97,15 +97,34 @@ export default function SettingLobby() {
                     ante: 0,
                     duration: 10,
                 },
-                {
-                    levelIndex: 4,
-                    label: "",
-                    smallBlind: 25,
-                    bigBlind: 50,
-                    ante: 0,
-                    duration: 10,
-                }
-            ]
+              {
+                levelIndex: 2,
+                label: "",
+                smallBlind: 15,
+                bigBlind: 30,
+                ante: 0,
+                duration: 10,
+              },
+              {
+                levelIndex: 3,
+                label: "",
+                smallBlind: 20,
+                bigBlind: 40,
+                ante: 0,
+                duration: 10,
+              },
+              {
+                levelIndex: 4,
+                label: "",
+                smallBlind: 25,
+                bigBlind: 50,
+                ante: 0,
+                duration: 10,
+              }
+            ],
+            seatsIndex: [1,2,3,4,5,6],
+            startingStack: 20000,
+            authorizedReentryLevelIndex: 3,
         }
         croupierLoadingService
             .startNewGame(defaultStructure)

@@ -35,8 +35,8 @@ export default function ActionButtons({
     return (
         <Box className={styles.actionButtonsContainer}>
             {isModalOpen && (
-                <CardMissRead isModalOpen={isModalOpen} closeModal={closeModal} playerOrStreetLabel={"Joueur 1"} cardsValues={[null,"9H"]} />
-                //<Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} />
+                //<CardMissRead isModalOpen={isModalOpen} closeModal={closeModal} playerOrStreetLabel={"Joueur 1"} cardsValues={[null,"9H"]} />
+                <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} />
             )}
             <Box className={styles.actionButtonsLine}>
                 <Button
