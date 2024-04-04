@@ -4,7 +4,6 @@ import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
-import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
@@ -105,7 +104,7 @@ public class RoundService {
      */
     public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
         Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
-        roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
+        roundValidationService.validatePlayerActionRoundStep(playerActionRequest, gameSession, currentRound);
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
 
@@ -115,7 +114,7 @@ public class RoundService {
             Player winner = playersWithoutFold.get(0);
             winner.setBalance(winner.getBalance() + currentRound.getPotAmount());
             currentRound.setRoundStep(RoundStep.FINISHED);
-        } else if (!areAllCardsReaded(currentRound, gameSession)){
+        } else if (currentRound.getRoundStep().equals(RoundStep.RIVER) && !areAllCardsReaded(currentRound, gameSession)){
             currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
         } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED)) {
             determineWinnerAndAllocatePot(gameSession, currentRound);

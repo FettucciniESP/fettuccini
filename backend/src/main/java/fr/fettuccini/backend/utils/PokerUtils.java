@@ -67,7 +67,7 @@ public class PokerUtils {
      * @return A list of players who haven't folded.
      */
     public static List<Player> getPlayersWithoutFoldThisRound(GameSession currentGame, Round currentRound){
-        List<Player> players = PokerUtils.getAllPlayersWithActionThisRound(currentGame, currentRound);
+        List<Player> players = currentGame.getPlayers();
         List<Integer> playersIndex = getPlayersIndexListFromPlayersList(players);
         List<Player> playersWhoDidntFold = new ArrayList<>();
 
