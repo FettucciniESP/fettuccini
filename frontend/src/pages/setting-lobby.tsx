@@ -83,11 +83,11 @@ export default function SettingLobby() {
                 },
                 {
                     levelIndex: 0,
-                    label: "break time 5 minutes",
+                    label: "Break time 5 minutes",
                     smallBlind: 15,
                     bigBlind: 30,
                     ante: 0,
-                    duration: 5,
+                    duration: 1,
                 },
                 {
                     levelIndex: 3,

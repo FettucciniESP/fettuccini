@@ -16,12 +16,12 @@ import { toastService } from '@/app/services/toast.service';
 
 export default function CroupierInterface() {
   const router: NextRouter = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const toast = useToast();
   const toastOptions = toastService.setToastOptions();
   let isBreak: boolean = false;
-  let title: string = "";
+  let title: string = "Pause";
 
   let [currentLevelInfos, setCurrentLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
   let [nextLevelInfos, setNextLevelInfos] = useState<LevelInfosModel | undefined>(undefined);
@@ -74,16 +74,6 @@ export default function CroupierInterface() {
   }
 
   useEffect(() => {
-
-    const currentLevelSubscribe: Subscription = levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
-      if (currentLevel.levelIndex === 0) {
-        title = "Pause";
-        isBreak = true;
-      } else {
-        isBreak = false;
-      }
-    });
-
     if (!croupierLoadingService.getSessionId()) {
       router.push('/home');
     }
@@ -92,7 +82,7 @@ export default function CroupierInterface() {
   return (
     <ChakraProvider>
       <main className={styles.main}>
-        {roundInfos?.breakTime ?? (<Break title={title} isOpen={isModalOpen} isClose={closeModal} />)}
+        {roundInfos?.breakTime && (<Break title={currentLevelInfos?.label} isOpen={isModalOpen} isClose={closeModal} />)}
         {roundInfos?.roundId && (<InformationPanel playersHandInfos={playersHandInfos} currentLevelInfos={currentLevelInfos} nextLevelInfos={nextLevelInfos} roundInfos={roundInfos} />)}
       </main>
     </ChakraProvider>
