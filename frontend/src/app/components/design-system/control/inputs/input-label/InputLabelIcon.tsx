@@ -23,7 +23,7 @@ interface InputLabelIconProps {
   currentValue: string | number | null;
   handleChangeCurrentValue?: (value: string | number | null | any) => void;
   // Optional
-  hangdleOnClick?: () => void;
+  handleClick?: () => void;
   type?: (typeof types)[keyof typeof types];
   icon?: any;
   label?: string;
@@ -49,7 +49,7 @@ function InputLabelIcon(props: InputLabelIconProps) {
   };
   const handleChange = (event: any) => {
     const { handleChangeCurrentValue } = props;
-    let value;
+    let value = null;
 
     switch (type) {
       case types.TEXT:
@@ -60,7 +60,9 @@ function InputLabelIcon(props: InputLabelIconProps) {
         value = event?.target?.value;
         break;
     }
-    handleChangeCurrentValue(value);
+    if (handleChangeCurrentValue) {
+      handleChangeCurrentValue(value);
+    }
   };
   const displayIcon = () => {
     const { icon } = props;
@@ -87,7 +89,7 @@ function InputLabelIcon(props: InputLabelIconProps) {
   };
 
   const displayContent = () => {
-    const { type, hangdleOnClick } = props;
+    const { type, handleClick } = props;
     switch (type) {
       case types.TEXT:
       case types.NUMBER:
@@ -116,7 +118,7 @@ function InputLabelIcon(props: InputLabelIconProps) {
         };
         return (
           <Button
-            onClick={hangdleOnClick}
+            onClick={handleClick}
             className={styles.buttonStyle}
             textAlign="right"
             padding={0}

@@ -13,7 +13,7 @@ const icons = {
 interface ButtonIconProps {
   // Required
   label: string;
-  hangdleOnClick: () => void;
+  handleClick: () => void;
   // Optional
   icon?: any;
   isUpperCase?: boolean;
@@ -21,7 +21,7 @@ interface ButtonIconProps {
 }
 
 function ButtonIcon(props: ButtonIconProps & ButtonProps) {
-  const { hangdleOnClick, label, disabled, isUpperCase } = props;
+  const { handleClick, label, disabled, isUpperCase } = props;
 
   const displayIcon = () => {
     const { icon } = props;
@@ -63,7 +63,7 @@ function ButtonIcon(props: ButtonIconProps & ButtonProps) {
 
   return (
     <Button
-      onClick={hangdleOnClick}
+      onClick={handleClick}
       leftIcon={buttonIcon}
       className={styles.buttonStyle}
       {...baseButtonConfig}

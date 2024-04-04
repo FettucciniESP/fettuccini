@@ -1,0 +1,38 @@
+@import '../../../assets/styles/variables.scss';
+
+.containerEndGame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  font-size: 2vw;
+  color: $white-color;
+}
+
+.crownImage {
+  width: 15vw;
+  height: 15vw;
+  justify-content: center;
+}
+
+.contentLabel {
+  font-size: 3vw;
+  color: $white-color;
+}
+
+.button {
+  margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  font-size: 20px;
+  color: $white-color !important;
+  background-color: $black-color-medium-opacity !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
