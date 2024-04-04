@@ -55,7 +55,7 @@ public class RoundServiceTests {
         PlayerActionRequest mockRequest = mock(PlayerActionRequest.class);
         when(mockRequest.getRoundId()).thenReturn(UUID.randomUUID().toString());
         doThrow(new PokerException(PokerExceptionType.ROUND_NOT_FOUND, "Round not found"))
-                .when(roundValidationService).validatePayerActionRoundStep(any(), any(), any());
+                .when(roundValidationService).validatePlayerActionRoundStep(any(), any(), any());
         assertThrows(PokerException.class, () -> roundService.setPlayerAction(mockRequest, mockGameSession));
     }
 

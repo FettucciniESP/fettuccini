@@ -81,4 +81,11 @@ public class PokerController {
         updateBoardCardsService.updateBoardCards(boardCards, boardCardsRequest.getCommunityCardType());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/addPlayer/{sessionId}/{seatIndex}")
+    public ResponseEntity<HttpStatus> addPlayer(@PathVariable String sessionId, @PathVariable Integer seatIndex) throws PokerException {
+        pokerService.addPlayer(seatIndex, sessionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

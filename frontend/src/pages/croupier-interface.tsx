@@ -77,7 +77,19 @@ export default function CroupierInterface() {
     if (!croupierLoadingService.getSessionId()) {
       router.push('/home');
     }
-  }, [router]);
+    const errorValue_subscribe: Subscription =
+      toastService.errorValue$.subscribe((errorValue: String | undefined) => {
+        if (!!errorValue && !!toastOptions) {
+          toast({
+            title: errorValue,
+            ...toastOptions,
+          });
+        }
+      });
+      return () => {
+        errorValue_subscribe.unsubscribe();
+      };
+  }, [router, toast, toastOptions]);
 
   return (
     <ChakraProvider>

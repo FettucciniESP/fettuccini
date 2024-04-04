@@ -9,4 +9,7 @@ import java.util.List;
 @Getter
 public class StartGameRequest implements Serializable {
     private List<Level> levels;
+    private List<Integer> seatsIndex;
+    private Integer startingStack;
+    private Integer authorizedReentryLevelIndex;
 }
