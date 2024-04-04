@@ -403,4 +403,29 @@ public class PokerUtils {
     public static String formatPokerExceptionMessage(PokerExceptionType pokerExceptionType, String message) {
         return pokerExceptionType.toString() + " : " + message;
     }
+
+    public static CardMisread createBoardCardMisread(Set<Card> cards) {
+        CardMisread cardMisread = new CardMisread();
+        cardMisread.setCards(
+                new HashSet<>(
+                        cards
+                        .stream()
+                        .limit(5)
+                        .toList()
+                ));
+        return cardMisread;
+    }
+    public static CardMisread createPlayerCardMisread(Player player, Set<Card> cards) {
+        CardMisread cardMisread = new CardMisread();
+        cardMisread.setPlayer(player);
+        cardMisread.setCards(
+                new HashSet<>(
+                        cards
+                        .stream()
+                        .limit(2)
+                        .toList()
+                )
+        );
+        return cardMisread;
+    }
 }

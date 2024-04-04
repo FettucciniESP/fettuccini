@@ -4,6 +4,7 @@ import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
+import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
@@ -68,6 +69,10 @@ public class RoundService {
         playerActionResponse.setCurrentPlayingUser(PokerUtils.getPlayerBySeatIndex(currentGame, round.getNextPlayerToPlaySeatIndex()));
         playerActionResponse.setCurrentButtonUser(PokerUtils.getPlayerBySeatIndex(currentGame, round.getButtonSeatIndex()));
         playerActionResponse.setPlayersLastActions(PokerUtils.getRoundPlayersLastActionList(currentGame, round));
+
+        if(round.getRoundStep().equals(RoundStep.ACTION_NEEDED)){
+            playerActionResponse.setCardMisreads(getCardMisreads(round, currentGame));
+        }
 
         return playerActionResponse;
     }
@@ -138,26 +143,6 @@ public class RoundService {
                 .forEach(player -> cardMisreads.add(PokerUtils.createPlayerCardMisread(player, player.getHand())));
 
         return cardMisreads;
-    }
-
-    public PlayerActionResponse replaceCardMisread(CardMisreadRequest cardMisreadRequest, GameSession gameSession) throws PokerException {
-        Round currentRound = findRoundById(cardMisreadRequest.getRoundId(), gameSession);
-        if(!currentRound.getRoundStep().equals(RoundStep.ACTION_NEEDED)){
-            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_ALLOWED, PokerExceptionType.NO_CARD_MISREAD_ALLOWED.getMessage());
-        }
-
-        if(cardMisreadRequest.getPlayerSeatId().equals(0)){
-            currentRound.getBoard().setCommunityCards(cardMisreadRequest.getCards());
-        } else {
-            Player player = PokerUtils.getPlayerBySeatIndex(gameSession, cardMisreadRequest.getSeatIndex());
-            player.setHand(cardMisreadRequest.getCorrectCards());
-        }
-
-        if(areAllCardsReaded(currentRound, gameSession)){
-            currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
-        }
-
-        return buildPlayerActionResponse(gameSession, currentRound, cardMisreadRequest.getAction());
     }
 
     /**
