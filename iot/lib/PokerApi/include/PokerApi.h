@@ -27,7 +27,7 @@ public:
      */
     bool sendCard(String card[]);
 
-    bool decidingSendChips(std::vector<String> chips, bool canSend);
+    bool decidingSendChips(std::vector<String>* chips);
 
     /**
      * @brief receive value from the card of the consumer account to the connected account
@@ -72,7 +72,7 @@ private:
      * @param chips[x] the jetons of the player
      * @return true if the transaction is a success
      */
-    bool sendChips(std::vector<String> chips);
+    bool sendChips(std::vector<String>* chips);
 
 };
 

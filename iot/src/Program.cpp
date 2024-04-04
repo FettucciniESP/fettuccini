@@ -1,5 +1,7 @@
 #include "Program.h"
 #include <WiFi.h>
+#include <soc/soc.h> //disable brownour problems
+#include <soc/rtc_cntl_reg.h> //disable brownour problems
 
 void initWiFi() {
     WiFi.mode(WIFI_STA);
@@ -14,13 +16,14 @@ void initWiFi() {
 
 
 Program::Program() {
+    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector in
     // Startup
     Serial.begin(MONITOR_SPEED);
 
     delay(2000);
     Serial.println("Hello!");
     //Screen
-
+    initWiFi();
     // Wire.setPins(15, 14);
     // Wire.begin();
     // this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
@@ -28,7 +31,7 @@ Program::Program() {
 
     //Screen
 
-    //this->api = new PokerApi(IP, PORT);
+    this->api = new PokerApi(IP, PORT);
 
 
     this->NFCTocken = new NfcTokenReader(Serial2);
@@ -81,7 +84,7 @@ void Program::loop() {
             this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
             Serial.println(NFCTocken->stringifyId(&it));
         }
-        //api->decidingSendChips(this->NFCTocken->chips, this->NFCTocken->chipsPresent); //XXX
+        api->decidingSendChips(this->NFCTocken->chips); //XXX
     }
     // END NFC token
 

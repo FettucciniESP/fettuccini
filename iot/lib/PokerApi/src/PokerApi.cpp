@@ -39,14 +39,15 @@ bool PokerApi::sendCard(String card[]) {
     return sortie;
 }
 
-bool PokerApi::sendChips(std::vector<String> chips) {
+bool PokerApi::sendChips(std::vector<String>* chips) {
     bool sortie = true;
     this->http->begin(*this->client, this->ip, this->port, API_CHIP);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    for (int i = 0; i < chips.size(); i++) {
-        body["chipsId"][i] = chips[i];
+    body["seat"] = SEAT_1;
+    for (int i = 0; i < chips->size(); i++) {
+        body["chipsId"][i] = chips->at(i);
     }
     int resp = this->http->POST(JSON.stringify(body));
     if (resp == 401) {  // 401 = Unauthorized
@@ -59,15 +60,18 @@ bool PokerApi::sendChips(std::vector<String> chips) {
     return sortie;
 }
 
-bool PokerApi::decidingSendChips(std::vector<String> chips, bool canSend) {
+bool PokerApi::decidingSendChips(std::vector<String>* chips) {
     if(chips != this->chips) {
         this->chips = chips;
         this->lastUpTimeChip = millis();
     }
 
-    if(this->canSend && (millis() - this->lastUpTime <= 5000)) {
-        this->sendChips(this->chips);
+    if(!this->chips->empty() && millis() - this->lastUpTimeChip >= 5000) {
+        bool res = this->sendChips(this->chips);
+        this->chips = {};
+        return res;
     }
+    return false;
 }
 
 bool PokerApi::receiveFromNFC(String NFCID, int amount) {

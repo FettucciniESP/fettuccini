@@ -11,7 +11,7 @@
 
 #include "OledScreen.h"
 #include "NfcTokenReader.h"
-//#include "PokerApi.h" // XXX
+#include "PokerApi.h" // XXX
 #include "NfcCardReader.h"
 
 class Program {
@@ -29,7 +29,7 @@ public:
 
 private:
     OledScreen *screen;
-    // PokerApi* api; //XXX
+    PokerApi* api; //XXX
 
     NfcTokenReader* NFCTocken;
 
