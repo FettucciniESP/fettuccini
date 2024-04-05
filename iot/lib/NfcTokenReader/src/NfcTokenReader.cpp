@@ -25,7 +25,7 @@ bool NfcTokenReader::init(){
         while (this->serial->available() > 0){
             for(byte j: REP_TRAMES[repnb]){
                 if(this->serial->read() != j){
-                    Serial.println("NFC reader init failed");
+                    //Serial.println("NFC reader init failed");
                     return false;
                 }
             }
@@ -111,7 +111,7 @@ void NfcTokenReader::shortToken(){
             this->iso_15693->push_back(std::vector<byte>(tokentypeIt, tokentypeIt+8));
             tokentypeIt += 9;
         }else{
-            Serial.println("Error token type");
+            //Serial.println("Error token type");
         }
     }
 }
