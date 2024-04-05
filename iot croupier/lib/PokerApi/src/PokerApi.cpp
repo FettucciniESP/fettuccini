@@ -20,8 +20,9 @@ bool PokerApi::sendCard(String card[]) {
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    body["cardsId"][0] = card[0];
-    body["cardsId"][1] = card[1];
+    for(int i = 0; i > card->length(); i++){
+    body["cardsId"][i] = card[i];
+    }
     int resp = this->http->POST(JSON.stringify(body));
     if (resp == 401) {  // 401 = Unauthorized
         this->login();
