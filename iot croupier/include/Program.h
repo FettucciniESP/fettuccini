@@ -10,8 +10,8 @@
 #include <SPI.h>
 
 #include "OledScreen.h"
-#include "NfcTokenReader.h"
-#include "PokerApi.h" // XXX
+//#include "NfcTokenReader.h"
+#include "PokerApi.h"
 #include "NfcCardReader.h"
 
 class Program {
@@ -31,7 +31,7 @@ private:
     OledScreen *screen;
     PokerApi* api; //XXX
 
-    NfcTokenReader* NFCTocken;
+    // NfcTokenReader* NFCTocken;
 
     NfcCardReader* card1;
     NfcCardReader* card2;
