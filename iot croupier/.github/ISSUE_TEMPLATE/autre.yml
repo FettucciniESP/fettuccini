@@ -1,0 +1,11 @@
+name: Autre
+description: Tout autre éléments liée au projet
+title: ""
+labels: []
+body:
+  - type: textarea
+    id: detail
+    attributes:
+      label: Details
+    validations:
+      required: true
