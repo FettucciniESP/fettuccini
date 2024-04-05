@@ -61,13 +61,15 @@ bool PokerApi::sendChips(std::vector<String>* chips) {
 }
 
 bool PokerApi::decidingSendChips(std::vector<String>* chips) {
-    if(chips != this->chips) {
+    if(chips != this->chips && !chips->empty()) {
         this->chips = chips;
+        this->canSendChips = true;
         this->lastUpTimeChip = millis();
     }
 
-    if(!this->chips->empty() && millis() - this->lastUpTimeChip >= 5000) {
+    if(this->canSendChips && millis() - this->lastUpTimeChip >= 5000) {
         bool res = this->sendChips(this->chips);
+        this->canSendChips = false;
         this->chips = {};
         return res;
     }
