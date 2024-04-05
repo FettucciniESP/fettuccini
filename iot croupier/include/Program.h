@@ -9,7 +9,7 @@
 #include <Wire.h>
 #include <SPI.h>
 
-#include "OledScreen.h"
+// #include "OledScreen.h"
 //#include "NfcTokenReader.h"
 #include "PokerApi.h"
 #include "NfcCardReader.h"
@@ -28,8 +28,8 @@ public:
     void loop();
 
 private:
-    OledScreen *screen;
-    PokerApi* api; //XXX
+    // OledScreen *screen;
+    PokerApi* api;
 
     // NfcTokenReader* NFCTocken;
 
