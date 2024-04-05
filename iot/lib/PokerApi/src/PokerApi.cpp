@@ -14,18 +14,18 @@ PokerApi::PokerApi(String ip, int port, String user, String password) {
     this->token = "";
 }
 
-bool PokerApi::sendCard(String card[]) {
+bool PokerApi::sendCard(String firstCard, String secondCard) {
     bool sortie = true;
     this->http->begin(*this->client, this->ip, this->port, API_CARD);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    body["cardsId"][0] = card[0];
-    body["cardsId"][1] = card[1];
+    body["cardsId"][0] = firstCard;
+    body["cardsId"][1] = secondCard;
     int resp = this->http->POST(JSON.stringify(body));
     if (resp == 401) {  // 401 = Unauthorized
         this->login();
-        this->sendCard(card);
+        this->sendCard(firstCard, secondCard);
     } else if (resp != 201) {
 #ifdef DEBUG
         Serial.print("Error while sending Card : ");
@@ -70,6 +70,21 @@ bool PokerApi::decidingSendChips(std::vector<String>* chips) {
         bool res = this->sendChips(this->chips);
         this->chips = {};
         return res;
+    }
+    return false;
+}
+
+bool PokerApi::decidingSendCards(String firstCard, String secondCard) {
+    if (firstCard != this->card1 && secondCard != this->card2) {
+        this->card1 = firstCard;
+        this->card2 = secondCard;
+        this->canSendCards = true;
+    }
+
+    if(this->canSendCards) {
+        this->sendCard(firstCard, secondCard);
+        this->canSendCards = false;
+        return true;
     }
     return false;
 }

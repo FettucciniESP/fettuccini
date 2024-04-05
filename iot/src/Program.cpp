@@ -90,15 +90,17 @@ void Program::loop() {
 
     // START NFC card
     String val1 = this->card1->read();
-    if(val1 != ""){
-        Serial.print("new card 1 : ");
-        Serial.println(val1);
-    }
+    // if(val1 != ""){
+    //     Serial.print("new card 1 : ");
+    //     Serial.println(val1);
+    // }
 
+    String val2 = "Value_card_2";
     // String val2 = this->card2->read();
     // if(val2 != ""){
     //     Serial.print("new card 2 : ");
     //     Serial.println(val2);
     // }
     // END NFC cad
+    this->api->decidingSendCards(val1, val2);
 }
