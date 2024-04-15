@@ -8,6 +8,8 @@ import { croupierLoadingService } from "@/app/services/croupier-loading.service"
 import { StartGameResponseModel } from "@/app/models/StartGameResponse.model";
 import { croupierService } from "@/app/services/croupier.service";
 import { NextRouter, useRouter } from "next/router";
+import {LevelInfosModel} from "@/app/models/LevelInfos.model";
+import SeatsSelection from "@/app/components/design-system/seats-selection/SeatsSelection";
 
 const labels = {
     STRUCTURE: "STRUCTURE",
@@ -15,6 +17,7 @@ const labels = {
     REGISTRATION_MAX: "TEMPS D'INSCRIPTION MAX",
     MULTI_TABLE: "PLUSIEURS TABLES",
     COST_ENTRY: "COÛT D'ENTRÉE",
+    PLAYERS: "JOUEURS",
 };
 
 const titles = {
@@ -30,36 +33,48 @@ const buttonTitles = {
 
 export default function SettingLobby() {
     const [isSettingDone, setIsSettingDone] = useState(false);
+    const [seatsSelectionIsOpen, setSeatsSelectionIsOpen] = useState(false);
 
     const router: NextRouter = useRouter();
 
-    const [stucture, setStructure] = useState("");
-    const [stacks, setStacks] = useState(null);
-    const [registrationMax, setRegistrationMax] = useState("");
+    const [stucture, setStructure] = useState<Array<LevelInfosModel>>([]);
+    const [stacks, setStacks] = useState<number>(0);
+    const [registrationMax, setRegistrationMax] = useState<number>(0);
     // const [multiTable, setMultiTable] = useState(false);
-    const [costEntry, setCostEntry] = useState(null);
+    const [costEntry, setCostEntry] = useState<number>(0);
+    const [seatsIndex, setSeatsIndex] = useState<Array<number>>([]);
 
-    const handleChangeStructure = (value: string): void => {
+    const closeSeatsSelection = () => {
+        setSeatsSelectionIsOpen(false);
+    }
+
+    const handleChangeStructure = (value: Array<LevelInfosModel>): void => {
         setStructure(value);
     };
     const handleChangeStacks = (value: number): void => {
         setStacks(value);
     };
-    const handleChangeRegistrationMax = (value: string): void => {
+    const handleChangeRegistrationMax = (value: number): void => {
         setRegistrationMax(value);
     };
     const handleChangeCostEntry = (value: number): void => {
         setCostEntry(value);
     };
 
+    const handleChangeSeatsIndex = (value: Array<number>): void => {
+        setSeatsIndex(value);
+    };
+
+    const openSeatsSelection = () => {
+        setSeatsSelectionIsOpen(true);
+    }
+
     const handleClickButtonStructure = () => {
         console.log("structure openstructure openstructure open modal");
-        handleChangeStructure("TEST STRUCTURE");
     };
 
     const handleClickButtonRegistration = () => {
         console.log("registration open modal");
-        handleChangeRegistrationMax("TEST REGISTRATION");
     };
 
     const handleClickButtonLoad = () => {
@@ -122,9 +137,9 @@ export default function SettingLobby() {
                 duration: 10,
               }
             ],
-            seatsIndex: [1,2,3,4,5,6],
-            startingStack: 20000,
-            authorizedReentryLevelIndex: 3,
+            seatsIndex: seatsIndex,
+            startingStack: stacks,
+            authorizedReentryLevelIndex: registrationMax,
         }
         croupierLoadingService
             .startNewGame(defaultStructure)
@@ -143,6 +158,7 @@ export default function SettingLobby() {
                 title: labels.COST_ENTRY,
                 value: costEntry ? `${costEntry + " €"}` : costEntry,
             },
+            { title: labels.PLAYERS, value: seatsIndex },
         ];
 
         return (
@@ -151,7 +167,7 @@ export default function SettingLobby() {
                     return (
                         <Box className={styles.textContainer} key={i}>
                             <Text className={styles.textSetting}>{element.title}</Text>
-                            <Text className={styles.textSetting}>{element.value}</Text>
+                            <Text className={styles.textSetting}>{element.value.toString()}</Text>
                         </Box>
                     );
                 })}
@@ -189,13 +205,15 @@ export default function SettingLobby() {
             <Box>
                 <Text className={styles.titlePage}>{titles.TITLE_PAGE}</Text>
             </Box>
+            {seatsSelectionIsOpen && (
+                <SeatsSelection modalIsOpen={seatsSelectionIsOpen} onCloseFunction={closeSeatsSelection} seatsIndex={seatsIndex} handleChangeSeatsIndex={handleChangeSeatsIndex} />)}
             <Box className={styles.mainSettingContainer}>
                 <Box className={styles.settingContainer}>
                     <Box className={styles.inputContainer}>
                         <InputLabelIcon
                             label={labels.STRUCTURE}
                             handleClick={handleClickButtonStructure}
-                            currentValue={stucture}
+                            currentValue={stucture.toString()}
                             type={InputLabelIcon.types.BUTTON}
                             isUpperCase
                         />
@@ -226,6 +244,13 @@ export default function SettingLobby() {
                             currentValue={costEntry}
                             type={InputLabelIcon.types.NUMBER}
                             customAddToText={"€"}
+                        />
+
+                        <InputLabelIcon
+                            label={labels.PLAYERS}
+                            handleClick={openSeatsSelection}
+                            currentValue={seatsIndex.toString()}
+                            type={InputLabelIcon.types.BUTTON}
                         />
                     </Box>
 

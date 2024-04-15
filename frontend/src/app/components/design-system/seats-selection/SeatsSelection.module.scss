@@ -1,0 +1,42 @@
+.informationPanel {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 2.5vw;
+  margin-bottom: 5vh;
+  color: white;
+  text-align: center;
+}
+
+.fettucciniContainer {
+  height: auto !important;
+}
+
+.topInformationPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1vw;
+}
+
+
+.bottomInformationPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1vw;
+}
+
+.seatLabel {
+  margin-bottom: 1vh;
+}
+
+.seatButtonIcon {
+  background: none !important;
+  color: white !important;
+  font-size: 3vw !important;
+}
