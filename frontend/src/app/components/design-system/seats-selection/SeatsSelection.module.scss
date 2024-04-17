@@ -14,6 +14,9 @@
 
 .fettucciniContainer {
   height: auto !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .topInformationPanel {

@@ -1,7 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import InputLabelIcon from "@/app/components/design-system/control/inputs/input-label/InputLabelIcon";
-// import SwitchLabel from "@/app/components/design-system/control/checkbox/single/switch-label/SwitchLabel";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
 import { croupierLoadingService } from "@/app/services/croupier-loading.service";
@@ -231,12 +230,6 @@ export default function SettingLobby() {
                             currentValue={registrationMax}
                             type={InputLabelIcon.types.BUTTON}
                         />
-
-                        {/* <SwitchLabel
-            label={labels.MULTI_TABLE}
-            handleChangeCurrentValue={handleChangesetMultiTable}
-            currentValue={multiTable}
-          /> */}
 
                         <InputLabelIcon
                             label={labels.COST_ENTRY}
