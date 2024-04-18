@@ -1,5 +1,8 @@
 #include "Program.h"
 #include <WiFi.h>
+#include <WebServer_WT32_ETH01.h>
+#include <HTTPClient.h>
+
 #include <soc/soc.h> //disable brownour problems
 #include <soc/rtc_cntl_reg.h> //disable brownour problems
 
@@ -14,6 +17,13 @@ void initWiFi() {
     Serial.println(WiFi.localIP());
 }
 
+void ethernetWT32Init(){
+    WT32_ETH01_onEvent();
+    ETH.begin(ETH_PHY_ADDR, ETH_PHY_POWER);
+    WT32_ETH01_waitForConnect();
+}
+
+
 
 Program::Program() {
     WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector in
@@ -24,9 +34,9 @@ Program::Program() {
     Serial.println("Hello!");
 
 
-    initWiFi();
+    //initWiFi();
 
-    this->api = new PokerApi(IP, PORT);
+    //this->api = new PokerApi(IP, PORT);
 
     //Card Reader
 
