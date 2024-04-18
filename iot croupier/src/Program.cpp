@@ -33,30 +33,42 @@ Program::Program() {
     delay(2000);
     Serial.println("Hello!");
 
+    ethernetWT32Init();
 
-    //initWiFi();
-
-    //this->api = new PokerApi(IP, PORT);
+    this->api = new PokerApi(IP, PORT);
 
     //Card Reader
 
-    bool card1Connected = 0;
-    bool card2Connected = 0;
 
+    bool card1Connected = 0;
     this->card1 = new NfcCardReader(Serial1);
     while (!card1Connected){
         card1Connected = card1->connect();
     }
 
+    bool card2Connected = 0;
     this->card2 = new NfcCardReader(Serial2);
-    while (!card1Connected){
-        card1Connected = card2->connect();
+    while (!card2Connected){
+        card2Connected = card2->connect();
     }
+
+    // bool card3Connected = 0;
+    // this->card3 = new NfcCardReader(Serial);
+    // while (!card3Connected){
+    //     card3Connected = card3->connect();
+    // }
 
     delay(100);
 }
 
 void Program::loop() {
+
+    //TEST API :
+
+    delay(2000);
+    String card[] = {"10","10"};
+    api->sendCard(card);
+
     // START NFC card
     String val1 = this->card1->read();
     if(val1 != ""){
@@ -69,5 +81,11 @@ void Program::loop() {
         Serial.print("new card 2 : ");
         Serial.println(val2);
     }
+
+    // String val3 = this->card3->read();
+    // if(val3 != ""){
+    //     Serial.print("new card 3 : ");
+    //     Serial.println(val3);
+    // }
     // END NFC cad
 }

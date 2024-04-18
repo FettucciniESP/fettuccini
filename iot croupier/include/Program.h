@@ -35,6 +35,7 @@ private:
 
     NfcCardReader* card1;
     NfcCardReader* card2;
+    NfcCardReader* card3;
 };
 
 #endif

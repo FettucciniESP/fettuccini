@@ -9,19 +9,25 @@ PokerApi::PokerApi(String ip, int port, String user, String password) {
     this->username = user;
     this->password = password;
 
-    this->client = new WiFiClient();
+    // this->client = new WiFiClient();
     this->http = new HTTPClient();
     this->token = "";
 }
 
+//route : poker/boardCards
+//communityCardType:FLOP/TURN/RIVER
+//cardsId: [...]
 bool PokerApi::sendCard(String card[]) {
     bool sortie = true;
-    this->http->begin(*this->client, this->ip, this->port, API_CARD);
+    this->http->begin(this->ip, this->port, API_CARD);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    for(int i = 0; i > card->length(); i++){
-    body["cardsId"][i] = card[i];
+    for(int i = 0; i < card->length(); i++){
+        body["cardsId"][i] = card[i];
+#ifdef DEBUG
+        Serial.print(card[i]);
+#endif
     }
     int resp = this->http->POST(JSON.stringify(body));
     if (resp == 401) {  // 401 = Unauthorized
@@ -33,6 +39,7 @@ bool PokerApi::sendCard(String card[]) {
         Serial.println(resp);
         Serial.println(this->http->errorToString(resp));
         Serial.println(this->http->getString());
+        Serial.println(JSON.stringify(body));
 #endif
         sortie = false;
     }
@@ -42,7 +49,7 @@ bool PokerApi::sendCard(String card[]) {
 
 bool PokerApi::sendChips(std::vector<String>* chips) {
     bool sortie = true;
-    this->http->begin(*this->client, this->ip, this->port, API_CHIP);
+    this->http->begin(this->ip, this->port, API_CHIP);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;

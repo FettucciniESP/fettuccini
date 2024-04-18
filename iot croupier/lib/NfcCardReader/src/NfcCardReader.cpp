@@ -24,14 +24,14 @@ bool NfcCardReader::connect() {
 
     uint32_t versiondata = this->nfc->getFirmwareVersion();
     if (! versiondata){
-        Serial.println("PN53x card not found!");
+        //Serial.println("PN53x card not found!");
         return false;
     }
 
     //port
-    Serial.print("Found chip PN5"); Serial.println((versiondata >> 24) & 0xFF, HEX);
-    Serial.print("Firmware version: "); Serial.print((versiondata >> 16) & 0xFF, DEC);
-    Serial.print('.'); Serial.println((versiondata >> 8) & 0xFF, DEC);
+    //Serial.print("Found chip PN5"); Serial.println((versiondata >> 24) & 0xFF, HEX);
+    //Serial.print("Firmware version: "); Serial.print((versiondata >> 16) & 0xFF, DEC);
+    //Serial.print('.'); Serial.println((versiondata >> 8) & 0xFF, DEC);
 
     // Set the max number of retry attempts to read from a card
     // This prevents us from waiting forever for a card, which is
@@ -41,9 +41,9 @@ bool NfcCardReader::connect() {
     // configure board to read RFID tags
     this->nfc->SAMConfig();
 
-    Serial.print("Waiting for card on reader : ");
-    Serial.println(NfcCardReader::readerNb);
-    Serial.println("");
+    //Serial.print("Waiting for card on reader : ");
+    //Serial.println(NfcCardReader::readerNb);
+    //Serial.println("");
 
     return true;
 }

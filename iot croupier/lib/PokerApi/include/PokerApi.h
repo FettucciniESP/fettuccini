@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <HTTPClient.h>
-#include <WiFiClient.h>
 #include <vector>
 
 class PokerApi {
@@ -58,7 +57,7 @@ private:
     int port;
 
     HTTPClient* http;
-    WiFiClient* client;
+    // WiFiClient* client;
 
     //Chips call setting
     bool canSendChips = false;
