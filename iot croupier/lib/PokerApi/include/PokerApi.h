@@ -21,10 +21,10 @@ public:
      * @brief send the id of the player card
      *
      * @param seat id of the seat on the table
-     * @param card[2] the card of the player
+     * @param std::vector<String>* card the card of the player
      * @return true if the transaction is a success
      */
-    bool sendCard(String card[]);
+    bool sendCard(std::vector<String>* card);
 
     bool decidingSendChips(std::vector<String>* chips);
 

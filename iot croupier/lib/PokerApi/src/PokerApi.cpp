@@ -17,14 +17,15 @@ PokerApi::PokerApi(String ip, int port, String user, String password) {
 //route : poker/boardCards
 //communityCardType:FLOP/TURN/RIVER
 //cardsId: [...]
-bool PokerApi::sendCard(String card[]) {
+bool PokerApi::sendCard(std::vector<String>* card) {
     bool sortie = true;
     this->http->begin(this->ip, this->port, API_CARD);
     this->http->addHeader("Authorization", "Bearer " + this->token);
     this->http->addHeader("Content-Type", "application/json");
     JSONVar body;
-    for(int i = 0; i < card->length(); i++){
-        body["cardsId"][i] = card[i];
+    body["communityCardType"] = "FLOP";
+    for(int i = 0; i < card->size(); i++){
+        body["cardsId"][i] = card->at(i);
 #ifdef DEBUG
         Serial.print(card[i]);
 #endif

@@ -59,33 +59,57 @@ Program::Program() {
     // }
 
     delay(100);
+
+    this->sendedCard = false;
+
+    this->cardId = new std::vector<String>({"","",""});
+
 }
 
 void Program::loop() {
-
-    //TEST API :
-
-    delay(2000);
-    String card[] = {"10","10"};
-    api->sendCard(card);
-
     // START NFC card
+
     String val1 = this->card1->read();
     if(val1 != ""){
-        Serial.print("new card 1 : ");
+        cardId->at(0) = val1;
         Serial.println(val1);
     }
 
     String val2 = this->card2->read();
     if(val2 != ""){
-        Serial.print("new card 2 : ");
+        cardId->at(1) = val2;
         Serial.println(val2);
     }
 
     // String val3 = this->card3->read();
     // if(val3 != ""){
-    //     Serial.print("new card 3 : ");
-    //     Serial.println(val3);
+    //     cardId->at(2) = val3;
+    //     cardId[2] = val3;
     // }
+        cardId->at(2) = "poeut";
     // END NFC cad
+
+    //SEND API
+
+    delay(1000);
+    this->api->sendCard(this->cardId);
+
+    // if(!this->sendedCard){
+    //     this->sendedCard = true;
+    //     api->sendCard(this->cardId);
+    //     for (int i = 0; i <= this->cardId->length(); i++){
+    //         this->cardId[i] = "";
+    //     }
+    // }else{
+    //     for (int i = 0; i < this->cardId->length(); i++){
+    //         if(this->cardId[i] == ""){
+    //             this->sendedCard = true;
+    //             i = this->cardId->length();
+    //         }else{
+    //             this->sendedCard = false;
+    //         }
+    //     }
+    // }
+
+    //END API
 }

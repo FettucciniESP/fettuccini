@@ -13,6 +13,7 @@
 //#include "NfcTokenReader.h"
 #include "PokerApi.h"
 #include "NfcCardReader.h"
+#include <vector>
 
 class Program {
 public:
@@ -36,6 +37,9 @@ private:
     NfcCardReader* card1;
     NfcCardReader* card2;
     NfcCardReader* card3;
+
+    std::vector<String>* cardId;
+    bool sendedCard;
 };
 
 #endif
