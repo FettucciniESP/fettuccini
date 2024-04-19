@@ -8,7 +8,7 @@ import usePlayerSeatInformations
     from "@/app/components/information-panel/player-seat-informations/usePlayerSeatInformations";
 import PlayerAction from "@/app/components/information-panel/player-seat-informations/player-action/PlayerAction";
 
-const BLUE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Bleu.png');
+const DEALER_TOKEN_IMAGE = require('../../../assets/images/dealer_button_icon.png');
 const WHITE_TOKEN_IMAGE = require('../../../assets/images/jeton_poker_v3_Blanc.png');
 
 export default function PlayerSeatInformations({
@@ -23,11 +23,13 @@ export default function PlayerSeatInformations({
     readonly currentPlayerSeatIndex: number
 }) {
 
-    const {seatPlaying} = usePlayerSeatInformations();
+    const {seatPlaying, playerSelected} = usePlayerSeatInformations();
 
     return (
         <FettucciniContainer variantStyle={seatPlaying(playerHandInfos, currentPlayerSeatIndex)}>
-            <Box className={styles.header}>
+            <Box className={styles.header+" "+(playerSelected() === true
+                ? styles.headerIsSelected
+                : " ")}>
                 <Text>Siège {seatIndex}</Text>
             </Box>
             <PlayerAction playerHandInfos={playerHandInfos} />
@@ -38,12 +40,14 @@ export default function PlayerSeatInformations({
                         alt="icone action"
                         className={styles.imgBalance}
                     />
-                    <Box className={styles.balanceContainer}>
+                    <Box className={styles.balanceContainer+" "+(playerSelected() === true
+                        ? styles.chipIsSelected
+                        : " ")}>
                         <Text className={styles.balanceValue}>{playerHandInfos.player.balance}</Text>
                     </Box>
                 </StackContainer>
                 {seatIndex === buttonSeatIndex && <Image
-                    src={BLUE_TOKEN_IMAGE}
+                    src={DEALER_TOKEN_IMAGE}
                     alt="icone action"
                     className={styles.imgSeatInformation}
                 />}

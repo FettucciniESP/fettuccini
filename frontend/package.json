@@ -13,7 +13,10 @@
     "test:cypress:components": "cross-env NODE_ENV=test cypress run --component"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/modal": "^2.3.1",
     "@chakra-ui/react": "^2.8.2",
+    "@colors/colors": "^1.6.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "axios": "^1.6.2",
@@ -34,6 +37,8 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.12.24",
+    "@swc/cli": "^0.3.12",
+    "@swc/core": "^1.4.11",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",

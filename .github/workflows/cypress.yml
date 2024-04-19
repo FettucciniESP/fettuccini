@@ -17,6 +17,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Cache Cypress binary
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -34,6 +41,8 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Install Cypress Binary
+        run: pnpm exec cypress install
       - name: Run Cypress Component Tests with Environment Variable
         run: pnpm run test:cypress:components
       - name: Generate Coverage Report

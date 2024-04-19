@@ -25,9 +25,9 @@ class CroupierService {
     return this.sessionId;
   }
 
-  async startNewGame(): Promise<StartGameResponseModel> {
+  async startNewGame(defaultStructure: any): Promise<StartGameResponseModel> {
     try {
-      const response = await this.axiosInstance.post(`/start`);
+      const response = await this.axiosInstance.post(`/start`, defaultStructure);
       return response.data;
     } catch (error: any) {
       throw toastService.pushError(error?.response?.data);

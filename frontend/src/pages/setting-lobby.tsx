@@ -10,16 +10,40 @@ import { Titles } from "@/app/enums/Titles.enum";
 import InputLabelIcon from "@/app/components/design-system/control/inputs/input-label/InputLabelIcon";
 import styles from "@/app/assets/styles/setting-lobby.module.scss";
 import ButtonIcon from "@/app/components/design-system/control/buttons/button-icon/ButtonIcon";
-import ModalStructure from "@/app/components/design-system/control/modal/structure/ModalStructure";
+import { croupierLoadingService } from "@/app/services/croupier-loading.service";
+import { StartGameResponseModel } from "@/app/models/StartGameResponse.model";
+import { croupierService } from "@/app/services/croupier.service";
+import { NextRouter, useRouter } from "next/router";
+
+const labels = {
+  STRUCTURE: "STRUCTURE",
+  STACKS: "STACKS",
+  REGISTRATION_MAX: "TEMPS D'INSCRIPTION MAX",
+  MULTI_TABLE: "PLUSIEURS TABLES",
+  COST_ENTRY: "COÛT D'ENTRÉE",
+};
+
+const titles = {
+  TITLE_PAGE: "PARAMÈTRES DE LA PARTIE",
+  TITLE_SECTION: "PARAMÈTRES UTILISÉS",
+};
+
+const buttonTitles = {
+  LOAD: "CHARGER",
+  SAVE: "ENREGISTRER",
+  START: "COMMENCER",
+};
 
 export default function SettingLobby() {
-  const [isSettingDone, setIsSettingDone] = useState<boolean>(false);
-  const [isModalOpen, setIsOpenModal] = useState<boolean>(true);
-  const [stucture, setStructure] = useState<null | string>(null);
-  const [stacks, setStacks] = useState<null | string>(null);
-  const [registrationMax, setRegistrationMax] = useState<null | string>(null);
-  const [costEntry, setCostEntry] = useState<null | string>(null);
+  const [isSettingDone, setIsSettingDone] = useState(false);
+
+  const router: NextRouter = useRouter();
+
+  const [stucture, setStructure] = useState("");
+  const [stacks, setStacks] = useState(null);
+  const [registrationMax, setRegistrationMax] = useState("");
   // const [multiTable, setMultiTable] = useState(false);
+  const [costEntry, setCostEntry] = useState(null);
 
   const handleChangeStructure = (value: string): void => {
     setStructure(value);
@@ -30,103 +54,105 @@ export default function SettingLobby() {
   const handleChangeRegistrationMax = (value: string): void => {
     setRegistrationMax(value);
   };
-  // const handleChangesetMultiTable = (value: boolean): void => {
-  //   setMultiTable(value);
-  // };
   const handleChangeCostEntry = (value: number): void => {
     setCostEntry(value);
   };
-  const hangdleOnClickButtonStructure = () => {
-    setIsOpenModal(!isModalOpen);
-    // handleChangeStructure("TEST STRUCTURE");
+
+  const handleClickButtonStructure = () => {
+    console.log("structure openstructure openstructure open modal");
+    handleChangeStructure("TEST STRUCTURE");
   };
-  const hangdleOnClickButtonRegistration = () => {
+
+  const handleClickButtonRegistration = () => {
+    console.log("registration open modal");
     handleChangeRegistrationMax("TEST REGISTRATION");
   };
-  const hangdleOnClickButtonLoad = () => {
+
+  const handleClickButtonLoad = () => {
     console.log("load button");
   };
-  const hangdleOnClickButtonSave = () => {
+
+  const handleClickButtonSave = () => {
     console.log("save button");
   };
-  const hangdleOnClickButtonStart = () => {
-    console.log("start button");
+
+  const handleClickButtonStart = () => {
+    const defaultStructure = {
+      levels: [
+        {
+          levelIndex: 1,
+          label: "",
+          smallBlind: 10,
+          bigBlind: 20,
+          ante: 0,
+          duration: 1,
+        },
+        {
+          levelIndex: 0,
+          label: "Break time 5 minutes",
+          smallBlind: 15,
+          bigBlind: 30,
+          ante: 0,
+          duration: 1,
+        },
+        {
+          levelIndex: 3,
+          label: "",
+          smallBlind: 20,
+          bigBlind: 40,
+          ante: 0,
+          duration: 10,
+        },
+        {
+          levelIndex: 2,
+          label: "",
+          smallBlind: 15,
+          bigBlind: 30,
+          ante: 0,
+          duration: 10,
+        },
+        {
+          levelIndex: 3,
+          label: "",
+          smallBlind: 20,
+          bigBlind: 40,
+          ante: 0,
+          duration: 10,
+        },
+        {
+          levelIndex: 4,
+          label: "",
+          smallBlind: 25,
+          bigBlind: 50,
+          ante: 0,
+          duration: 10,
+        },
+      ],
+      seatsIndex: [1, 2, 3, 4, 5, 6],
+      startingStack: 20000,
+      authorizedReentryLevelIndex: 3,
+    };
+    croupierLoadingService
+      .startNewGame(defaultStructure)
+      .then((startGameResponse: StartGameResponseModel) => {
+        croupierService.getGameInformations(startGameResponse);
+        router.push("/croupier-interface");
+      });
   };
-  const handleChangeModalStatus = (bool: boolean) => {
-    setIsOpenModal(bool);
-  };
 
-  const renderInputContent = () => {
-    return (
-      <Box className={styles.inputContainer}>
-        <InputLabelIcon
-          label={InputLabels.STRUCTURE}
-          hangdleOnClick={hangdleOnClickButtonStructure}
-          currentValue={stucture}
-          type={InputLabelIcon.types.BUTTON}
-          isUpperCase
-        />
-
-        <InputLabelIcon
-          label={InputLabels.STACKS}
-          handleChangeCurrentValue={handleChangeStacks}
-          currentValue={stacks}
-          type={InputLabelIcon.types.NUMBER}
-        />
-
-        <InputLabelIcon
-          label={InputLabels.REGISTRATION_MAX}
-          hangdleOnClick={hangdleOnClickButtonRegistration}
-          currentValue={registrationMax}
-          type={InputLabelIcon.types.BUTTON}
-        />
-
-        {/* <SwitchLabel
-            label={InputLabels.MULTI_TABLE}
-            handleChangeCurrentValue={handleChangesetMultiTable}
-            currentValue={multiTable}
-          /> */}
-
-        <InputLabelIcon
-          label={InputLabels.COST_ENTRY}
-          handleChangeCurrentValue={handleChangeCostEntry}
-          currentValue={costEntry}
-          type={InputLabelIcon.types.NUMBER}
-          customAddToText={"€"}
-        />
-      </Box>
-    );
-  };
-  const renderSettingContent = () => {
-    return (
-      <Box className={styles.sectionContainer}>
-        <Text className={styles.titleSection}>
-          {Titles.SETTING_LOBBY_TITLE_SECTION}
-        </Text>
-        <Box className={styles.settingSectionContainer}>
-          {renderSettingsSection()}
-        </Box>
-        <Box className={styles.buttonSectionContainer}>
-          {renderButtonSection()}
-        </Box>
-      </Box>
-    );
-  };
   const renderSettingsSection = () => {
     const sectionContent = [
-      { title: InputLabels.STRUCTURE, value: stucture },
-      { title: InputLabels.STACKS, value: stacks },
-      { title: InputLabels.REGISTRATION_MAX, value: registrationMax },
+      { title: labels.STRUCTURE, value: stucture },
+      { title: labels.STACKS, value: stacks },
+      { title: labels.REGISTRATION_MAX, value: registrationMax },
       {
-        title: InputLabels.COST_ENTRY,
-        value: costEntry
-          ? `${costEntry} ${InputEndTextLabels.EURO}`
-          : costEntry,
+        title: labels.COST_ENTRY,
+        value: costEntry ? `${costEntry + " €"}` : costEntry,
       },
     ];
 
     return (
-      <Box>
+      <>
         {sectionContent.map((element, i) => {
           return (
             <Box className={styles.textContainer} key={i}>
@@ -135,54 +161,89 @@ export default function SettingLobby() {
             </Box>
           );
         })}
-      </Box>
+      </>
     );
   };
+
   const renderButtonSection = () => {
     return (
-      <Box>
+      <>
         <Box className={styles.singleButtonContainer}>
           <ButtonIcon
-            label={ButtonLabels.LOAD}
-            hangdleOnClick={hangdleOnClickButtonLoad}
-            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
+            label={buttonTitles.LOAD}
+            handleClick={handleClickButtonLoad}
             icon={ButtonIcon.icons.LOAD}
           />
           <ButtonIcon
-            label={ButtonLabels.SAVE}
-            hangdleOnClick={hangdleOnClickButtonSave}
-            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
+            label={buttonTitles.SAVE}
+            handleClick={handleClickButtonSave}
             icon={ButtonIcon.icons.SAVE}
           />
         </Box>
         <Box className={styles.multiButtonContainer}>
           <ButtonIcon
-            label={ButtonLabels.START}
-            customStyle={ButtonIcon.customStyles.SETTING_LOBBY}
-            hangdleOnClick={hangdleOnClickButtonStart}
+            label={buttonTitles.START}
+            handleClick={handleClickButtonStart}
           />
         </Box>
-      </Box>
+      </>
     );
   };
 
   return (
     <Box className={styles.mainContainer}>
-      {isModalOpen ? (
-        <ModalStructure
-          isOpen={isModalOpen}
-          handleCloseModal={handleChangeModalStatus}
-        />
-      ) : null}
       <Box>
-        <Text className={styles.titlePage}>
-          {Titles.SETTING_LOBBY_TITLE_PAGE}
-        </Text>
+        <Text className={styles.titlePage}>{titles.TITLE_PAGE}</Text>
       </Box>
       <Box className={styles.mainSettingContainer}>
         <Box className={styles.settingContainer}>
-          {renderInputContent()}
-          {renderSettingContent()}
+          <Box className={styles.inputContainer}>
+            <InputLabelIcon
+              label={labels.STRUCTURE}
+              handleClick={handleClickButtonStructure}
+              currentValue={stucture}
+              type={InputLabelIcon.types.BUTTON}
+              isUpperCase
+            />
+
+            <InputLabelIcon
+              label={labels.STACKS}
+              handleChangeCurrentValue={handleChangeStacks}
+              currentValue={stacks}
+              type={InputLabelIcon.types.NUMBER}
+            />
+
+            <InputLabelIcon
+              label={labels.REGISTRATION_MAX}
+              handleClick={handleClickButtonRegistration}
+              currentValue={registrationMax}
+              type={InputLabelIcon.types.BUTTON}
+            />
+
+            {/* <SwitchLabel
+            label={labels.MULTI_TABLE}
+            handleChangeCurrentValue={handleChangesetMultiTable}
+            currentValue={multiTable}
+          /> */}
+
+            <InputLabelIcon
+              label={labels.COST_ENTRY}
+              handleChangeCurrentValue={handleChangeCostEntry}
+              currentValue={costEntry}
+              type={InputLabelIcon.types.NUMBER}
+              customAddToText={"€"}
+            />
+          </Box>
+
+          <Box className={styles.sectionContainer}>
+            <Text className={styles.titleSection}>{titles.TITLE_SECTION}</Text>
+            <Box className={styles.settingSectionContainer}>
+              {renderSettingsSection()}
+            </Box>
+            <Box className={styles.buttonSectionContainer}>
+              {renderButtonSection()}
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>

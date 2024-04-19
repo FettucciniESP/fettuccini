@@ -22,7 +22,7 @@ public class RoundValidationService {
      * @param round The current round of the game.
      * @throws PokerException if any validation fails.
      */
-    public void validatePayerActionRoundStep(PlayerActionRequest playerActionRequest, GameSession currentGame, Round round) throws PokerException {
+    public void validatePlayerActionRoundStep(PlayerActionRequest playerActionRequest, GameSession currentGame, Round round) throws PokerException {
         isPlayerActionForRoundAlreadyFinished(playerActionRequest, round);
         isPlayerActionSamePlayerThanExpected(playerActionRequest, round);
         isPlayerActionSameRoundStepThanExpected(playerActionRequest, round);
@@ -143,8 +143,9 @@ public class RoundValidationService {
 
         boolean isBetLowerThanHighest = highestBetValue != 0 && betAmount < highestBetValue;
         boolean isBetLowerThanBigBlind = highestBetValue == 0 && betAmount < bigBlindAmount;
+        boolean isBetIncreaseAmountLessThanBigBlind = highestBetValue != 0 && betAmount - highestBetValue < bigBlindAmount;
 
-        if(isBetLowerThanHighest || isBetLowerThanBigBlind) {
+        if(isBetLowerThanHighest || isBetLowerThanBigBlind || isBetIncreaseAmountLessThanBigBlind){
             throw new PokerException(PokerExceptionType.BAD_BET_AMOUNT,
                     String.format(PokerExceptionType.BAD_BET_AMOUNT.getMessage(), highestBetValue));
         }

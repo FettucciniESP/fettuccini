@@ -1,36 +1,41 @@
 package fr.fettuccini.backend.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
+import fr.fettuccini.backend.model.poker.Player;
+import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
+import fr.fettuccini.backend.model.request.StartGameRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
+import fr.fettuccini.backend.utils.PokerUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class PokerService {
     private final GameSessionRepository gameSessionRepository;
-    private final PokerEvaluatorService pokerEvaluatorService;
     private final RoundService roundService;
-    @Value("${defaultLevelsStructureFilePath}")
-    private String defaultLevelsStructureFilePath;
 
-    public StartGameResponse startGame() throws IOException {
+    public StartGameResponse startGame(StartGameRequest startGameRequest) {
+        List<Level> levels = startGameRequest.getLevels();
+
         var gameSession = new GameSession();
         gameSession.startGame();
-        gameSession.setLevelsStructure(initializeLevelsStructureFromJson());
+        gameSession.setLevelsStructure(levels);
+        gameSession.setAuthorizedReentryLevelIndex(startGameRequest.getAuthorizedReentryLevelIndex());
+        for (Player player : initializePlayers(startGameRequest.getSeatsIndex(), startGameRequest.getStartingStack())) {
+            gameSession.getPlayers().add(player);
+        }
 
         gameSessionRepository.save(gameSession);
 
@@ -38,6 +43,40 @@ public class PokerService {
                 playRound(gameSession.getId()),
                 gameSession. getLevelsStructure()
         );
+    }
+
+    public List<Player> initializePlayers(List<Integer> seatsIndex, Integer startingStack) {
+        List<Player> players = new ArrayList<>();
+        for (Integer seatIndex : seatsIndex) {
+            Player player = new Player();
+            player.setSeatIndex(seatIndex);
+            player.setBalance(startingStack);
+            player.setName("Seat " + seatIndex);
+            player.setHand(new HashSet<>());
+            players.add(player);
+        }
+        return players;
+    }
+    
+    public void addPlayer (Integer seatIndex, String sessionId) throws PokerException {
+        var gameSession = gameSessionRepository.findById(sessionId)
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
+        
+        if (gameSession.getPlayers().stream().anyMatch(player -> player.getSeatIndex().equals(seatIndex))) {
+            throw new PokerException(PokerExceptionType.PLAYER_ALREADY_EXISTS, String.format(PokerExceptionType.PLAYER_ALREADY_EXISTS.getMessage(), seatIndex));
+        }
+        if (Objects.requireNonNull(PokerUtils.getCurrentLevelByTime(gameSession)).getRoundIndex() > gameSession.getAuthorizedReentryLevelIndex()) {
+            throw new PokerException(PokerExceptionType.REENTRY_NOT_ALLOWED, PokerExceptionType.REENTRY_NOT_ALLOWED.getMessage());
+        }
+
+        Player player = new Player();
+        player.setSeatIndex(seatIndex);
+        player.setBalance(gameSession.getStartingStack());
+        player.setName("Seat " + seatIndex);
+        player.setHand(new HashSet<>());
+        gameSession.getPlayers().add(player);
+        gameSessionRepository.save(gameSession);
     }
 
     public PlayerActionResponse playRound(String sessionId) {
@@ -71,16 +110,5 @@ public class PokerService {
 
         gameSessionRepository.save(gameSession);
         return playerActionResponse;
-    }
-
-    public List<Level> initializeLevelsStructureFromJson() throws IOException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(defaultLevelsStructureFilePath);
-        if (inputStream == null) {
-            throw new IOException("Le fichier de structure de niveau par défaut est introuvable");
-        }
-        return (mapper.readValue(inputStream, new TypeReference<>() {
-        }));
     }
 }

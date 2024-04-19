@@ -29,7 +29,8 @@ export default function useActionButtons() {
 
   async function handleActionButtonClick(
     player: PlayerInfosModel,
-    action: GameActionEnum
+    action: GameActionEnum,
+    amount?: number,
   ): Promise<void> {
     try {
       if (!roundInfos) {
@@ -46,9 +47,8 @@ export default function useActionButtons() {
           playerAction = isCheckOrCall(player, roundInfos);
           break;
         case GameActionEnum.BET: {
-          const betAmount = prompt("Entrez le montant du pari :", "10");
-          if (betAmount !== null) {
-            playerAction.amount = parseInt(betAmount);
+          if (amount !== undefined && amount !== null && !Number.isNaN(amount)) {
+            playerAction.amount = amount;
           } else {
             return;
           }
@@ -72,7 +72,7 @@ export default function useActionButtons() {
             updateInformations(roundInfos);
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } catch (error: any) {
       toastService.pushError(error?.response?.data);
     }
@@ -107,7 +107,7 @@ export default function useActionButtons() {
   function calculateHighestBet(roundInfos: RoundInfosModel): number {
     const actions: PlayerActionModel[] =
       roundInfos.roundPlayersActionsHistory[
-        roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
+      roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
       ];
     return actions.reduce((max, action) => Math.max(max, action.amount), 0);
   }
@@ -118,7 +118,7 @@ export default function useActionButtons() {
   ): number {
     const actions: PlayerActionModel[] =
       roundInfos.roundPlayersActionsHistory[
-        roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
+      roundInfos.roundStep.toLowerCase() as keyof RoundPlayersActionsHistoryModel
       ];
     return actions
       .filter((action) => action.seatIndex === seatIndex)

@@ -2,10 +2,14 @@
 $blue-color: #182e3b;
 $dark-blue-color: #142530;
 $back-players-blue-color: #363E4B;
-$white-color: #ffffff;
+$white-color: rgba(255, 255, 255);
+$black-color: rgba(0,0,0,0.67);
 $red-color: #c60000;
-$gradient-blue-color: linear-gradient(#182e3b80, #182e3b80);
-$transparent-white-color: #f7f0e1bf;
+$white-color-low-opacity: rgba(255, 255, 255, 0.20);
+$white-color-medium-opacity: rgba(255, 255, 255, 0.40);
+$white-color-high-opacity: rgba(255, 255, 255, 0.70);
+$black-color-low-opacity: rgba(0, 0, 0, 0.25);
+$black-color-medium-opacity: rgba(0, 0, 0, 0.50);
 
 // Taille des polices
 $font-size-header: 2vw;
