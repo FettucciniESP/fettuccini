@@ -28,11 +28,11 @@ export default function SeatsSelection({modalIsOpen, onCloseFunction, seatsIndex
     }
 
     const getVariantStyle = (seatIndex: number) => {
-        return isSeatSelected(seatIndex) ? VariantStyleEnum.IS_SELECTED : VariantStyleEnum.DEFAULT;
+        return isSeatSelected(seatIndex) ? VariantStyleEnum.DEFAULT : VariantStyleEnum.DEFAULT;
     }
 
     const getIcon = (seatIndex: number) => {
-        return isSeatSelected(seatIndex) ? <Icon as={HiMinusCircle}/> : <Icon as={HiMiniPlusCircle}/>;
+        return isSeatSelected(seatIndex) ? <Icon className={styles.redIcon} as={HiMinusCircle}/> : <Icon as={HiMiniPlusCircle}/>;
     }
 
     return (
