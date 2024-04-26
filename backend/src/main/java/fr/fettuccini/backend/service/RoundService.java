@@ -1,9 +1,11 @@
 package fr.fettuccini.backend.service;
 
+import fr.fettuccini.backend.enums.CommunityCardType;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
+import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
@@ -73,6 +75,10 @@ public class RoundService {
             playerActionResponse.setCardMisreads(getCardMisreads(round, currentGame));
         }
 
+        if(!round.getWinners().isEmpty()){
+            playerActionResponse.setWinners(round.getWinners());
+        }
+
         return playerActionResponse;
     }
 
@@ -114,7 +120,7 @@ public class RoundService {
             Player winner = playersWithoutFold.get(0);
             winner.setBalance(winner.getBalance() + currentRound.getPotAmount());
             currentRound.setRoundStep(RoundStep.FINISHED);
-        } else if (currentRound.getRoundStep().equals(RoundStep.RIVER) && !areAllCardsReaded(currentRound, gameSession)){
+        } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED) && !areAllCardsReaded(currentRound, gameSession)){
             currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
         } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED)) {
             determineWinnerAndAllocatePot(gameSession, currentRound);
@@ -181,12 +187,20 @@ public class RoundService {
         int splitAmount = potAmount / winners.size();
         for (Player winner : winners) {
             winner.setBalance(winner.getBalance() + splitAmount);
+            Winner winnerInfo = new Winner(winner.getSeatIndex(), splitAmount);
+            currentRound.addWinner(winnerInfo);
         }
 
         // Handle remainder if pot doesn't split evenly
         int remainder = potAmount % winners.size();
         if (remainder > 0) {
-            winners.getFirst().setBalance(winners.getFirst().getBalance() + remainder);
+            Player remainderWinner = winners.getFirst();
+            remainderWinner.setBalance(winners.getFirst().getBalance() + remainder);
+            Winner winnerWithRemaind =  currentRound.getWinners().stream()
+                    .filter(winner -> winner.getSeatIndex().equals(remainderWinner.getSeatIndex()))
+                    .findFirst()
+                    .orElseThrow();
+            winnerWithRemaind.setAmount(winnerWithRemaind.getAmount() + remainder);
         }
 
         // Set round as finished
@@ -406,6 +420,69 @@ public class RoundService {
     public boolean isRoundFinished(GameSession currentGame, Round round) {
         return round.getRoundStep().equals(RoundStep.SHOWDOWN) ||
                 PokerUtils.getPlayersWithoutFoldThisRound(currentGame, round).size() == 1;
+    }
+
+    public PlayerActionResponse handleCardMisread(CardMisreadRequest cardMisreadRequest, GameSession gameSession) throws PokerException {
+
+        Round currentRound = findRoundById(cardMisreadRequest.getRoundId(), gameSession);
+        if (currentRound == null) {
+            throw new PokerException(PokerExceptionType.ROUND_NOT_FOUND, PokerExceptionType.ROUND_NOT_FOUND.getMessage());
+        }
+
+        if (!currentRound.getRoundStep().equals(RoundStep.ACTION_NEEDED)) {
+            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_ALLOWED, PokerExceptionType.NO_CARD_MISREAD_ALLOWED.getMessage());
+        }
+
+        if (cardMisreadRequest.getCards().isEmpty()) {
+            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_PROVIDED, PokerExceptionType.NO_CARD_MISREAD_PROVIDED.getMessage());
+        }
+
+        if (cardMisreadRequest.getPlayerSeatId() == null) {
+            currentRound.setBoard(handleCommunityCardMisread(currentRound, cardMisreadRequest));
+        } else {
+            Player player = PokerUtils.getPlayerBySeatIndex(gameSession, cardMisreadRequest.getPlayerSeatId());
+            player.setHand(handlePlayerCardMisread(player, cardMisreadRequest));
+        }
+
+        if (getCardMisreads(currentRound, gameSession).isEmpty()) {
+            determineWinnerAndAllocatePot(gameSession, currentRound);
+        }
+
+        return buildPlayerActionResponse(gameSession, currentRound, null);
+    }
+
+    public Board handleCommunityCardMisread(Round currentRound, CardMisreadRequest cardMisreadRequest) throws PokerException {
+        Board board = currentRound.getBoard();
+        List<Card> cards = cardMisreadRequest.getCards();
+        for (Card card : cards) {
+            if (board.getCommunityCards().contains(card)) {
+                throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, String.format(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE.getMessage(), card));
+            }
+            CommunityCardType cardType = board.getLastAddedType();
+            CommunityCardType newCardType = null;
+            if (board.getCommunityCards().size() > 2) {
+                newCardType = switch (cardType) {
+                    case FLOP -> CommunityCardType.TURN;
+                    case TURN -> CommunityCardType.RIVER;
+                    case RIVER -> throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, "Cannot add more than 5 community cards.");
+                    default ->  CommunityCardType.FLOP;
+                };
+            } else {
+                newCardType = CommunityCardType.FLOP;
+            }
+
+            board.addCards(new HashSet<>(List.of(card)), newCardType);
+        }
+
+        return board;
+    }
+
+    public HashSet<Card> handlePlayerCardMisread(Player player, CardMisreadRequest cardMisreadRequest) throws PokerException {
+        List<Card> cards = cardMisreadRequest.getCards();
+        if (player.getHand().size() > 2) {
+            throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, "Cannot add more than 2 cards to a player's hand.");
+        }
+        return new HashSet<>(cards);
     }
 
 }
