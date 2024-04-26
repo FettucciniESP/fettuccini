@@ -13,4 +13,5 @@ export interface RoundInfosModel {
     currentButtonUser: PlayerInfosModel
     playersLastActions: PlayerHandInfosModel[]
     gameStartedDatetime: Date
+    breakTime: boolean
 }

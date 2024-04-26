@@ -22,7 +22,7 @@ public class RoundValidationService {
      * @param round The current round of the game.
      * @throws PokerException if any validation fails.
      */
-    public void validatePayerActionRoundStep(PlayerActionRequest playerActionRequest, GameSession currentGame, Round round) throws PokerException {
+    public void validatePlayerActionRoundStep(PlayerActionRequest playerActionRequest, GameSession currentGame, Round round) throws PokerException {
         isPlayerActionForRoundAlreadyFinished(playerActionRequest, round);
         isPlayerActionSamePlayerThanExpected(playerActionRequest, round);
         isPlayerActionSameRoundStepThanExpected(playerActionRequest, round);

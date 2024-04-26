@@ -3,7 +3,6 @@ import styles from './EndGameModal.module.scss'
 import {Box, Text, Button} from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
-import useEndGameModal from "@/app/components/information-panel/end-game-modal/useEndGameModal";
 import {NextRouter, useRouter} from "next/router";
 
 const CROWN_IMAGE = require('../../../assets/images/crown.png');
