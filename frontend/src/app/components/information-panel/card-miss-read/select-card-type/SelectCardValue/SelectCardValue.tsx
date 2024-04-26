@@ -9,7 +9,7 @@ export default function SelectCardValue({
                                             cardType,
                                         }: {
     playerOrStreetLabel: string,
-    cardType: CardTypeEnum,
+    cardType: CardTypeEnum | undefined,
 }) {
 
     const cardSelected = (cardValue: string) => {

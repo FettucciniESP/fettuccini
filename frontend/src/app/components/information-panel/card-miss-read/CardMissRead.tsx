@@ -31,10 +31,6 @@ export default function CardMissRead({
         return <Image key={index} src={cardImage} alt={`card ${index + 1}`} className={styles.card} />;
     });
 
-    const handleCloseModal = () => {
-        closeModal();
-    };
-
     const handleActiveCardType = () => {
         setCardTypeView(true);
     };

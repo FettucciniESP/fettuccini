@@ -40,9 +40,9 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
     }
     const renderActionContent = () => {
         const {lastAction} = playerHandInfos;
-        if (!lastAction) return null;
+        if (!!playerHandInfos.player.seatIndex && playerHandInfos.player.balance === 0) return allInActionContent();
 
-        if (playerHandInfos.player.balance === 0) return allInActionContent();
+        if (!lastAction) return null;
 
         switch (lastAction.actionType) {
             case GameActionEnum.FOLD:
