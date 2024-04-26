@@ -6,6 +6,8 @@ import { RoundInfosModel } from "@/app/models/RoundInfos.model";
 import PlayerSeatInformations from "@/app/components/information-panel/player-seat-informations/PlayerSeatInformations";
 import GameInformations from "@/app/components/information-panel/game-informations/GameInformations";
 import BlindsInformations from "@/app/components/information-panel/blinds-informations/BlindsInformations";
+import {PlayerActionModel} from "@/app/models/PlayerAction.model";
+import {PlayerInfosModel} from "@/app/models/PlayerInfos.model";
 
 export default function InformationPanel({
   playersHandInfos,
@@ -17,21 +19,35 @@ export default function InformationPanel({
     nextLevelInfos: LevelInfosModel  | undefined,
     roundInfos: RoundInfosModel | undefined,
   }) {
+
+    const playersHandInfosDefault: PlayerHandInfosModel = {
+        lastAction: null,
+        player: {
+            name: "",
+            seatIndex: 0,
+            balance: 0,
+        }
+    };
+
+    const searchPlayerSeatIndex = (seatIndex: number) => {
+        return playersHandInfos.find(playerHandInfos => playerHandInfos.player.seatIndex === seatIndex) || playersHandInfosDefault;
+    }
+
   return (
     <Box className={styles.informationPanel}>
       <Box className={styles.leftInformationPanel}>
-        {playersHandInfos && playersHandInfos[1] && roundInfos && (
+        {roundInfos && (
           <PlayerSeatInformations
             seatIndex={2}
-            playerHandInfos={playersHandInfos[1]}
+            playerHandInfos={searchPlayerSeatIndex(2)}
             buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
         )}
-        {playersHandInfos && playersHandInfos[0] && roundInfos && (
+        {roundInfos && (
           <PlayerSeatInformations
             seatIndex={1}
-            playerHandInfos={playersHandInfos[0]}
+            playerHandInfos={searchPlayerSeatIndex(1)}
             buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
@@ -40,10 +56,10 @@ export default function InformationPanel({
       <Box className={styles.middleInformationPanel}>
         <Box className={styles.playersInformationsContainer}>
           <Box className={styles.playersInformationsCard}>
-            {playersHandInfos && playersHandInfos[2] && roundInfos && (
+            {roundInfos && (
               <PlayerSeatInformations
                 seatIndex={3}
-                playerHandInfos={playersHandInfos[2]}
+                playerHandInfos={searchPlayerSeatIndex(3)}
                 buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
                 currentPlayerSeatIndex={
                   roundInfos?.currentPlayingUser.seatIndex!
@@ -52,10 +68,10 @@ export default function InformationPanel({
             )}
           </Box>
           <Box className={styles.playersInformationsCard}>
-            {playersHandInfos && playersHandInfos[3] && roundInfos && (
+            {roundInfos && (
               <PlayerSeatInformations
                 seatIndex={4}
-                playerHandInfos={playersHandInfos[3]}
+                playerHandInfos={searchPlayerSeatIndex(4)}
                 buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
                 currentPlayerSeatIndex={
                   roundInfos?.currentPlayingUser.seatIndex!
@@ -73,18 +89,18 @@ export default function InformationPanel({
         )}
       </Box>
       <Box className={styles.rightInformationPanel}>
-        {playersHandInfos && playersHandInfos[4] && roundInfos && (
+        {roundInfos && (
           <PlayerSeatInformations
             seatIndex={5}
-            playerHandInfos={playersHandInfos[4]}
+            playerHandInfos={searchPlayerSeatIndex(5)}
             buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
         )}
-        {playersHandInfos && playersHandInfos[5] && roundInfos && (
+        {roundInfos && (
           <PlayerSeatInformations
             seatIndex={6}
-            playerHandInfos={playersHandInfos[5]}
+            playerHandInfos={searchPlayerSeatIndex(6)}
             buttonSeatIndex={roundInfos?.currentButtonUser.seatIndex!}
             currentPlayerSeatIndex={roundInfos?.currentPlayingUser.seatIndex!}
           ></PlayerSeatInformations>
