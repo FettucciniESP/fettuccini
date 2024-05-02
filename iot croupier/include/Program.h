@@ -39,6 +39,7 @@ private:
     NfcCardReader* card3;
 
     std::vector<String>* cardId;
+    std::vector<String>* sendedCardId;
     bool sendedCard;
 };
 

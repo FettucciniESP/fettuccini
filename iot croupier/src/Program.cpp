@@ -38,8 +38,6 @@ Program::Program() {
     this->api = new PokerApi(IP, PORT);
 
     //Card Reader
-
-
     bool card1Connected = 0;
     this->card1 = new NfcCardReader(Serial1);
     while (!card1Connected){
@@ -63,6 +61,7 @@ Program::Program() {
     this->sendedCard = false;
 
     this->cardId = new std::vector<String>({"","",""});
+    this->sendedCardId = new std::vector<String>({"","",""});
 
 }
 
@@ -92,24 +91,34 @@ void Program::loop() {
     //SEND API
 
     delay(1000);
-    this->api->sendCard(this->cardId);
 
-    // if(!this->sendedCard){
-    //     this->sendedCard = true;
-    //     api->sendCard(this->cardId);
-    //     for (int i = 0; i <= this->cardId->length(); i++){
-    //         this->cardId[i] = "";
-    //     }
-    // }else{
-    //     for (int i = 0; i < this->cardId->length(); i++){
-    //         if(this->cardId[i] == ""){
-    //             this->sendedCard = true;
-    //             i = this->cardId->length();
-    //         }else{
-    //             this->sendedCard = false;
-    //         }
-    //     }
-    // }
+    for (int i = 0; i < this->cardId->size(); i++) {
+        if(this->cardId->at(i) == ""){
+            this->sendedCard = false;
+            break;
+        }
+        this->sendedCard = true;
+    }
+    if(this->sendedCard){
+        for (int i = 0; i < this->cardId->size(); i++) {
+            if(this->cardId->at(i) != this->sendedCardId->at(i)){
+                this->sendedCard = true;
+                Serial.print(this->cardId->at(i));
+                Serial.println(this->sendedCardId->at(i));
+                break;
+            }
+            this->sendedCard = false;
+        }
+    }
+
+    if(this->sendedCard){
+        api->sendCard(this->cardId);
+        for (int i = 0; i < this->cardId->size(); i++) {
+            this->sendedCardId->at(i) = this->cardId->at(i);
+        }
+        this->sendedCard = false;
+        Serial.println("card sended");
+    }
 
     //END API
 }
