@@ -79,17 +79,19 @@ describe('Action Buttons', () => {
         cy.get('[id="FOLD"]').click();
     })
 
-    it('click on BET', ()=>{
+    it('click on BET and validate', ()=>{
         cy.get('[id="BET"]').click();
         cy.get('[id="idButtonNumber5"]').should('be.visible');
         cy.get('[id="idButtonNumber5"]').click();
         cy.get('[id="idButtonNumber0"]').should('be.visible');
         cy.get('[id="idButtonNumber0"]').click();
-        cy.get('[id="idButtonNumber0"]').should('be.visible');
-        cy.get('[id="idButtonNumber0"]').click();
+        cy.get('[id="idResult"]').should('have.value', '50');
+        cy.get('[id="idButtonSubmit"]').should('be.visible');
+        cy.get('[id="idButtonSubmit"]').click();
     })
 
     it('click on ALL-IN', ()=>{
         cy.get('[id="ALL_IN"]').click();
     })
+
 })
