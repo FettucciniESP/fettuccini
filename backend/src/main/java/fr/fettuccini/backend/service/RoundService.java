@@ -72,7 +72,10 @@ public class RoundService {
         playerActionResponse.setPlayersLastActions(PokerUtils.getRoundPlayersLastActionList(currentGame, round));
 
         if(round.getRoundStep().equals(RoundStep.ACTION_NEEDED)){
-            playerActionResponse.setCardMisreads(getCardMisreads(round, currentGame));
+            ActionNeededInfos actionNeededInfos = new ActionNeededInfos();
+            actionNeededInfos.setCardMisreads(getCardMisreads(round, currentGame));
+            actionNeededInfos.setImpossibleCards(getImpossibleCards(round, currentGame));
+            playerActionResponse.setActionNeededInfos(actionNeededInfos);
         }
 
         if(!round.getWinners().isEmpty()){
@@ -148,6 +151,21 @@ public class RoundService {
                 .forEach(player -> cardMisreads.add(PokerUtils.createPlayerCardMisread(player, player.getHand())));
 
         return cardMisreads;
+    }
+
+    public List<Card> getImpossibleCards(Round currendRound, GameSession gameSession) {
+        List<Card> impossibleCards = new ArrayList<>();
+        if(!currendRound.getBoard().getCommunityCards().isEmpty()){
+            impossibleCards.addAll(currendRound.getBoard().getCommunityCards());
+        }
+
+        for(Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currendRound)){
+            if(!player.getHand().isEmpty()){
+                impossibleCards.addAll(player.getHand());
+            }
+        }
+
+        return impossibleCards;
     }
 
     /**
@@ -233,7 +251,7 @@ public class RoundService {
      */
     private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
         Action action = playerActionRequest.getAction();
-        
+
         switch (action.getActionType()) {
             case BET, RAISE ->
                     playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
