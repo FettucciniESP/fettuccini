@@ -233,6 +233,7 @@ public class RoundService {
      */
     private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
         Action action = playerActionRequest.getAction();
+        
         switch (action.getActionType()) {
             case BET, RAISE ->
                     playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
