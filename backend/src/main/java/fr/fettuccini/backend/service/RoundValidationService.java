@@ -103,7 +103,7 @@ public class RoundValidationService {
         Integer highestPlayerBetValue = PokerUtils.getHighestBetValueForPlayerInCurrentRoundStep(round, playerActionRequest.getAction().getSeatIndex());
 
         boolean isValid = switch (playerActionRequest.getAction().getActionType()) {
-            case FOLD, BET, RAISE -> true;
+            case FOLD, BET, RAISE, ALL_IN -> true;
             case CHECK -> highestBetValue.equals(highestPlayerBetValue);
             case CALL -> !highestBetValue.equals(highestPlayerBetValue);
         };

@@ -70,6 +70,7 @@ public class PokerController {
         var ip = req.getRemoteAddr();
         var playerChips = playerChipsRequestMapper.map(playerChipsRequest, ip);
 
+
         val totalAmount = updatePlayerChipsService.updatePlayerChips(playerChips);
         return new PlayerBetResponse(totalAmount);
     }

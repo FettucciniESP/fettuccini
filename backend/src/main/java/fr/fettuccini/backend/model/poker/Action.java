@@ -15,6 +15,6 @@ public class Action implements Serializable {
     private RoundStep roundStep;
 
     public enum ActionType {
-        BET, RAISE, CALL, FOLD, CHECK
+        BET, RAISE, CALL, FOLD, CHECK, ALL_IN
     }
 }

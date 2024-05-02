@@ -21,7 +21,7 @@ public class BoardCardsRequestMapper {
     private final CardMapperRepository cardMapperRepository;
 
     public Set<Card> map(BoardCardsRequest request) throws PokerException {
-        var cards = new HashSet<>(cardMapperRepository.findAllById(request.getCardsId()));
+         var cards = new HashSet<>(cardMapperRepository.findAllById(request.getCardsId()));
 
         if (cards.size() != request.getCardsId().size()) {
             throw new PokerException(IMPOSSIBLE_MAPPING, "Impossible to map cards");

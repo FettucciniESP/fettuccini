@@ -9,17 +9,20 @@ import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RoundService {
     private final RoundValidationService roundValidationService;
 
     private final PokerEvaluatorService pokerEvaluatorService;
+
+    private final WledService wledService;
 
     /**
      * Initializes a new round for a given game session.
@@ -31,6 +34,8 @@ public class RoundService {
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
+
+        wledService.resetPlayerLeds().subscribe();
 
         Level currentLevel = PokerUtils.getCurrentLevelByTime(currentGame);
         if (currentLevel != null && currentLevel.getRoundIndex().equals(0)) {
@@ -233,7 +238,7 @@ public class RoundService {
      */
     private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
         Action action = playerActionRequest.getAction();
-        
+        wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), action.getSeatIndex());
         switch (action.getActionType()) {
             case BET, RAISE ->
                     playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
@@ -339,6 +344,7 @@ public class RoundService {
     private void playerAction(Player player, Action action, Round round, Integer betAmount) {
         if (player.getBalance() < betAmount) {
             action.setAmount(player.getBalance());
+            wledService.setPlayerLedColor(Action.ActionType.ALL_IN, player.getSeatIndex());
         }
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
