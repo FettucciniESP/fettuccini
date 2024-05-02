@@ -94,12 +94,12 @@ public class WledService {
         resetPlayerLeds().subscribe();
     }
 
-    @PreDestroy
-    public void cleanup() {
-        try {
-            resetPlayerLeds().block(Duration.ofSeconds(timeoutInSeconds));
-        } catch (Exception e) {
-            log.error("Failed to reset LEDs on shutdown: {}", e.getMessage(), e);
-        }
-    }
+    //@PreDestroy
+    //public void cleanup() {
+    //    try {
+    //        resetPlayerLeds().block(Duration.ofSeconds(timeoutInSeconds));
+    //    } catch (Exception e) {
+    //        log.error("Failed to reset LEDs on shutdown: {}", e.getMessage(), e);
+    //    }
+    //}
 }
