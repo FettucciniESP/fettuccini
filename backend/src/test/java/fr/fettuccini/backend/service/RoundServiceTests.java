@@ -26,6 +26,9 @@ public class RoundServiceTests {
     @Mock
     private RoundValidationService roundValidationService;
 
+    @Mock
+    private WledService wledService;
+
     @InjectMocks
     private RoundService roundService;
 
