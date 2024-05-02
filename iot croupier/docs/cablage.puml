@@ -1,0 +1,32 @@
+@startuml
+[ESP32]
+[NFC 1]
+[NFC 2]
+[NFC 3]
+[Alim 5 volt]
+
+
+[Alim 5 volt] -- [ESP32] : 5v
+[Alim 5 volt] -- [ESP32] : GND
+
+[Alim 5 volt] -- [NFC 1] : 5v
+[Alim 5 volt] -- [NFC 1] : GND
+[Alim 5 volt] -- [NFC 2] : 5v
+[Alim 5 volt] -- [NFC 2] : GND
+[Alim 5 volt] -- [NFC 3] : 5v
+[Alim 5 volt] -- [NFC 3] : GND
+
+[NFC 3] "RXD" --"Tx0" [ESP32]
+[NFC 3] "TXD" --"Rx0" [ESP32]
+
+[NFC 2] "RXD" --"IO4" [ESP32]
+[NFC 2] "TXD" --"IO35" [ESP32]
+
+[NFC 1] "RXD" -"IO14" [ESP32]
+[NFC 1] "TXD" -"IO15" [ESP32]
+
+
+
+
+
+@enduml
