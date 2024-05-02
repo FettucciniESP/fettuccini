@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -145,7 +147,6 @@ public class RoundValidationServiceTests {
     }
 
     @Test
-    @Disabled
     public void testIsPlayerActionAmountValid() {
         Action betAction = new Action(
                 Action.ActionType.BET,
@@ -153,13 +154,19 @@ public class RoundValidationServiceTests {
                 1,
                 RoundStep.PREFLOP
         );
+        
+        Player player = new Player();
+        player.setSeatIndex(2);
+        player.setBalance(1000);
+        gameSession.getPlayers().add(player);
 
         round.addAction(betAction);
+        round.setNextPlayerToPlaySeatIndex(2);
 
         var playerActionFoldRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.FOLD,
                 0,
-                1,
+                2,
                 round);
 
         assertDoesNotThrow(
@@ -169,7 +176,7 @@ public class RoundValidationServiceTests {
         var playerActionBetUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.BET,
                 8,
-                1,
+                2,
                 round);
 
         Exception exception = assertThrows(PokerException.class,
@@ -181,7 +188,7 @@ public class RoundValidationServiceTests {
         var playerActionBetIncreaseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.BET,
                 12,
-                1,
+                2,
                 round);
 
         exception = assertThrows(PokerException.class,
@@ -193,7 +200,7 @@ public class RoundValidationServiceTests {
         var playerActionCallUnderRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 5,
-                1,
+                2,
                 round);
 
         exception = assertThrows(PokerException.class,
@@ -205,7 +212,7 @@ public class RoundValidationServiceTests {
         var playerActionCallHigherRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 15,
-                1,
+                2,
                 round);
 
         exception = assertThrows(PokerException.class,
@@ -217,7 +224,7 @@ public class RoundValidationServiceTests {
         var playerActionCallLegitRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.CALL,
                 10,
-                1,
+                2,
                 round);
 
         assertDoesNotThrow(
@@ -227,7 +234,7 @@ public class RoundValidationServiceTests {
         var playerActionRaiseLegitRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 100,
-                1,
+                2,
                 round);
 
         assertDoesNotThrow(
@@ -237,7 +244,7 @@ public class RoundValidationServiceTests {
         var playerActionRaiseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 8,
-                1,
+                2,
                 round);
 
         exception = assertThrows(PokerException.class,
@@ -249,7 +256,7 @@ public class RoundValidationServiceTests {
         var playerActionRaiseIncreaseUnderBigBlindValueRequest = TestUtils.createPlayerActionRequest(
                 Action.ActionType.RAISE,
                 14,
-                1,
+                2,
                 round);
 
         exception = assertThrows(PokerException.class,
