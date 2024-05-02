@@ -31,7 +31,6 @@ Program::Program() {
     Serial.begin(MONITOR_SPEED);
 
     delay(2000);
-    Serial.println("Hello!");
 
     ethernetWT32Init();
 
@@ -50,11 +49,11 @@ Program::Program() {
         card2Connected = card2->connect();
     }
 
-    // bool card3Connected = 0;
-    // this->card3 = new NfcCardReader(Serial);
-    // while (!card3Connected){
-    //     card3Connected = card3->connect();
-    // }
+    bool card3Connected = 0;
+    this->card3 = new NfcCardReader(Serial);
+    while (!card3Connected){
+        card3Connected = card3->connect();
+    }
 
     delay(100);
 
@@ -71,21 +70,17 @@ void Program::loop() {
     String val1 = this->card1->read();
     if(val1 != ""){
         cardId->at(0) = val1;
-        Serial.println(val1);
     }
 
     String val2 = this->card2->read();
     if(val2 != ""){
         cardId->at(1) = val2;
-        Serial.println(val2);
     }
 
-    // String val3 = this->card3->read();
-    // if(val3 != ""){
-    //     cardId->at(2) = val3;
-    //     cardId[2] = val3;
-    // }
-        cardId->at(2) = "poeut";
+    String val3 = this->card3->read();
+    if(val3 != ""){
+        cardId->at(2) = val3;
+    }
     // END NFC cad
 
     //SEND API
@@ -103,8 +98,6 @@ void Program::loop() {
         for (int i = 0; i < this->cardId->size(); i++) {
             if(this->cardId->at(i) != this->sendedCardId->at(i)){
                 this->sendedCard = true;
-                Serial.print(this->cardId->at(i));
-                Serial.println(this->sendedCardId->at(i));
                 break;
             }
             this->sendedCard = false;
@@ -117,7 +110,6 @@ void Program::loop() {
             this->sendedCardId->at(i) = this->cardId->at(i);
         }
         this->sendedCard = false;
-        Serial.println("card sended");
     }
 
     //END API
