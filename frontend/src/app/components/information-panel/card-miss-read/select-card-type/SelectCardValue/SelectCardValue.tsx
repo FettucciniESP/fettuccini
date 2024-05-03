@@ -1,17 +1,20 @@
 import {CardTypeEnum} from "@/app/enums/CardType.enum";
-import {Box, Text} from "@chakra-ui/react";
+import {Box, Button, Icon, Text} from "@chakra-ui/react";
 import styles from "./SelectCardValue.module.scss";
 import Image from "next/image";
 import React from "react";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 export default function SelectCardValue({
                                             playerOrStreetLabel,
                                             cardType,
                                             setCard,
+                                            backFunction,
                                         }: {
     playerOrStreetLabel: string,
     cardType: CardTypeEnum,
     setCard: (cardType: CardTypeEnum, cardValue: string) => void,
+    backFunction: () => void,
 }) {
 
     const cardSelected = (cardValue: string) => {
@@ -34,7 +37,10 @@ export default function SelectCardValue({
             <Box className={styles.cardsContainer}>
                 {cardsImages}
             </Box>
-            <Box>
+            <Box className={styles.boxContainer}>
+                <Button className={styles.backButton} onClick={() => backFunction()}>
+                    <Icon as={IoMdArrowRoundBack} />
+                </Button>
                 <Text className={styles.label}>{playerOrStreetLabel}</Text>
             </Box>
         </Box>

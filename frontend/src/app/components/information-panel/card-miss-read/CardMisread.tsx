@@ -33,6 +33,7 @@ export default function CardMisread({
     const [cardValueView, setCardValueView] = useState(false);
     const [cardsMisread, setCardsMisread] = useState(actionNeededInfos.cardMisreads);
     const [impossibleCards, setImpossibleCards] = useState(actionNeededInfos.impossibleCards);
+    const [cardIndex, setCardIndex] = useState<number>(0);
 
     function getCardImages() {
         const {cards, player} = cardsMisread[0];
@@ -43,12 +44,14 @@ export default function CardMisread({
         while (completeCards.length < totalCardsCount) {
             completeCards.push(null);
         }
+        cardsMisread[0].cards = completeCards;
         return completeCards.map((cardModel, index) => {
             const cardType = cardModel ? CardTypeEnum[cardModel.type] : null;
             const cardValue = cardModel ? CardValueEnum[cardModel.value] : null;
             const imageFile = cardModel ? `${cardValue + cardType}.gif` : "isNull.gif";
             const cardImage = require(`../../../assets/images/cards/${imageFile}`);
             return <Image key={index} src={cardImage} alt={`card ${index + 1}`}
+                          onClick={() => handleActiveCardType(index)}
                           className={`${styles.card} ${cardClass}`}/>;
         });
     }
@@ -75,7 +78,10 @@ export default function CardMisread({
                 toastService.pushError("Card already exists");
                 return;
             }
-            cardsMisread[0].cards.push(newCard);
+            console.log(cardsMisread[0].cards);
+            const newCards = cardsMisread[0].cards.slice();
+            newCards[cardIndex] = newCard;
+            cardsMisread[0].cards = newCards;
             if (cardCountIsValid()) {
                 const seatIndex: number | null = cardsMisread[0].player ? cardsMisread[0].player!.seatIndex : null;
                 croupierLoadingService.setCardsMisread(roundId, seatIndex, cardsMisread[0].cards).then((roundIndfos: RoundInfosModel) => {
@@ -99,10 +105,11 @@ export default function CardMisread({
     function cardCountIsValid() {
         const {cards, player} = cardsMisread[0];
         const totalCardsCount = player == null ? 5 : 2;
-        return cards.length === totalCardsCount;
+        return cards.length === totalCardsCount && cards.every(card => card != null);
     }
 
-    const handleActiveCardType = () => {
+    const handleActiveCardType = (index: number) => {
+        setCardIndex(index);
         setCardTypeView(true);
     };
 
@@ -111,6 +118,11 @@ export default function CardMisread({
         setCardTypeValue(cardType);
         setCardValueView(true);
     };
+
+    const backToCardType = () => {
+        setCardTypeView(true);
+        setCardValueView(false);
+    }
 
     const playerOrStreetLabel = () => {
         return cardsMisread && cardsMisread[0].player ? cardsMisread[0].player?.name : "BOARD";
@@ -127,18 +139,13 @@ export default function CardMisread({
                         {getCardImages()}
                     </Box>
                 </Box>
-                <Box className={styles.buttonsContainer}>
-                    <Button id={"idButtonContinue"} onClick={() => handleActiveCardType()}>
-                        CHOOSE
-                    </Button>
-                    <Button id={"idButtonContinue"} onClick={() => handleActiveCardType()}>
-                        MUCK
-                    </Button>
-                </Box>
             </Box>)}
             {cardTypeView && (<SelectCardType playerOrStreetLabel={playerOrStreetLabel()!}
+                                              backFunction={() => setCardTypeView(false)}
                                               handleActiveCardValue={handleActiveCardValue}/>)}
             {cardValueView && (<SelectCardValue playerOrStreetLabel={playerOrStreetLabel()!} cardType={cardTypeValue!}
+                                                backFunction={() => backToCardType()}
+                                                cardIndex={cardIndex}
                                                 setCard={setCard!}/>)}
         </FettucciniModal>
     );
