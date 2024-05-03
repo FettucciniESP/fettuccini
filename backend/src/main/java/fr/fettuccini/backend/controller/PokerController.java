@@ -38,12 +38,12 @@ public class PokerController {
     private final BoardCardsRequestMapper boardCardsRequestMapper;
 
     @PostMapping("/start")
-    public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException {
+    public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException, PokerException {
         return pokerService.startGame(startGameRequest);
     }
 
     @PostMapping("/playRound/{sessionId}")
-    public PlayerActionResponse playRound(@PathVariable String sessionId) {
+    public PlayerActionResponse playRound(@PathVariable String sessionId) throws PokerException {
         return pokerService.playRound(sessionId);
     }
 

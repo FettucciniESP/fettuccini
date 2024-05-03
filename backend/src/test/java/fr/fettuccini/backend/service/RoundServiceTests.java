@@ -43,7 +43,7 @@ public class RoundServiceTests {
     }
 
     @Test
-    void testInitializeRoundForGame() {
+    void testInitializeRoundForGame() throws PokerException {
         PlayerActionResponse response = roundService.initializeRoundForGame(mockGameSession);
         assertNotNull(response);
         assertNotNull(response.getRoundId());

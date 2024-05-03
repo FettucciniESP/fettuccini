@@ -17,6 +17,7 @@ public enum PokerExceptionType {
     EXPECTED_OTHER_PLAYER_ACTION("Expected player seat %s to make action"),
     IMPOSSIBLE_MAPPING("Impossible to map card or chip to value"),
     TOKEN_NOT_FOUND("Token not found"),
+    GAME_ENDED("End of game, the winner is %s");
     PLAYER_ALREADY_EXISTS("Player with seat index %s already exists"),
     REENTRY_NOT_ALLOWED("Reentry not allowed"),
     NO_CARD_MISREAD_ALLOWED("No card misread allowed"),
