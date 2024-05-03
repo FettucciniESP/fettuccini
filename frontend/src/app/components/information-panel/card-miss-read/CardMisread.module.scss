@@ -8,7 +8,15 @@
 }
 
 .card {
-  padding: 1vw;
+  padding: 0.5vw;
+  transition: all 0.3s ease;
+}
+
+.boardCard {
+  width: 6vw;
+}
+
+.playerCard {
   width: 12vw;
 }
 

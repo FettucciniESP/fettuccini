@@ -7,20 +7,23 @@ import React from "react";
 export default function SelectCardValue({
                                             playerOrStreetLabel,
                                             cardType,
+                                            setCard,
                                         }: {
     playerOrStreetLabel: string,
-    cardType: CardTypeEnum | undefined,
+    cardType: CardTypeEnum,
+    setCard: (cardType: CardTypeEnum, cardValue: string) => void,
 }) {
 
     const cardSelected = (cardValue: string) => {
-        console.log(cardValue);
+        setCard(cardValue);
     }
 
-    const cardsImages = Array.from({ length: 13 }, (_, index) => {
+    const cardsImages = Array.from({length: 13}, (_, index) => {
         index === 0 ? index = 13 : index;
         const cardValue = `${index + 1}${cardType}`;
         const cardImage = require(`../../../../../assets/images/cards/${cardValue}.gif`);
-        return <Image onClick={() => cardSelected(cardValue)} key={index} src={cardImage} alt={`card ${index + 1}`} className={styles.card} />;
+        return <Image onClick={() => cardSelected(cardValue)} key={index} src={cardImage} alt={`card ${index + 1}`}
+                      className={styles.card}/>;
     });
 
     return (
