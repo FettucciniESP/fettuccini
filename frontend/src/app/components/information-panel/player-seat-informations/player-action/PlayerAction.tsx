@@ -64,14 +64,10 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
         const {lastAction} = playerHandInfos;
         if (!!playerHandInfos.player.seatIndex && playerHandInfos.player.balance === 0) return allInActionContent();
 
-        console.log('1', playerHandInfos)
         const winningInformations: WinnerInfosModel|undefined = playerIsWinner();
-        console.log('2', playerHandInfos)
         if (!!winningInformations) return winnerActionContent(winningInformations.amount);
-        console.log('3', playerHandInfos)
 
         if (!lastAction) return null;
-        console.log('4', playerHandInfos)
 
         switch (lastAction.actionType) {
             case GameActionEnum.FOLD:

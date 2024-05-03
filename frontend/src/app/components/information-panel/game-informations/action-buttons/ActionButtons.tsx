@@ -7,6 +7,8 @@ import { useState } from 'react'
 import Calculator from '@/app/components/design-system/calculator-modal/Calculator'
 import EndGameModal from "@/app/components/information-panel/end-game-modal/EndGameModal";
 import CardMisread from "@/app/components/information-panel/card-miss-read/CardMisread";
+import {croupierLoadingService} from "@/app/services/croupier-loading.service";
+import {ChipsCountResponseModel} from "@/app/models/ChipsCountResponse.model";
 
 export default function ActionButtons({
   playerInfos,
@@ -14,6 +16,7 @@ export default function ActionButtons({
   readonly playerInfos: PlayerInfosModel;
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [initialBetValue, setInitialBetValue] = useState(0);
 
     const {
         handleActionButtonClick,
@@ -26,7 +29,10 @@ export default function ActionButtons({
     } = useActionButtons()
 
     const openModal = () => {
-        setIsModalOpen(true);
+        croupierLoadingService.getChipsCount(playerInfos.seatIndex, roundInfos!.roundId).then((chipsCount: ChipsCountResponseModel) => {
+            setInitialBetValue(chipsCount ? chipsCount.chipsCount : 0);
+            setIsModalOpen(true);
+        });
     }
 
     const closeModal = () => { 
@@ -40,7 +46,7 @@ export default function ActionButtons({
     return (
         <Box className={styles.actionButtonsContainer}>
             {isModalOpen && (
-                <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} />
+                <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} initialValue={initialBetValue} />
             )}
             {cardsMisreadModal && (
                 <CardMisread isModalOpen={cardsMisreadModal} closeModal={closeCardsMisreadModal} actionNeededInfos={actionNeededInfos!} roundId={roundInfos!.roundId} finishRound={finishRound} />

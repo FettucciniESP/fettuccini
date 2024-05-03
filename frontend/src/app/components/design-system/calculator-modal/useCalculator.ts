@@ -1,8 +1,8 @@
 import {useState} from "react";
 import {CalculatorPropsModel} from "@/app/models/CalculatorProps.model";
 
-export default function useCalculator({openCalculator, closeCalculator, handleNumber}: CalculatorPropsModel) {
-    const [code, setCode] = useState("");
+export default function useCalculator({openCalculator, closeCalculator, handleNumber, initialValue}: CalculatorPropsModel) {
+    const [code, setCode] = useState(initialValue ? initialValue.toString() : "");
 
     const handleChange = (value: number) => {
         setCode(code + value);
