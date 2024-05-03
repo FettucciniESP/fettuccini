@@ -6,6 +6,7 @@ import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.*;
+import fr.fettuccini.backend.model.response.ChipsCountResponse;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.PlayerBetResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
@@ -66,7 +67,7 @@ public class PokerController {
     }
 
     @PostMapping("/playerBet")
-    public PlayerBetResponse setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) {
+    public PlayerBetResponse setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) throws PokerException {
         var ip = req.getRemoteAddr();
         var playerChips = playerChipsRequestMapper.map(playerChipsRequest, ip);
 
@@ -91,6 +92,11 @@ public class PokerController {
     @PostMapping("/cardMisread/{sessionId}")
     public PlayerActionResponse cardMisread(@PathVariable String sessionId, @RequestBody CardMisreadRequest cardMisreadRequest) throws PokerException {
         return pokerService.handleCardMisread(cardMisreadRequest, sessionId);
+    }
+
+    @PostMapping("chipsCount/{sessionId}")
+    public ChipsCountResponse getChipsCount(@PathVariable String sessionId, @RequestBody ChipsCountRequest chipsCountRequest) {
+        return pokerService.getChipsCount(sessionId, chipsCountRequest);
     }
 
 }

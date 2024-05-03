@@ -5,9 +5,12 @@ import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.poker.Level;
 import fr.fettuccini.backend.model.poker.Player;
+import fr.fettuccini.backend.model.poker.Round;
 import fr.fettuccini.backend.model.request.CardMisreadRequest;
+import fr.fettuccini.backend.model.request.ChipsCountRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.request.StartGameRequest;
+import fr.fettuccini.backend.model.response.ChipsCountResponse;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
 import fr.fettuccini.backend.repository.GameSessionRepository;
@@ -15,10 +18,7 @@ import fr.fettuccini.backend.utils.PokerUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -123,5 +123,28 @@ public class PokerService {
         gameSessionRepository.save(gameSession);
 
         return playerActionResponse;
+    }
+
+    public ChipsCountResponse getChipsCount(String sessionId, ChipsCountRequest chipsCountRequest) {
+        var gameSession = gameSessionRepository.findById(sessionId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("No game session found for the given sessionId"));
+
+        Player player = gameSession.getPlayers().stream()
+                .filter(p -> p.getSeatIndex().equals(chipsCountRequest.getSeatIndex()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No player found for the given seat index"));
+
+        Optional<Round> currentRound = PokerUtils.getLastRound(gameSession);
+
+        if (currentRound.isEmpty()) {
+            throw new IllegalArgumentException("No round found for the given game session");
+        }
+
+        return new ChipsCountResponse(
+                player.getSeatIndex(),
+                currentRound.get().getId(),
+                player.getChipsReaded()
+        );
     }
 }

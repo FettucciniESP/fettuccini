@@ -428,4 +428,13 @@ public class PokerUtils {
         );
         return cardMisread;
     }
+
+    public static Integer getCurrentBetAmountForPlayer(Round currentRound, Integer seatIndex) {
+        return currentRound.getActions()
+                .stream()
+                .filter(action -> action.getSeatIndex().equals(seatIndex))
+                .filter()
+                .mapToInt(Action::getAmount)
+                .sum();
+    }
 }
