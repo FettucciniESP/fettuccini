@@ -36,7 +36,9 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
 
     const winnerActionContent = (amountWin: number) => {
         return (
-            <WinnerBanner ammountWin={amountWin} />
+            <>
+                <WinnerBanner ammountWin={amountWin} />
+            </>
         );
     }
 

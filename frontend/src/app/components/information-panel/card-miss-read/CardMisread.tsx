@@ -78,7 +78,6 @@ export default function CardMisread({
                 toastService.pushError("Card already exists");
                 return;
             }
-            console.log(cardsMisread[0].cards);
             const newCards = cardsMisread[0].cards.slice();
             newCards[cardIndex] = newCard;
             cardsMisread[0].cards = newCards;
