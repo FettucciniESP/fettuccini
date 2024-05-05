@@ -14,11 +14,14 @@ import {CardMisreadModel} from "@/app/models/CardMisread.model";
 import {ActionNeededInfosModel} from "@/app/models/ActionNeededInfos.model";
 import {Simulate} from "react-dom/test-utils";
 import waiting = Simulate.waiting;
+import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
 
 export default function useActionButtons() {
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
     const [cardsMisreadModal, setCardsMisreadModal] = useState(false);
     const [actionNeededInfos, setActionNeededInfos] = useState<ActionNeededInfosModel|null>();
+    const [endGameModal, setEndGameModal] = useState(false);
+    const [winner, setWinner] = useState<PlayerInfosModel | null>(null);
 
     const closeCardsMisreadModal = () => {
         setCardsMisreadModal(false);
@@ -105,20 +108,38 @@ export default function useActionButtons() {
         if (roundInfos.winners) {
             playersService.setWinnersInformations(roundInfos.winners);
             setTimeout(() => {
-                croupierLoadingService
-                    .startNewRound()
-                    .then((newRoundInfos: RoundInfosModel) =>
-                        updateInformations(newRoundInfos)
-                    );
+                startNewRound();
             }, 10000);
 
         } else {
-            croupierLoadingService
-                .startNewRound()
-                .then((newRoundInfos: RoundInfosModel) =>
-                    updateInformations(newRoundInfos)
-                );
+            startNewRound();
         }
+    }
+
+    function startNewRound(): void {
+        const playersWithChips: PlayerHandInfosModel[] = getPlayersWithChips();
+        if (playersWithChips.length === 1) {
+            setWinner(playersWithChips[0].player)
+            setEndGameModal(true);
+            return;
+        }
+        croupierLoadingService
+            .startNewRound()
+            .then((newRoundInfos: RoundInfosModel) => updateInformations(newRoundInfos));
+    }
+
+    function getPlayersWithChips(): PlayerHandInfosModel[] {
+        if (!roundInfos || !roundInfos.playersLastActions) {
+            return [];
+        }
+
+        return roundInfos.playersLastActions.filter((playerHandInfo: PlayerHandInfosModel) => {
+            return playerHandInfo.player && playerHandInfo.player.balance > 0;
+        });
+    }
+
+    function closeEndGameModal() {
+        setEndGameModal(false);
     }
 
     function isCheckOrCall(
@@ -216,5 +237,8 @@ export default function useActionButtons() {
         actionNeededInfos,
         roundInfos,
         finishRound,
+        endGameModal,
+        closeEndGameModal,
+        winner,
     };
 }

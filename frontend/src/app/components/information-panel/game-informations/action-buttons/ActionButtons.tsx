@@ -26,6 +26,9 @@ export default function ActionButtons({
         actionNeededInfos,
         roundInfos,
         finishRound,
+        endGameModal,
+        closeEndGameModal,
+        winner,
     } = useActionButtons()
 
     const openModal = () => {
@@ -50,6 +53,9 @@ export default function ActionButtons({
             )}
             {cardsMisreadModal && (
                 <CardMisread isModalOpen={cardsMisreadModal} closeModal={closeCardsMisreadModal} actionNeededInfos={actionNeededInfos!} roundId={roundInfos!.roundId} finishRound={finishRound} />
+            )}
+            {endGameModal && (
+                <EndGameModal modalIsOpen={endGameModal} onCloseFunction={closeEndGameModal} winnerLabel={winner!.name} />
             )}
             <Box className={styles.actionButtonsLine}>
                 <Button
