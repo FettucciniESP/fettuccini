@@ -22,6 +22,7 @@ export default function useActionButtons() {
     const [actionNeededInfos, setActionNeededInfos] = useState<ActionNeededInfosModel|null>();
     const [endGameModal, setEndGameModal] = useState(false);
     const [winner, setWinner] = useState<PlayerInfosModel | null>(null);
+    const [waitNextRound, setWaitNextRound] = useState(false);
 
     const closeCardsMisreadModal = () => {
         setCardsMisreadModal(false);
@@ -107,9 +108,7 @@ export default function useActionButtons() {
     function finishRound(roundInfos: RoundInfosModel): void {
         if (roundInfos.winners) {
             playersService.setWinnersInformations(roundInfos.winners);
-            setTimeout(() => {
-                startNewRound();
-            }, 10000);
+            setWaitNextRound(true);
 
         } else {
             startNewRound();
@@ -117,6 +116,7 @@ export default function useActionButtons() {
     }
 
     function startNewRound(): void {
+        setWaitNextRound(false);
         const playersWithChips: PlayerHandInfosModel[] = getPlayersWithChips();
         if (playersWithChips.length === 1) {
             setWinner(playersWithChips[0].player)
@@ -240,5 +240,7 @@ export default function useActionButtons() {
         endGameModal,
         closeEndGameModal,
         winner,
+        startNewRound,
+        waitNextRound,
     };
 }

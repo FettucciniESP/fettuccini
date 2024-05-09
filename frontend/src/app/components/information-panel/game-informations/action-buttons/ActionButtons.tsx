@@ -1,9 +1,9 @@
-import { Box, Button } from '@chakra-ui/react'
-import { PlayerInfosModel } from '@/app/models/PlayerInfos.model'
+import {Box, Button} from '@chakra-ui/react'
+import {PlayerInfosModel} from '@/app/models/PlayerInfos.model'
 import styles from './ActionButtons.module.scss'
 import useActionButtons from './useActionButtons'
-import { GameActionEnum } from '@/app/enums/GameAction.enum'
-import { useState } from 'react'
+import {GameActionEnum} from '@/app/enums/GameAction.enum'
+import {useState} from 'react'
 import Calculator from '@/app/components/design-system/calculator-modal/Calculator'
 import EndGameModal from "@/app/components/information-panel/end-game-modal/EndGameModal";
 import CardMisread from "@/app/components/information-panel/card-miss-read/CardMisread";
@@ -29,6 +29,8 @@ export default function ActionButtons({
         endGameModal,
         closeEndGameModal,
         winner,
+        startNewRound,
+        waitNextRound,
     } = useActionButtons()
 
     const openModal = () => {
@@ -38,7 +40,7 @@ export default function ActionButtons({
         });
     }
 
-    const closeModal = () => { 
+    const closeModal = () => {
         setIsModalOpen(false);
     }
 
@@ -57,45 +59,59 @@ export default function ActionButtons({
             {endGameModal && (
                 <EndGameModal modalIsOpen={endGameModal} onCloseFunction={closeEndGameModal} winnerLabel={winner!.name} />
             )}
-            <Box className={styles.actionButtonsLine}>
-                <Button
-                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.FOLD)}
-                    className={styles.button}
-                    onClick={() =>
-                        handleActionButtonClick(playerInfos, GameActionEnum.FOLD)
-                    }
-                >
-                    FOLD
-                </Button>
-                <Button
-                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.CHECK)}
-                    className={styles.button}
-                    onClick={() =>
-                        handleActionButtonClick(playerInfos, GameActionEnum.CHECK)
-                    }
-                >
-                    CHECK / CALL
-                </Button>
-            </Box>
-            <Box className={styles.actionButtonsLine}>
-                <Button
-                    isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.BET)}
-                    className={styles.button}
-                    onClick={() =>
-                        openModal()
-                    }
-                >
-                    BET
-                </Button>
-                <Button
-                    className={styles.button}
-                    onClick={() =>
-                        handleActionButtonClick(playerInfos, GameActionEnum.ALL_IN)
-                    }
-                >
-                    ALL-IN
-                </Button>
-            </Box>
+            {waitNextRound && (
+                <Box className={styles.nextRoundContainer}>
+                    <Button
+                        className={styles.button}
+                        onClick={() => startNewRound()}
+                    >
+                        NEXT ROUND
+                    </Button>
+                </Box>
+            )}
+            {!waitNextRound && (
+                <>
+                    <Box className={styles.actionButtonsLine}>
+                        <Button
+                            isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.FOLD)}
+                            className={styles.button}
+                            onClick={() =>
+                                handleActionButtonClick(playerInfos, GameActionEnum.FOLD)
+                            }
+                        >
+                            FOLD
+                        </Button>
+                        <Button
+                            isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.CHECK)}
+                            className={styles.button}
+                            onClick={() =>
+                                handleActionButtonClick(playerInfos, GameActionEnum.CHECK)
+                            }
+                        >
+                            CHECK / CALL
+                        </Button>
+                    </Box>
+                    <Box className={styles.actionButtonsLine}>
+                        <Button
+                            isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.BET)}
+                            className={styles.button}
+                            onClick={() =>
+                                openModal()
+                            }
+                        >
+                            BET
+                        </Button>
+                        <Button
+                            className={styles.button}
+                            onClick={() =>
+                                handleActionButtonClick(playerInfos, GameActionEnum.ALL_IN)
+                            }
+                        >
+                            ALL-IN
+                        </Button>
+                    </Box>
+                </>
+            )}
         </Box>
     )
 }
