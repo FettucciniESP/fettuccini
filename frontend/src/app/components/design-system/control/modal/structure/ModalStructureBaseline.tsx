@@ -6,6 +6,7 @@ import InputLabelIcon from "../../inputs/input-label/InputLabelIcon";
 import { ButtonLabels, InputLabels } from "../../../../../enums/Labels.enum";
 import ButtonIcon from "../../buttons/button-icon/ButtonIcon";
 import styles from "./ModalStructure.module.scss";
+import ButtonText from "../../buttons/button-text/ButtonText";
 interface ModalBaseProps {
   isOpen: boolean;
   handleCloseModal: (bool: boolean) => void;
@@ -15,6 +16,9 @@ function ModalStructureBaseline(props: ModalBaseProps) {
   const [structure, setStructure] = useState<any>([]);
 
   const hangdleOnClickContinueButton = () => {};
+
+  const handleClickButtonAddLine = () => {};
+  const handleClickButtonAddBreak = () => {};
 
   const handleClickButtonLoad = () => {};
   const handleClickButtonSave = () => {};
@@ -53,6 +57,24 @@ function ModalStructureBaseline(props: ModalBaseProps) {
       });
   };
 
+  const renderButtonLineSection = () => {
+    return (
+      <Box className={styles.buttonLineSectionContainer}>
+        <ButtonText
+          label={ButtonLabels.ADD_LINE}
+          handleClick={handleClickButtonAddLine}
+          customStyle={ButtonText.customStyles.TRANSPARENT}
+          isUpperCase={false}
+        />
+        <ButtonText
+          label={ButtonLabels.ADD_BREAK}
+          handleClick={handleClickButtonAddBreak}
+          customStyle={ButtonText.customStyles.TRANSPARENT}
+        />
+      </Box>
+    );
+  };
+
   const renderButtonSection = () => {
     return (
       <Box className={styles.buttonSectionContainer}>
@@ -85,6 +107,7 @@ function ModalStructureBaseline(props: ModalBaseProps) {
       handleCloseModal={handleCloseModal}
     >
       <Box>{renderInputStructure()}</Box>
+      <Box>{renderButtonLineSection()}</Box>
       <Box className={styles.buttonContainer}>{renderButtonSection()}</Box>
     </ModalBase>
   );

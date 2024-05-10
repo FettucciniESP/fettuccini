@@ -1,0 +1,26 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.baseStyle, .buttonLobbyStyle, .buttonStructureStyle {
+    flex: 1;
+    background-color: $white-color-low-opacity;
+    padding: 15px 20px;
+    -webkit-box-shadow: 2px 5px 8px -2px $black-color;
+    box-shadow: 2px 5px 8px -2px $black-color;
+    margin: 5px;
+}
+
+.buttonTransparentStyle {
+    padding: 18px;
+}
+
+.buttonStructureStyle {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    max-width: 300px;
+}
+
+.textButtonStyle {
+    color: $white-color;
+    font-size: 20px;
+    font-weight: normal;
+}

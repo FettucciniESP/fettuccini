@@ -3,6 +3,8 @@ export enum ButtonLabels {
   SAVE = "ENREGISTRER",
   START = "COMMENCER",
   CONTINUE = "CONTINUER",
+  ADD_LINE = "Ajouter une ligne",
+  ADD_BREAK = "Ajouter une pause",
 }
 
 export enum InputLabels {
