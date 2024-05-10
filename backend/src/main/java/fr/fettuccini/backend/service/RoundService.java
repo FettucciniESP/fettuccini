@@ -260,9 +260,9 @@ public class RoundService {
 
         switch (action.getActionType()) {
             case BET, RAISE ->
-                    playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+                    playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound, gameSession);
             case CALL ->
-                    playerMakeACall(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+                    playerMakeACall(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound, gameSession);
             default -> currentRound.addAction(action);
         }
     }
@@ -332,7 +332,7 @@ public class RoundService {
                     smallBlindPlayer.get().getSeatIndex(),
                     RoundStep.PREFLOP);
 
-            playerMakeABet(smallBlindPlayer.get(), smallBlindAction, currentRound);
+            playerMakeABet(smallBlindPlayer.get(), smallBlindAction, currentRound, currentGame);
         }
 
         Player bigBlindPlayer = PokerUtils.getBigBlindPlayer(players, currentRound).orElseThrow();
@@ -343,7 +343,7 @@ public class RoundService {
                 bigBlindPlayer.getSeatIndex(),
                 RoundStep.PREFLOP);
 
-        playerMakeABet(bigBlindPlayer, bigBlindAction, currentRound);
+        playerMakeABet(bigBlindPlayer, bigBlindAction, currentRound, currentGame);
 
         return bigBlindAction;
     }
@@ -355,15 +355,20 @@ public class RoundService {
      * @param action The betting action.
      * @param round  The current round in which the bet is made.
      */
-    public void playerMakeABet(Player player, Action action, Round round) {
+    public void playerMakeABet(Player player, Action action, Round round, GameSession gameSession) {
         Integer betAmount = action.getAmount();
-        playerAction(player, action, round, betAmount);
+        playerAction(player, action, round, betAmount, gameSession);
     }
 
-    private void playerAction(Player player, Action action, Round round, Integer betAmount) {
+    private void playerAction(Player player, Action action, Round round, Integer betAmount, GameSession gameSession) {
         if (player.getBalance() < betAmount) {
             action.setAmount(player.getBalance());
         }
+
+        if (PokerUtils.isRoundAllIn(round, gameSession)) {
+            return;
+        }
+
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
         round.addAction(action);
@@ -397,7 +402,7 @@ public class RoundService {
      * @param action The calling action.
      * @param round  The current round in which the call is made.
      */
-    public void playerMakeACall(Player player, Action action, Round round) {
+    public void playerMakeACall(Player player, Action action, Round round, GameSession gameSession) {
         Integer callAmount = round.getActions()
                 .stream()
                 .filter(action1 -> action1.getActionType().equals(Action.ActionType.BET))
@@ -405,7 +410,7 @@ public class RoundService {
                 .max()
                 .orElseThrow();
 
-        playerAction(player, action, round, callAmount);
+        playerAction(player, action, round, callAmount, gameSession);
     }
 
     /**
@@ -429,7 +434,7 @@ public class RoundService {
             }
         }
 
-        if (isRoundFinished(currentGame, round)) {
+        if (isRoundFinished(currentGame, round) || PokerUtils.isRoundAllIn(round, currentGame)) {
             round.setRoundStep(RoundStep.FINISHED);
         }
     }
@@ -484,7 +489,7 @@ public class RoundService {
                 throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, String.format(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE.getMessage(), card));
             }
             CommunityCardType cardType = board.getLastAddedType();
-            CommunityCardType newCardType = null;
+            CommunityCardType newCardType;
             if (board.getCommunityCards().size() > 2) {
                 newCardType = switch (cardType) {
                     case FLOP -> CommunityCardType.TURN;

@@ -26,7 +26,7 @@ public class PokerService {
     private final GameSessionRepository gameSessionRepository;
     private final RoundService roundService;
 
-    public StartGameResponse startGame(StartGameRequest startGameRequest) {
+    public StartGameResponse startGame(StartGameRequest startGameRequest) throws PokerException {
         List<Level> levels = startGameRequest.getLevels();
 
         var gameSession = new GameSession();
@@ -79,7 +79,7 @@ public class PokerService {
         gameSessionRepository.save(gameSession);
     }
 
-    public PlayerActionResponse playRound(String sessionId) {
+    public PlayerActionResponse playRound(String sessionId) throws PokerException {
         GameSession gameSession = gameSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new IllegalArgumentException("No game session found for the given sessionId"));
 

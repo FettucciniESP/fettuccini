@@ -429,12 +429,13 @@ public class PokerUtils {
         return cardMisread;
     }
 
-    public static Integer getCurrentBetAmountForPlayer(Round currentRound, Integer seatIndex) {
-        return currentRound.getActions()
+    public static boolean isRoundAllIn(Round round, GameSession gameSession) {
+        List<Player> playersWithoutFold = getPlayersWithoutFoldThisRound(gameSession, round);
+
+        return playersWithoutFold
                 .stream()
-                .filter(action -> action.getSeatIndex().equals(seatIndex))
-                .filter()
-                .mapToInt(Action::getAmount)
-                .sum();
+                .mapToInt(Player::getBalance)
+                .filter(balance -> balance > 0)
+                .count() <= 1;
     }
 }
