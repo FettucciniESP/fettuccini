@@ -3,30 +3,30 @@ import path from "path";
 
 export default defineConfig({
   component: {
-    specPattern: 'cypress/components/**/*.cy.{js,jsx,ts,tsx}',
+    specPattern: "cypress/components/**/*.cy.{js,jsx,ts,tsx}",
     devServer: {
       framework: "next",
       bundler: "webpack",
       webpackConfig: {
         resolve: {
           alias: {
-            '@': path.resolve(__dirname, './src'),
+            "@": path.resolve(__dirname, "./src"),
           },
         },
-      }
+      },
     },
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config)
-      return config
+      require("@cypress/code-coverage/task")(on, config);
+      return config;
     },
   },
 
   e2e: {
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config)
+      require("@cypress/code-coverage/task")(on, config);
       //on('file:preprocessor', require('@cypress/code-coverage/use-babelrc'))
 
-      return config
+      return config;
     },
   },
 });

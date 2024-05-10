@@ -1,3 +1,6 @@
+////////// MODAL_STRUCTURE //////////////
+
+
 .buttonSettingContainer {
     display: flex;
     justify-content: center;
@@ -5,4 +8,20 @@
 
 .inputContainer {
     margin-top: 20px;
+}
+
+
+////////// MODAL_STRUCTURE_BASELINE//////////////
+
+.buttonContainer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+}
+
+.buttonSectionContainer {
+    display: flex;
+    justify-content: space-around
+
 }

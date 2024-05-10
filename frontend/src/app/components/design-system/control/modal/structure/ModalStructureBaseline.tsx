@@ -3,12 +3,9 @@ import { Box } from "@chakra-ui/react";
 import ModalBase from "../ModalBase";
 import { Titles } from "../../../../../enums/Titles.enum";
 import InputLabelIcon from "../../inputs/input-label/InputLabelIcon";
-import {
-  ButtonLabels,
-  InputLabels,
-  InputEndTextLabels,
-} from "../../../../../enums/Labels.enum";
-
+import { ButtonLabels, InputLabels } from "../../../../../enums/Labels.enum";
+import ButtonIcon from "../../buttons/button-icon/ButtonIcon";
+import styles from "./ModalStructure.module.scss";
 interface ModalBaseProps {
   isOpen: boolean;
   handleCloseModal: (bool: boolean) => void;
@@ -19,7 +16,11 @@ function ModalStructureBaseline(props: ModalBaseProps) {
 
   const hangdleOnClickContinueButton = () => {};
 
-  const renderInputStructure = () => {
+  const handleClickButtonLoad = () => {};
+  const handleClickButtonSave = () => {};
+  const handleClickButtonContinue = () => {};
+
+  const renderInputStructure = (): any => {
     structure &&
       structure.map((item: any, index: number) => {
         const {
@@ -32,10 +33,10 @@ function ModalStructureBaseline(props: ModalBaseProps) {
         } = item;
 
         let inputValue = "";
-        if (!breakDuration || !breakName) {
+        if (!!breakDuration && !!breakName) {
           inputValue = `${breakName} : ${breakDuration} `;
         } else {
-          inputValue = `${smallBlind} | ${bigBlind} | ${ante} | ${}`
+          inputValue = `${smallBlind} | ${bigBlind} | ${ante} | ${duration}`;
         }
         return (
           <InputLabelIcon
@@ -52,23 +53,39 @@ function ModalStructureBaseline(props: ModalBaseProps) {
       });
   };
 
+  const renderButtonSection = () => {
+    return (
+      <Box className={styles.buttonSectionContainer}>
+        <ButtonIcon
+          label={ButtonLabels.LOAD}
+          handleClick={handleClickButtonLoad}
+          icon={ButtonIcon.icons.LOAD}
+          customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
+        />
+        <ButtonIcon
+          label={ButtonLabels.SAVE}
+          handleClick={handleClickButtonSave}
+          icon={ButtonIcon.icons.SAVE}
+          customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
+        />
+        <ButtonIcon
+          label={ButtonLabels.CONTINUE}
+          icon={ButtonIcon.icons.PLAY}
+          handleClick={handleClickButtonContinue}
+          customStyle={ButtonIcon.customStyles.SETTING_STRUCTURE}
+        />
+      </Box>
+    );
+  };
+
   return (
     <ModalBase
       modalTitle={Titles.STRUCTURE_MODAL}
       isOpen={isOpen}
       handleCloseModal={handleCloseModal}
     >
-      <Box>
-        <InputLabelIcon
-          label={InputLabels.SMALL_BLIND}
-          handleChangeCurrentValue={() =>
-            console.log("handleChangeCurrentValue")
-          }
-          currentValue={smallBlind}
-          type={InputLabelIcon.types.NUMBER}
-          isUpperCase
-        />
-      </Box>
+      <Box>{renderInputStructure()}</Box>
+      <Box className={styles.buttonContainer}>{renderButtonSection()}</Box>
     </ModalBase>
   );
 }

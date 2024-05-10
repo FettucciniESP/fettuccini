@@ -9,6 +9,8 @@ import { croupierService } from "@/app/services/croupier.service";
 import { NextRouter, useRouter } from "next/router";
 import { LevelInfosModel } from "@/app/models/LevelInfos.model";
 import SeatsSelection from "@/app/components/design-system/seats-selection/SeatsSelection";
+import ModalStructureBaseline from "@/app/components/design-system/control/modal/structure/ModalStructureBaseline";
+import { ButtonLabels, InputEndTextLabels } from "@/app/enums/Labels.enum";
 
 const labels = {
   STRUCTURE: "STRUCTURE",
@@ -24,15 +26,11 @@ const titles = {
   TITLE_SECTION: "PARAMÈTRES UTILISÉS",
 };
 
-const buttonTitles = {
-  LOAD: "CHARGER",
-  SAVE: "ENREGISTRER",
-  START: "COMMENCER",
-};
-
 export default function SettingLobby() {
   const [isSettingDone, setIsSettingDone] = useState(false);
   const [seatsSelectionIsOpen, setSeatsSelectionIsOpen] = useState(false);
+  const [structureSelectionIsOpen, setStructureSelectionIsOpen] =
+    useState(false);
 
   const router: NextRouter = useRouter();
 
@@ -45,6 +43,9 @@ export default function SettingLobby() {
 
   const closeSeatsSelection = () => {
     setSeatsSelectionIsOpen(false);
+  };
+  const closeStructureSelection = () => {
+    setStructureSelectionIsOpen(false);
   };
 
   const handleChangeStructure = (value: Array<LevelInfosModel>): void => {
@@ -69,6 +70,7 @@ export default function SettingLobby() {
   };
 
   const handleClickButtonStructure = () => {
+    setStructureSelectionIsOpen(true);
     console.log("structure openstructure openstructure open modal");
   };
 
@@ -155,7 +157,9 @@ export default function SettingLobby() {
       { title: labels.REGISTRATION_MAX, value: registrationMax },
       {
         title: labels.COST_ENTRY,
-        value: costEntry ? `${costEntry + " €"}` : costEntry,
+        value: costEntry
+          ? `${costEntry + ` ${InputEndTextLabels.EURO}`}`
+          : costEntry,
       },
       { title: labels.PLAYERS, value: seatsIndex },
     ];
@@ -181,19 +185,19 @@ export default function SettingLobby() {
       <Box>
         <Box className={styles.singleButtonContainer}>
           <ButtonIcon
-            label={buttonTitles.LOAD}
+            label={ButtonLabels.LOAD}
             handleClick={handleClickButtonLoad}
             icon={ButtonIcon.icons.LOAD}
           />
           <ButtonIcon
-            label={buttonTitles.SAVE}
+            label={ButtonLabels.SAVE}
             handleClick={handleClickButtonSave}
             icon={ButtonIcon.icons.SAVE}
           />
         </Box>
         <Box className={styles.multiButtonContainer}>
           <ButtonIcon
-            label={buttonTitles.START}
+            label={ButtonLabels.START}
             handleClick={handleClickButtonStart}
           />
         </Box>
@@ -212,6 +216,13 @@ export default function SettingLobby() {
           onCloseFunction={closeSeatsSelection}
           seatsIndex={seatsIndex}
           handleChangeSeatsIndex={handleChangeSeatsIndex}
+        />
+      )}
+
+      {structureSelectionIsOpen && (
+        <ModalStructureBaseline
+          isOpen={structureSelectionIsOpen}
+          handleCloseModal={closeStructureSelection}
         />
       )}
       <Box className={styles.mainSettingContainer}>
@@ -244,7 +255,7 @@ export default function SettingLobby() {
               handleChangeCurrentValue={handleChangeCostEntry}
               currentValue={costEntry}
               type={InputLabelIcon.types.NUMBER}
-              customAddToText={"€"}
+              customAddToText={InputEndTextLabels.EURO}
             />
 
             <InputLabelIcon
