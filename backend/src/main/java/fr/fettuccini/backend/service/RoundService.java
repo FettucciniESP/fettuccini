@@ -33,6 +33,10 @@ public class RoundService {
                     PokerExceptionType.GAME_ENDED.getMessage(), currentGame.getPlayers().getFirst().getName()
             ));
         }
+        
+        if (!currentGame.getRounds().isEmpty()){
+            currentGame.getPlayers().forEach(player -> player.setHand(new HashSet<>()));
+        }
 
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
