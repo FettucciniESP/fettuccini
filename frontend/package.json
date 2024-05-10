@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "set NODE_ENV=development&& next dev",
+    "build": "set NODE_ENV=production&& next build",
+    "start": "set NODE_ENV=production&& next start",
     "lint": "next lint",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
