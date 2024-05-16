@@ -116,6 +116,10 @@ public class RoundService {
     public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
         Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
         roundValidationService.validatePlayerActionRoundStep(playerActionRequest, gameSession, currentRound);
+
+        // action valide
+        wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), playerActionRequest.getAction().getSeatIndex());
+
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound);
 
@@ -206,6 +210,10 @@ public class RoundService {
                     .findFirst()
                     .orElseThrow();
             winnerWithRemaind.setAmount(winnerWithRemaind.getAmount() + remainder);
+        }
+
+        for (var winner : winners) {
+            wledService.setPlayerLedColor(Action.ActionType.WIN, winner.getSeatIndex());
         }
 
         // Set round as finished
@@ -344,10 +352,12 @@ public class RoundService {
     private void playerAction(Player player, Action action, Round round, Integer betAmount) {
         if (player.getBalance() < betAmount) {
             action.setAmount(player.getBalance());
-            wledService.setPlayerLedColor(Action.ActionType.ALL_IN, player.getSeatIndex());
         }
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
+        if (player.getBalance() == 0) {
+            wledService.setPlayerLedColor(Action.ActionType.ALL_IN, player.getSeatIndex());
+        }
         round.addAction(action);
         round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
     }

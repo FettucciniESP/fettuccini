@@ -17,6 +17,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Map;
 
+//
+
 @Service
 @Slf4j
 public class WledService {
@@ -26,7 +28,7 @@ public class WledService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     //@Value("${wled.device.url:http://192.168.241.15}")
-    private final String WLED_DEVICE_URL = "http://5.4.3.2";
+    private final String WLED_DEVICE_URL = "http://192.168.241.15";
 
     @Value("${wled.max.player.count:6}")
     private int maxPlayerCount;
@@ -34,13 +36,18 @@ public class WledService {
     @Value("${wled.timeout.seconds:5}")
     private int timeoutInSeconds;
 
+    private int[] losers;
+
     private static final Map<Action.ActionType, int[]> ACTION_LED_COLOR_MAP = Map.of(
-            Action.ActionType.BET, new int[] {255, 0, 0},
-            Action.ActionType.RAISE, new int[] {255, 200, 50},
-            Action.ActionType.FOLD, new int[] {0, 0, 0},
-            Action.ActionType.CHECK, new int[] {0, 0, 0},
-            Action.ActionType.CALL, new int[] {0, 0, 0},
-            Action.ActionType.ALL_IN, new int[] {255, 0, 0}
+            Action.ActionType.BET, new int[] {255, 200, 50}, // Jaune
+            Action.ActionType.RAISE, new int[] {255, 200, 50}, // Jaune
+            Action.ActionType.FOLD, new int[] {0, 0, 0}, // Eteint
+            Action.ActionType.LOSE, new int[] {0, 0, 0}, // Eteint
+            Action.ActionType.CHECK, new int[] {0, 255, 0}, // Vert
+            Action.ActionType.CALL, new int[] {0, 255, 0}, // Vert
+            Action.ActionType.ALL_IN, new int[] {255, 0, 0}, // Rouge
+            Action.ActionType.PLAYER_TURN, new int[] {0, 0, 255}, // Bleu, tour du joueur pas encore d'action
+            Action.ActionType.WIN, new int[] {0, 0, 255} // Animation WIN, FADE, 75% vitesse.
     );
 
     public WledService(WebClient.Builder webClientBuilder) {
@@ -74,7 +81,7 @@ public class WledService {
 
     private Mono<String> prepareAndSetLedState(int seat) {
         String jsonPayload = String.format("""
-            {"on": true, "seg": [{"id": %d, "fx": 0, "col": [[255,255,255]], "effect": "Solid"}]}
+            {"on": true, "seg": [{"id": %d, "fx": 0, "col": [[0,0,255]], "effect": "Solid"}]}
             """, seat - 1);
         return setLedState(jsonPayload);
     }
