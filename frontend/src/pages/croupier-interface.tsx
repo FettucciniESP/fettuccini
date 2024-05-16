@@ -52,7 +52,7 @@ export default function CroupierInterface() {
 
     const errorValue_subscribe: Subscription =
       toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        if (!!errorValue && !!toastOptions) {
+        if (!!errorValue && !!toastOptions && !toast.isActive("error-toast")) {
           toast({
             title: errorValue,
             ...toastOptions,
@@ -79,7 +79,7 @@ export default function CroupierInterface() {
     }
     const errorValue_subscribe: Subscription =
       toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        if (!!errorValue && !!toastOptions) {
+        if (!!errorValue && !!toastOptions && !toast.isActive("error-toast")) {
           toast({
             title: errorValue,
             ...toastOptions,

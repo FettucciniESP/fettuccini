@@ -7,8 +7,9 @@ import { croupierLoadingService } from "@/app/services/croupier-loading.service"
 import { StartGameResponseModel } from "@/app/models/StartGameResponse.model";
 import { croupierService } from "@/app/services/croupier.service";
 import { NextRouter, useRouter } from "next/router";
-import {LevelInfosModel} from "@/app/models/LevelInfos.model";
+import { LevelInfosModel } from "@/app/models/LevelInfos.model";
 import SeatsSelection from "@/app/components/design-system/seats-selection/SeatsSelection";
+import { toastService } from "@/app/services/toast.service";
 
 const labels = {
     STRUCTURE: "STRUCTURE",
@@ -99,41 +100,47 @@ export default function SettingLobby() {
                     ante: 0,
                     duration: 10,
                 },
-              {
-                levelIndex: 2,
-                label: "",
-                smallBlind: 15,
-                bigBlind: 30,
-                ante: 0,
-                duration: 10,
-              },
-              {
-                levelIndex: 3,
-                label: "",
-                smallBlind: 20,
-                bigBlind: 40,
-                ante: 0,
-                duration: 10,
-              },
-              {
-                levelIndex: 4,
-                label: "",
-                smallBlind: 25,
-                bigBlind: 50,
-                ante: 0,
-                duration: 10,
-              }
+                {
+                    levelIndex: 2,
+                    label: "",
+                    smallBlind: 15,
+                    bigBlind: 30,
+                    ante: 0,
+                    duration: 10,
+                },
+                {
+                    levelIndex: 3,
+                    label: "",
+                    smallBlind: 20,
+                    bigBlind: 40,
+                    ante: 0,
+                    duration: 10,
+                },
+                {
+                    levelIndex: 4,
+                    label: "",
+                    smallBlind: 25,
+                    bigBlind: 50,
+                    ante: 0,
+                    duration: 10,
+                }
             ],
             seatsIndex: [...seatsIndex].sort((a, b) => a - b),
             startingStack: stacks,
             authorizedReentryLevelIndex: 0,
         }
-        croupierLoadingService
-            .startNewGame(defaultStructure)
-            .then((startGameResponse: StartGameResponseModel) => {
-                croupierService.getGameInformations(startGameResponse);
-                router.push("/croupier-interface");
-            });
+        if (!stacks) {
+            toastService.pushError("Stacks is required");
+        } else if (!seatsIndex.length) {
+            toastService.pushError("Seats is required");
+        } else {
+            croupierLoadingService
+                .startNewGame(defaultStructure)
+                .then((startGameResponse: StartGameResponseModel) => {
+                    croupierService.getGameInformations(startGameResponse);
+                    router.push("/croupier-interface");
+                });
+        }  
     };
 
     const renderSettingsSection = () => {
