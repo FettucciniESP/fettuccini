@@ -268,6 +268,10 @@ public class PokerUtils {
                 .count() == getPlayersWithoutFoldThisRound(currentGame, round).size();
     }
 
+    public static boolean didAllPlayersPlayedThisRoundStep(Round round, GameSession currentGame, Action action) {
+        return didAllPlayersPlayedThisRoundStep(round, currentGame);
+    }
+
     /**
      * Checks if the players assigned to post the small and big blinds have already played in the pre-flop.
      *

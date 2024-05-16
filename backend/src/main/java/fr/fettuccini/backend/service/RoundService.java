@@ -33,7 +33,7 @@ public class RoundService {
                     PokerExceptionType.GAME_ENDED.getMessage(), currentGame.getPlayers().getFirst().getName()
             ));
         }
-        
+
         if (!currentGame.getRounds().isEmpty()){
             currentGame.getPlayers().forEach(player -> player.setHand(new HashSet<>()));
         }
@@ -125,7 +125,7 @@ public class RoundService {
         Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
         roundValidationService.validatePlayerActionRoundStep(playerActionRequest, gameSession, currentRound);
         processPlayerAction(playerActionRequest, gameSession, currentRound);
-        manageRoundStepProgression(gameSession, currentRound);
+        manageRoundStepProgression(gameSession, currentRound, playerActionRequest.getAction());
 
         List<Player> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound);
 
@@ -365,14 +365,6 @@ public class RoundService {
     }
 
     private void playerAction(Player player, Action action, Round round, Integer betAmount, GameSession gameSession) {
-        if (player.getBalance() < betAmount) {
-            action.setAmount(player.getBalance());
-        }
-
-        if (PokerUtils.isRoundAllIn(round, gameSession)) {
-            return;
-        }
-
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
         round.addAction(action);
@@ -425,8 +417,10 @@ public class RoundService {
      * @param currentGame The current game session.
      * @param round       The round whose progression is to be managed.
      */
-    public void manageRoundStepProgression(GameSession currentGame, Round round) {
-        if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame)) {
+    public void manageRoundStepProgression(GameSession currentGame, Round round, Action action) {
+        boolean isRoundAllIn = false;
+
+        if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame, action)) {
             if (round.getRoundStep().equals(RoundStep.PREFLOP)) {
                 round.setRoundStep(RoundStep.FLOP);
             } else if (round.getRoundStep().equals(RoundStep.FLOP)) {
@@ -436,9 +430,11 @@ public class RoundService {
             } else if (round.getRoundStep().equals(RoundStep.RIVER)) {
                 round.setRoundStep(RoundStep.SHOWDOWN);
             }
+
+            isRoundAllIn = PokerUtils.isRoundAllIn(round, currentGame);
         }
 
-        if (isRoundFinished(currentGame, round) || PokerUtils.isRoundAllIn(round, currentGame)) {
+        if (isRoundFinished(currentGame, round) || isRoundAllIn) {
             round.setRoundStep(RoundStep.FINISHED);
         }
     }
