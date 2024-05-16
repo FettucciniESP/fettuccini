@@ -44,15 +44,16 @@ export default function ActionButtons({
     }
 
     return (
-        <Box className={styles.actionButtonsContainer}>
+        <Box id={"box"} className={styles.actionButtonsContainer}>
             {isModalOpen && (
                 <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} initialValue={initialBetValue} />
             )}
             {cardsMisreadModal && (
                 <CardMisread isModalOpen={cardsMisreadModal} closeModal={closeCardsMisreadModal} actionNeededInfos={actionNeededInfos!} roundId={roundInfos!.roundId} finishRound={finishRound} />
             )}
-            <Box className={styles.actionButtonsLine}>
+            <Box id={"line1"} className={styles.actionButtonsLine}>
                 <Button
+                    id={"FOLD"}
                     isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.FOLD)}
                     className={styles.button}
                     onClick={() =>
@@ -62,6 +63,7 @@ export default function ActionButtons({
                     FOLD
                 </Button>
                 <Button
+                    id={"CHECK"}
                     isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.CHECK)}
                     className={styles.button}
                     onClick={() =>
@@ -71,8 +73,9 @@ export default function ActionButtons({
                     CHECK / CALL
                 </Button>
             </Box>
-            <Box className={styles.actionButtonsLine}>
+            <Box id={"line2"} className={styles.actionButtonsLine}>
                 <Button
+                    id={"BET"}
                     isDisabled={buttonIsDisabled(playerInfos, GameActionEnum.BET)}
                     className={styles.button}
                     onClick={() =>
@@ -82,6 +85,7 @@ export default function ActionButtons({
                     BET
                 </Button>
                 <Button
+                    id={"ALL_IN"}
                     className={styles.button}
                     onClick={() =>
                         handleActionButtonClick(playerInfos, GameActionEnum.ALL_IN)

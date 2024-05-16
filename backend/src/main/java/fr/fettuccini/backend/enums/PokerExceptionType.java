@@ -20,6 +20,7 @@ public enum PokerExceptionType {
     PLAYER_ALREADY_EXISTS("Player with seat index %s already exists"),
     REENTRY_NOT_ALLOWED("Reentry not allowed"),
     NO_CARD_MISREAD_ALLOWED("No card misread allowed"),
+    NO_CARD_MISREAD_PROVIDED("No card misread provided"),
     ;
 
     private final String message;
