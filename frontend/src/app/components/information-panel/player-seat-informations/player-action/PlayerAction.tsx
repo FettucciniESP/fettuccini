@@ -36,7 +36,9 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
 
     const winnerActionContent = (amountWin: number) => {
         return (
-            <WinnerBanner ammountWin={amountWin} />
+            <>
+                <WinnerBanner ammountWin={amountWin} />
+            </>
         );
     }
 
@@ -62,7 +64,7 @@ export default function PlayerAction({playerHandInfos}: { readonly playerHandInf
     }
     const renderActionContent = () => {
         const {lastAction} = playerHandInfos;
-        if (!!playerHandInfos.player.seatIndex && playerHandInfos.player.balance === 0) return allInActionContent();
+        if (winnersInfos.length === 0 && !!playerHandInfos.player.seatIndex && playerHandInfos.player.balance === 0) return allInActionContent();
 
         const winningInformations: WinnerInfosModel|undefined = playerIsWinner();
         if (!!winningInformations) return winnerActionContent(winningInformations.amount);

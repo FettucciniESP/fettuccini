@@ -14,11 +14,15 @@ import {CardMisreadModel} from "@/app/models/CardMisread.model";
 import {ActionNeededInfosModel} from "@/app/models/ActionNeededInfos.model";
 import {Simulate} from "react-dom/test-utils";
 import waiting = Simulate.waiting;
+import {PlayerHandInfosModel} from "@/app/models/PlayerHandInfos.model";
 
 export default function useActionButtons() {
     let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
     const [cardsMisreadModal, setCardsMisreadModal] = useState(false);
     const [actionNeededInfos, setActionNeededInfos] = useState<ActionNeededInfosModel|null>();
+    const [endGameModal, setEndGameModal] = useState(false);
+    const [winner, setWinner] = useState<PlayerInfosModel | null>(null);
+    const [waitNextRound, setWaitNextRound] = useState(false);
 
     const closeCardsMisreadModal = () => {
         setCardsMisreadModal(false);
@@ -65,8 +69,12 @@ export default function useActionButtons() {
                     break;
                 }
                 case GameActionEnum.ALL_IN:
+                    const allInAmount = player.balance + calculateHighestBetForPlayer(roundInfos, player.seatIndex);
                     playerAction.actionType = GameActionEnum.BET;
-                    playerAction.amount = player.balance;
+                    playerAction.amount = allInAmount;
+                    if (calculateHighestBet(roundInfos) >= allInAmount) {
+                        playerAction.actionType = GameActionEnum.CALL;
+                    }
                     break;
             }
             croupierLoadingService
@@ -104,21 +112,46 @@ export default function useActionButtons() {
     function finishRound(roundInfos: RoundInfosModel): void {
         if (roundInfos.winners) {
             playersService.setWinnersInformations(roundInfos.winners);
-            setTimeout(() => {
-                croupierLoadingService
-                    .startNewRound()
-                    .then((newRoundInfos: RoundInfosModel) =>
-                        updateInformations(newRoundInfos)
-                    );
-            }, 10000);
-
+            roundService.setRoundInfos(roundInfos);
+            const playersWithChips: PlayerHandInfosModel[] = getPlayersWithChips();
+            if (playersWithChips.length === 1) {
+                setWinner(playersWithChips[0].player)
+                setEndGameModal(true);
+                return;
+            }
+            setWaitNextRound(true);
         } else {
-            croupierLoadingService
-                .startNewRound()
-                .then((newRoundInfos: RoundInfosModel) =>
-                    updateInformations(newRoundInfos)
-                );
+            startNewRound();
         }
+    }
+
+    function startNewRound(): void {
+        setWaitNextRound(false);
+        const playersWithChips: PlayerHandInfosModel[] = getPlayersWithChips();
+        if (playersWithChips.length === 1) {
+            setWinner(playersWithChips[0].player)
+            setEndGameModal(true);
+            return;
+        }
+        croupierLoadingService
+            .startNewRound()
+            .then((newRoundInfos: RoundInfosModel) => {
+                updateInformations(newRoundInfos)
+            })
+    }
+
+    function getPlayersWithChips(): PlayerHandInfosModel[] {
+        if (!roundInfos || !roundInfos.playersLastActions) {
+            return [];
+        }
+
+        return roundInfos.playersLastActions.filter((playerHandInfo: PlayerHandInfosModel) => {
+            return playerHandInfo.player && playerHandInfo.player.balance > 0;
+        });
+    }
+
+    function closeEndGameModal() {
+        setEndGameModal(false);
     }
 
     function isCheckOrCall(
@@ -216,5 +249,10 @@ export default function useActionButtons() {
         actionNeededInfos,
         roundInfos,
         finishRound,
+        endGameModal,
+        closeEndGameModal,
+        winner,
+        startNewRound,
+        waitNextRound,
     };
 }

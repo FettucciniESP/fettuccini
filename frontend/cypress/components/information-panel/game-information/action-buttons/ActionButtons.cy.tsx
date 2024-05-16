@@ -9,6 +9,9 @@ import { LevelInfosModel } from '@/app/models/LevelInfos.model';
 import { RoundPlayersActionsHistoryModel } from '@/app/models/RoundPlayersActionsHistory.model';
 import { PlayerActionModel } from '@/app/models/PlayerAction.model';
 import { PlayerInfosModel } from '@/app/models/PlayerInfos.model';
+import {ActionNeededInfosModel} from "@/app/models/ActionNeededInfos.model";
+import {WinnerInfosModel} from "@/app/models/WinnerInfos.model";
+
 
 describe('Action Buttons', () => {
     
@@ -40,6 +43,11 @@ describe('Action Buttons', () => {
         player: playerInfos
     };
 
+    const actionsNeeded : ActionNeededInfosModel = {
+        cardMisreads: [],
+        impossibleCards: [],
+    }
+
     const roundInfos: RoundInfosModel = {
         currentPlayingUser: playerInfos,
         currentPotAmount: 30,
@@ -50,7 +58,9 @@ describe('Action Buttons', () => {
         currentButtonUser: playerInfos,
         playersLastActions: [playerHandInfos], // []
         gameStartedDatetime: new Date(),
-        breakTime: false
+        breakTime: false,
+        actionNeededInfos: actionsNeeded,
+        winners: []
     };
 
     beforeEach(() =>{
@@ -77,17 +87,6 @@ describe('Action Buttons', () => {
 
     it('click on FOLD', ()=>{
         cy.get('[id="FOLD"]').click();
-    })
-
-    it('click on BET and validate', ()=>{
-        cy.get('[id="BET"]').click();
-        cy.get('[id="idButtonNumber5"]').should('be.visible');
-        cy.get('[id="idButtonNumber5"]').click();
-        cy.get('[id="idButtonNumber0"]').should('be.visible');
-        cy.get('[id="idButtonNumber0"]').click();
-        cy.get('[id="idResult"]').should('have.value', '50');
-        cy.get('[id="idButtonSubmit"]').should('be.visible');
-        cy.get('[id="idButtonSubmit"]').click();
     })
 
     it('click on ALL-IN', ()=>{

@@ -16,13 +16,6 @@
   margin-bottom: 1vw;
 }
 
-.label {
-  font-size: 2vw;
-  font-weight: bold;
-  color: $white-color;
-  margin-bottom: 1vw;
-}
-
 .redIcon {
   color: $red-color !important;
 }
@@ -41,4 +34,25 @@
   border: none;
   border-radius: 0.5vw;
   cursor: pointer;
+}
+
+.boxContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.backButton {
+  position: absolute !important;
+  left: 0;
+}
+
+.label {
+  font-size: 2vw;
+  font-weight: bold;
+  color: $white-color;
+  text-align: center;
+  flex: 1;
 }
