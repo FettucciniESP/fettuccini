@@ -95,7 +95,7 @@ public class RoundServiceTests {
                     .thenReturn(Optional.of(players.get(3)));
             mocked.when(() -> PokerUtils.getBigBlindPlayer(anyList(), any(Round.class)))
                     .thenReturn(Optional.of(players.get(4)));
-            mocked.when(() -> PokerUtils.didAllPlayersPlayedThisRoundStep(any(Round.class), any(GameSession.class)))
+            mocked.when(() -> PokerUtils.didAllPlayersPlayedThisRoundStep(any(Round.class), any(GameSession.class), any(Action.class)))
                     .thenReturn(true);
             Round mockRound = new Round();
             mockRound.setRoundStep(RoundStep.PREFLOP);
@@ -170,7 +170,7 @@ public class RoundServiceTests {
     @Test
     void testManageRoundStepProgressionToFlop() {
         try (MockedStatic<PokerUtils> mocked = mockStatic(PokerUtils.class)) {
-            when(PokerUtils.didAllPlayersPlayedThisRoundStep(any(Round.class), any(GameSession.class)))
+            when(PokerUtils.didAllPlayersPlayedThisRoundStep(any(Round.class), any(GameSession.class), any(Action.class)))
                     .thenReturn(true);
 
             Action action = new Action(Action.ActionType.CALL, 10, 1, RoundStep.PREFLOP);
