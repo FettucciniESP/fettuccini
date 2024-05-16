@@ -72,6 +72,9 @@ export default function useActionButtons() {
                     const allInAmount = player.balance + calculateHighestBetForPlayer(roundInfos, player.seatIndex);
                     playerAction.actionType = GameActionEnum.BET;
                     playerAction.amount = allInAmount;
+                    if (calculateHighestBet(roundInfos) >= allInAmount) {
+                        playerAction.actionType = GameActionEnum.CALL;
+                    }
                     break;
             }
             croupierLoadingService
@@ -109,8 +112,14 @@ export default function useActionButtons() {
     function finishRound(roundInfos: RoundInfosModel): void {
         if (roundInfos.winners) {
             playersService.setWinnersInformations(roundInfos.winners);
+            roundService.setRoundInfos(roundInfos);
+            const playersWithChips: PlayerHandInfosModel[] = getPlayersWithChips();
+            if (playersWithChips.length === 1) {
+                setWinner(playersWithChips[0].player)
+                setEndGameModal(true);
+                return;
+            }
             setWaitNextRound(true);
-
         } else {
             startNewRound();
         }
@@ -126,7 +135,9 @@ export default function useActionButtons() {
         }
         croupierLoadingService
             .startNewRound()
-            .then((newRoundInfos: RoundInfosModel) => updateInformations(newRoundInfos));
+            .then((newRoundInfos: RoundInfosModel) => {
+                updateInformations(newRoundInfos)
+            })
     }
 
     function getPlayersWithChips(): PlayerHandInfosModel[] {
