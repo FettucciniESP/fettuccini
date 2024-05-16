@@ -231,8 +231,21 @@ public class RoundService {
             winnerWithRemaind.setAmount(winnerWithRemaind.getAmount() + remainder);
         }
 
+        manageEliminations(gameSession);
+
         // Set round as finished
         currentRound.setRoundStep(RoundStep.FINISHED);
+    }
+
+    public void manageEliminations(GameSession gamesession) {
+        List<Player> players = gamesession.getPlayers();
+        List<Player> playersToEliminate = players.stream()
+                .filter(player -> player.getBalance() <= 0)
+                .toList();
+
+        for (Player player : playersToEliminate) {
+            players.remove(player);
+        }
     }
 
 
