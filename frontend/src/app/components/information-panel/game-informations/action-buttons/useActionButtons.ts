@@ -69,8 +69,9 @@ export default function useActionButtons() {
                     break;
                 }
                 case GameActionEnum.ALL_IN:
+                    const allInAmount = player.balance + calculateHighestBetForPlayer(roundInfos, player.seatIndex);
                     playerAction.actionType = GameActionEnum.BET;
-                    playerAction.amount = player.balance;
+                    playerAction.amount = allInAmount;
                     break;
             }
             croupierLoadingService
