@@ -88,4 +88,9 @@ public class PokerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping("/cardMisread/{sessionId}")
+    public PlayerActionResponse cardMisread(@PathVariable String sessionId, @RequestBody CardMisreadRequest cardMisreadRequest) throws PokerException {
+        return pokerService.handleCardMisread(cardMisreadRequest, sessionId);
+    }
+
 }

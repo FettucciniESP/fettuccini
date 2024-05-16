@@ -49,7 +49,7 @@ export default function ActionButtons({
     }
 
     return (
-        <Box className={styles.actionButtonsContainer}>
+        <Box id={"box"} className={styles.actionButtonsContainer}>
             {isModalOpen && (
                 <Calculator openCalculator={isModalOpen} closeCalculator={closeModal} handleNumber={handleBet} initialValue={initialBetValue} />
             )}

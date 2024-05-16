@@ -111,4 +111,17 @@ public class PokerService {
         gameSessionRepository.save(gameSession);
         return playerActionResponse;
     }
+
+    public PlayerActionResponse handleCardMisread(CardMisreadRequest cardMisreadRequest, String sessionId) throws PokerException {
+        var gameSession = gameSessionRepository.findById(sessionId)
+                .orElseThrow(() ->
+                        new PokerException(PokerExceptionType.GAME_NOT_FOUND, String.format(PokerExceptionType.GAME_NOT_FOUND.getMessage(), sessionId)));
+
+
+        PlayerActionResponse playerActionResponse = roundService.handleCardMisread(cardMisreadRequest, gameSession);
+
+        gameSessionRepository.save(gameSession);
+
+        return playerActionResponse;
+    }
 }

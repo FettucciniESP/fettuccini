@@ -20,8 +20,12 @@ public class Round {
     private Level currentLevel;
     private RoundStep roundStep;
     private Integer nextPlayerToPlaySeatIndex;
+    private List<Winner> winners = new LinkedList<>();
     public void addAction(Action action) {
         actions.add(action);
+    }
+    public void addWinner(Winner winner) {
+        winners.add(winner);
     }
 
     public Round startRound(String id, String gameId, Integer buttonSeatIndex) {
