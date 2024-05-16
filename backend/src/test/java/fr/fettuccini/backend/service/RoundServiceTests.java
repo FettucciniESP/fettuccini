@@ -48,7 +48,7 @@ public class RoundServiceTests {
 
     @Test
     @Disabled
-    void testInitializeRoundForGame() {
+    void testInitializeRoundForGame() throws PokerException {
         PlayerActionResponse response = roundService.initializeRoundForGame(mockGameSession);
         assertNotNull(response);
         assertNotNull(response.getRoundId());
@@ -160,13 +160,14 @@ public class RoundServiceTests {
 
     @Test
     void testPlayerMakeABet() {
+        GameSession gameSession = new GameSession();
         Player player = new Player();
         player.setBalance(1000);
         Action action = new Action(Action.ActionType.BET, 500, 1, RoundStep.PREFLOP);
         Round round = new Round();
         round.setActions(new ArrayList<>());
         round.setPotAmount(0);
-        roundService.playerMakeABet(player, action, round);
+        roundService.playerMakeABet(player, action, round, gameSession);
         assertEquals(500, player.getBalance().intValue());
         assertFalse(round.getActions().isEmpty());
     }
@@ -176,11 +177,14 @@ public class RoundServiceTests {
         try (MockedStatic<PokerUtils> mocked = mockStatic(PokerUtils.class)) {
             when(PokerUtils.didAllPlayersPlayedThisRoundStep(any(Round.class), any(GameSession.class)))
                     .thenReturn(true);
+
+            Action action = new Action(Action.ActionType.CALL, 10, 1, RoundStep.PREFLOP);
+
             GameSession gameSession = new GameSession();
             Round round = new Round();
             round.setRoundStep(RoundStep.PREFLOP);
             gameSession.addRound(round);
-            roundService.manageRoundStepProgression(gameSession, round);
+            roundService.manageRoundStepProgression(gameSession, round, action);
             assertEquals(RoundStep.FLOP, round.getRoundStep());
         }
     }
