@@ -5,4 +5,5 @@ export enum GameActionEnum {
   ALL_IN = 'ALL_IN',
   CALL = 'CALL',
   NOTHING = '',
+  WINNER = 'WINNER',
 }

@@ -13,7 +13,6 @@ import SeatsSelection from "@/app/components/design-system/seats-selection/Seats
 const labels = {
     STRUCTURE: "STRUCTURE",
     STACKS: "STACKS",
-    REGISTRATION_MAX: "TEMPS D'INSCRIPTION MAX",
     MULTI_TABLE: "PLUSIEURS TABLES",
     COST_ENTRY: "COÛT D'ENTRÉE",
     PLAYERS: "JOUEURS",
@@ -25,8 +24,6 @@ const titles = {
 };
 
 const buttonTitles = {
-    LOAD: "CHARGER",
-    SAVE: "ENREGISTRER",
     START: "COMMENCER",
 };
 
@@ -38,8 +35,6 @@ export default function SettingLobby() {
 
     const [stucture, setStructure] = useState<Array<LevelInfosModel>>([]);
     const [stacks, setStacks] = useState<number>(0);
-    const [registrationMax, setRegistrationMax] = useState<number>(0);
-    // const [multiTable, setMultiTable] = useState(false);
     const [costEntry, setCostEntry] = useState<number>(0);
     const [seatsIndex, setSeatsIndex] = useState<Array<number>>([]);
 
@@ -52,9 +47,6 @@ export default function SettingLobby() {
     };
     const handleChangeStacks = (value: number): void => {
         setStacks(value);
-    };
-    const handleChangeRegistrationMax = (value: number): void => {
-        setRegistrationMax(value);
     };
     const handleChangeCostEntry = (value: number): void => {
         setCostEntry(value);
@@ -70,10 +62,6 @@ export default function SettingLobby() {
 
     const handleClickButtonStructure = () => {
         console.log("structure openstructure openstructure open modal");
-    };
-
-    const handleClickButtonRegistration = () => {
-        console.log("registration open modal");
     };
 
     const handleClickButtonLoad = () => {
@@ -136,9 +124,9 @@ export default function SettingLobby() {
                 duration: 10,
               }
             ],
-            seatsIndex: seatsIndex,
+            seatsIndex: [...seatsIndex].sort((a, b) => a - b),
             startingStack: stacks,
-            authorizedReentryLevelIndex: registrationMax,
+            authorizedReentryLevelIndex: 0,
         }
         croupierLoadingService
             .startNewGame(defaultStructure)
@@ -152,7 +140,6 @@ export default function SettingLobby() {
         const sectionContent = [
             { title: labels.STRUCTURE, value: stucture },
             { title: labels.STACKS, value: stacks },
-            { title: labels.REGISTRATION_MAX, value: registrationMax },
             {
                 title: labels.COST_ENTRY,
                 value: costEntry ? `${costEntry + " €"}` : costEntry,
@@ -177,18 +164,6 @@ export default function SettingLobby() {
     const renderButtonSection = () => {
         return (
             <Box>
-                <Box className={styles.singleButtonContainer}>
-                    <ButtonIcon
-                        label={buttonTitles.LOAD}
-                        handleClick={handleClickButtonLoad}
-                        icon={ButtonIcon.icons.LOAD}
-                    />
-                    <ButtonIcon
-                        label={buttonTitles.SAVE}
-                        handleClick={handleClickButtonSave}
-                        icon={ButtonIcon.icons.SAVE}
-                    />
-                </Box>
                 <Box className={styles.multiButtonContainer}>
                     <ButtonIcon
                         label={buttonTitles.START}
@@ -222,13 +197,6 @@ export default function SettingLobby() {
                             handleChangeCurrentValue={handleChangeStacks}
                             currentValue={stacks}
                             type={InputLabelIcon.types.NUMBER}
-                        />
-
-                        <InputLabelIcon
-                            label={labels.REGISTRATION_MAX}
-                            handleClick={handleClickButtonRegistration}
-                            currentValue={registrationMax}
-                            type={InputLabelIcon.types.BUTTON}
                         />
 
                         <InputLabelIcon

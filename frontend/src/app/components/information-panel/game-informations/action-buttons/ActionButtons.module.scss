@@ -4,6 +4,14 @@
   width: 100%;
 }
 
+.nextRoundContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+
 .actionButtonsLine {
   display: flex;
   justify-content: space-between;

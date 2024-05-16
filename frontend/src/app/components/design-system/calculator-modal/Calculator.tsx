@@ -15,12 +15,13 @@ import useCalculator from "@/app/components/design-system/calculator-modal/useCa
 import {CalculatorPropsModel} from "@/app/models/CalculatorProps.model";
 import FettucciniModal from "@/app/components/design-system/fettuccini-modal/FettucciniModal";
 
-export default function Calculator({openCalculator, closeCalculator, handleNumber}: CalculatorPropsModel) {
+export default function Calculator({openCalculator, closeCalculator, handleNumber, initialValue}: CalculatorPropsModel) {
 
     const calculatorProps: CalculatorPropsModel = {
         openCalculator: openCalculator,
         closeCalculator: closeCalculator,
-        handleNumber: handleNumber
+        handleNumber: handleNumber,
+        initialValue: initialValue
     }
     const {code, handleChange, handleSubmit, handleDelete} = useCalculator(calculatorProps);
 

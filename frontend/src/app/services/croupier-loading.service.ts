@@ -3,6 +3,8 @@ import { PlayerActionModel } from "../models/PlayerAction.model";
 import { StartGameResponseModel } from "@/app/models/StartGameResponse.model";
 import { RoundInfosModel } from "@/app/models/RoundInfos.model";
 import { toastService } from "./toast.service";
+import {CardModel} from "@/app/models/Card.model";
+import {ChipsCountResponseModel} from "@/app/models/ChipsCountResponse.model";
 
 class CroupierService {
   private sessionId!: string;
@@ -56,6 +58,37 @@ class CroupierService {
     try {
       const response = await this.axiosInstance.post(
         `/playRound/${this.sessionId}`
+      );
+      return response.data;
+    } catch (error: any) {
+      throw toastService.pushError(error?.response?.data);
+    }
+  }
+
+  async setCardsMisread(roundId: string, playerSeatId: number | null, cardMisreads: Array<CardModel|null>): Promise<RoundInfosModel> {
+    try {
+      const response = await this.axiosInstance.post(
+        `/cardMisread/${this.sessionId}`,
+        {
+          playerSeatId: playerSeatId,
+          roundId: roundId,
+          cards: cardMisreads,
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      throw toastService.pushError(error?.response?.data);
+    }
+  }
+
+  async getChipsCount(seatIndex: number, roundId: string): Promise<ChipsCountResponseModel> {
+    try {
+      const response = await this.axiosInstance.post(
+        `/chipsCount/${this.sessionId}`,
+        {
+          seatIndex: seatIndex,
+          roundId: roundId,
+        }
       );
       return response.data;
     } catch (error: any) {
