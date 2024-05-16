@@ -20,6 +20,6 @@ public class PlayerActionResponse {
     List<PlayerLastAction> playersLastActions;
     boolean isBreakTime;
     String levelLabel;
-    List<CardMisread> cardMisreads;
+    ActionNeededInfos actionNeededInfos;
     List<Winner> winners;
 }

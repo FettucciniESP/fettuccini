@@ -3,7 +3,6 @@ package fr.fettuccini.backend.utils;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.poker.*;
-import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -268,6 +267,10 @@ public class PokerUtils {
                 .count() == getPlayersWithoutFoldThisRound(currentGame, round).size();
     }
 
+    public static boolean didAllPlayersPlayedThisRoundStep(Round round, GameSession currentGame, Action action) {
+        return didAllPlayersPlayedThisRoundStep(round, currentGame);
+    }
+
     /**
      * Checks if the players assigned to post the small and big blinds have already played in the pre-flop.
      *
@@ -427,5 +430,15 @@ public class PokerUtils {
                 )
         );
         return cardMisread;
+    }
+
+    public static boolean isRoundAllIn(Round round, GameSession gameSession) {
+        List<Player> playersWithoutFold = getPlayersWithoutFoldThisRound(gameSession, round);
+
+        return playersWithoutFold
+                .stream()
+                .mapToInt(Player::getBalance)
+                .filter(balance -> balance > 0)
+                .count() <= 1;
     }
 }

@@ -15,4 +15,6 @@ public class Player {
     private Integer bet;
     @JsonIgnore
     private HashSet<Card> hand;
+    @JsonIgnore
+    private Integer chipsReaded;
 }
