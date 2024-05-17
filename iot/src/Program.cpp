@@ -4,14 +4,6 @@
 #include <soc/rtc_cntl_reg.h> //disable brownour problems
 #include <WebServer_WT32_ETH01.h>
 
-// void initWiFi() {
-//     WiFi.mode(WIFI_STA);
-//     WiFi.begin(WSSID, PASS);
-//     while (WiFi.status() != WL_CONNECTED) {
-//         delay(1000);
-//     }
-// }
-
 void ethernetWT32Init(){
     WT32_ETH01_onEvent();
     ETH.begin(ETH_PHY_ADDR, ETH_PHY_POWER);
@@ -25,13 +17,7 @@ Program::Program() {
     Serial.begin(MONITOR_SPEED);
 
     delay(2000);
-    //Screen
-    //initWiFi();
     ethernetWT32Init();
-    // Wire.setPins(15, 14);
-    // Wire.begin();
-    // this->screen = new OledScreen(OLED_WIDTH, OLED_HEIGHT, OLED_RESET);
-    // this->screen->welcome();
 
     //Screen
 
@@ -53,10 +39,10 @@ Program::Program() {
 
     delay(100);
 
-    // this->card2 = new NfcCardReader(Serial);
-    // while (!card2Connected){
-    //     card2Connected = card2->connect();
-    // }
+    this->card2 = new NfcCardReader(Serial);
+    while (!card2Connected){
+        card2Connected = card2->connect();
+    }
 
 }
 
@@ -76,7 +62,6 @@ void Program::loop() {
         for(auto it: *NFCTocken->GetIso14443Tokens()){
             this->NFCTocken->pushBackChips(NFCTocken->stringifyId(&it));
         }
-        Serial.println(this->NFCTocken->chips->at(0));
         api->decidingSendChips(this->NFCTocken->chips); //XXX
     } else {
         api->refreshSauvgarde();
@@ -85,7 +70,7 @@ void Program::loop() {
 
     // START NFC card
     String val1 = this->card1->read();
-    String val2 = "coucou"; //this->card2->read();
+    String val2 = this->card2->read();
     this->api->decidingSendCards(val1, val2);
     // END NFC card
 }
