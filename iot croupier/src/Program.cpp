@@ -7,14 +7,14 @@
 #include <soc/rtc_cntl_reg.h> //disable brownour problems
 
 void initWiFi() {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(WSSID, PASS);
-    Serial.print("Connecting to WiFi ..");
-    while (WiFi.status() != WL_CONNECTED) {
-        Serial.print(WiFi.status());
-        delay(1000);
-    }
-    Serial.println(WiFi.localIP());
+    // WiFi.mode(WIFI_STA);
+    // WiFi.begin(WSSID, PASS);
+    // Serial.print("Connecting to WiFi ..");
+    // while (WiFi.status() != WL_CONNECTED) {
+    //     Serial.print(WiFi.status());
+    //     delay(1000);
+    // }
+    // Serial.println(WiFi.localIP());
 }
 
 void ethernetWT32Init(){
