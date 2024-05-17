@@ -8,6 +8,7 @@ import { PlayerHandInfosModel } from "@/app/models/PlayerHandInfos.model";
 import { RoundPlayersActionsHistoryModel } from '@/app/models/RoundPlayersActionsHistory.model';
 import { PlayerActionModel } from '@/app/models/PlayerAction.model';
 import { PlayerInfosModel } from '@/app/models/PlayerInfos.model';
+import {ActionNeededInfosModel} from "@/app/models/ActionNeededInfos.model";
 
 describe('Game Informations', () => {
     
@@ -39,6 +40,11 @@ describe('Game Informations', () => {
         player: playerInfos
     };
 
+    const actionsNeeded : ActionNeededInfosModel = {
+        cardMisreads: [],
+        impossibleCards: [],
+    }
+
     const roundInfos: RoundInfosModel = {
         currentPlayingUser: playerInfos,
         currentPotAmount: 30,
@@ -48,7 +54,10 @@ describe('Game Informations', () => {
         sessionId: '5',
         currentButtonUser: playerInfos,
         playersLastActions: [playerHandInfos], // []
-        gameStartedDatetime: new Date()
+        gameStartedDatetime: new Date(),
+        breakTime: false,
+        actionNeededInfos: actionsNeeded,
+        winners: []
     };
 
     const currentLevelInfo : LevelInfosModel = {
@@ -56,7 +65,8 @@ describe('Game Informations', () => {
         bigBlind: 20,
         ante: 3,
         duration: 10,
-        levelIndex: 1
+        levelIndex: 1,
+        label: ""
     };
 
     const nextLevelInfos : LevelInfosModel = {
@@ -64,7 +74,8 @@ describe('Game Informations', () => {
         bigBlind: 30,
         ante: 4,
         duration: 10,
-        levelIndex: 2
+        levelIndex: 2,
+        label: ""
     };
 
     beforeEach(() =>{

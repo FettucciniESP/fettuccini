@@ -3,7 +3,6 @@ package fr.fettuccini.backend.utils;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.poker.*;
-import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

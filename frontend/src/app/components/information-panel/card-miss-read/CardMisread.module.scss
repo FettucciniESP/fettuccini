@@ -8,14 +8,22 @@
 }
 
 .card {
-  padding: 1vw;
+  padding: 0.5vw;
+  transition: all 0.3s ease;
+}
+
+.boardCard {
+  width: 6vw;
+}
+
+.playerCard {
   width: 12vw;
 }
 
 .playerContainer {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 1vw;
   flex-direction: column;
   text-align: center;
@@ -36,8 +44,6 @@
 
 .missReadContainer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: space-around;
   width: 100%;
   height: 100%;

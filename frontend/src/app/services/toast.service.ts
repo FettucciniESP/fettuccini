@@ -7,6 +7,7 @@ const defaultOptions: UseToastOptions = {
   position: "top",
   duration: 5000,
   isClosable: true,
+  id: "error-toast",
 };
 
 class ToastService {

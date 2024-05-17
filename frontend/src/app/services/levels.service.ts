@@ -7,14 +7,16 @@ class LevelsService {
         bigBlind: 0,
         ante: 0,
         duration: 0,
-        levelIndex: 0
+        levelIndex: 0,
+        label: ''
     });
     private nextLevel = new BehaviorSubject<LevelInfosModel>({
         smallBlind: 0,
         bigBlind: 0,
         ante: 0,
         duration: 0,
-        levelIndex: 0
+        levelIndex: 0,
+        label: ''
     });
     private levelsStructure = new BehaviorSubject<LevelInfosModel[]>([]);
 
