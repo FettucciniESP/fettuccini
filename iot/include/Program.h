@@ -7,9 +7,10 @@
 #include <Wire.h>
 #include <SPI.h>
 
-#include "NfcModule.h"
 #include "OledScreen.h"
-#include "PokerApi.h"
+#include "NfcTokenReader.h"
+#include "PokerApi.h" // XXX
+#include "NfcCardReader.h"
 
 class Program {
 public:
@@ -26,9 +27,12 @@ public:
 
 private:
     OledScreen *screen;
-    NfcModule* nfc;
-    NfcModule* nfc2;
-    PokerApi* api;
+    PokerApi* api; //XXX
+
+    NfcTokenReader* NFCTocken;
+
+    NfcCardReader* card1;
+    NfcCardReader* card2;
 };
 
 #endif
