@@ -6,10 +6,7 @@ import fr.fettuccini.backend.model.poker.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class PokerUtils {
@@ -87,6 +84,17 @@ public class PokerUtils {
             }
         }
         return playersWhoDidntFold;
+    }
+
+    public static List<Player> getAllPlayersWithActionThisRound(GameSession currentGame, Round currentRound) {
+        List<Player> playersWithAction = new ArrayList<>();
+
+        for(Action action : currentRound.getActions()){
+            if(!playersWithAction.contains(getPlayerBySeatIndex(currentGame, action.getSeatIndex()))){
+                playersWithAction.add(getPlayerBySeatIndex(currentGame, action.getSeatIndex()));
+            }
+        }
+        return playersWithAction;
     }
 
     /**
@@ -259,6 +267,10 @@ public class PokerUtils {
                 .count() == getPlayersWithoutFoldThisRound(currentGame, round).size();
     }
 
+    public static boolean didAllPlayersPlayedThisRoundStep(Round round, GameSession currentGame, Action action) {
+        return didAllPlayersPlayedThisRoundStep(round, currentGame);
+    }
+
     /**
      * Checks if the players assigned to post the small and big blinds have already played in the pre-flop.
      *
@@ -267,8 +279,8 @@ public class PokerUtils {
      * @return {@code true} if both the small and big blind players have played in the pre-flop, {@code false} otherwise.
      */
     public static boolean areBlindsPlayersAlreadyPlayedPreflop(Round round, GameSession currentGame) {
-        Optional<Player> smallBlindPlayer = getSmallBlindPlayer(currentGame.getPlayers(), round);
-        Player bigBlindPlayer = getBigBlindPlayer(currentGame.getPlayers(), round).orElseThrow();
+        Optional<Player> smallBlindPlayer = getSmallBlindPlayer(PokerUtils.getAllPlayersWithActionThisRound(currentGame, round), round);
+        Player bigBlindPlayer = getBigBlindPlayer(PokerUtils.getAllPlayersWithActionThisRound(currentGame, round), round).orElseThrow();
         boolean smallBlindAlreadyPlayed = true;
         
         if (smallBlindPlayer.isPresent()) {
@@ -393,5 +405,40 @@ public class PokerUtils {
      */
     public static String formatPokerExceptionMessage(PokerExceptionType pokerExceptionType, String message) {
         return pokerExceptionType.toString() + " : " + message;
+    }
+
+    public static CardMisread createBoardCardMisread(Set<Card> cards) {
+        CardMisread cardMisread = new CardMisread();
+        cardMisread.setCards(
+                new HashSet<>(
+                        cards
+                        .stream()
+                        .limit(5)
+                        .toList()
+                ));
+        return cardMisread;
+    }
+    public static CardMisread createPlayerCardMisread(Player player, Set<Card> cards) {
+        CardMisread cardMisread = new CardMisread();
+        cardMisread.setPlayer(player);
+        cardMisread.setCards(
+                new HashSet<>(
+                        cards
+                        .stream()
+                        .limit(2)
+                        .toList()
+                )
+        );
+        return cardMisread;
+    }
+
+    public static boolean isRoundAllIn(Round round, GameSession gameSession) {
+        List<Player> playersWithoutFold = getPlayersWithoutFoldThisRound(gameSession, round);
+
+        return playersWithoutFold
+                .stream()
+                .mapToInt(Player::getBalance)
+                .filter(balance -> balance > 0)
+                .count() <= 1;
     }
 }

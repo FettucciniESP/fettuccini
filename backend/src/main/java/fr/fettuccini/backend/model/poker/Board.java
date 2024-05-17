@@ -18,7 +18,7 @@ public class Board {
     private static final int TURN_SIZE = 1;
     private static final int RIVER_SIZE = 1;
 
-    private final Set<Card> communityCards = new HashSet<>();
+    private Set<Card> communityCards = new HashSet<>();
     private CommunityCardType lastAddedType = null;
 
     /**
@@ -49,13 +49,14 @@ public class Board {
 
     private boolean isValidSequence(CommunityCardType communityCardType) {
         if (lastAddedType == null && communityCardType == CommunityCardType.FLOP) return true;
+        if (this.communityCards.size() < 3 && communityCardType == CommunityCardType.FLOP) return true;
         if (lastAddedType == CommunityCardType.FLOP && communityCardType == CommunityCardType.TURN) return true;
         return lastAddedType == CommunityCardType.TURN && communityCardType == CommunityCardType.RIVER;
     }
 
     private boolean isValidCardSetForType(Set<Card> cards, CommunityCardType communityCardType) {
         return switch (communityCardType) {
-            case FLOP -> cards.size() == FLOP_SIZE;
+            case FLOP -> cards.size() <= FLOP_SIZE;
             case TURN -> cards.size() == TURN_SIZE;
             case RIVER -> cards.size() == RIVER_SIZE;
         };

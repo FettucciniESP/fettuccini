@@ -9,7 +9,7 @@ export const TimerCountUp = () => {
     const [elapsedTime, setElapsedTime] = useState<number>(0);
 
     useEffect(() => {
-        let interval;
+        let interval: NodeJS.Timeout | undefined;
 
         if (startTime) {
             interval = setInterval(() => {
@@ -26,7 +26,9 @@ export const TimerCountUp = () => {
         });
 
         return () => {
-            clearInterval(interval);
+            if (interval) {
+                clearInterval(interval);
+            }
             startGameTime_subscribe.unsubscribe();
         }
     }, [startTime]);

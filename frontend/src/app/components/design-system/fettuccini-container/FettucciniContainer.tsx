@@ -19,5 +19,5 @@ export default function FettucciniContainer({
             className = styles.blur;
             break;
     }
-    return <Box className={className}>{children}</Box>
+    return <Box id='box' className={className}>{children}</Box>
 }

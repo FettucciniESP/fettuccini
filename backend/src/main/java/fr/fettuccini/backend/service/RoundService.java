@@ -1,23 +1,28 @@
 package fr.fettuccini.backend.service;
 
+import fr.fettuccini.backend.enums.CommunityCardType;
 import fr.fettuccini.backend.enums.PokerExceptionType;
 import fr.fettuccini.backend.enums.RoundStep;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.*;
+import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RoundService {
     private final RoundValidationService roundValidationService;
 
     private final PokerEvaluatorService pokerEvaluatorService;
+
+    private final WledService wledService;
 
     /**
      * Initializes a new round for a given game session.
@@ -25,10 +30,24 @@ public class RoundService {
      * @param currentGame The current game session.
      * @return PlayerActionResponse containing details of the new round.
      */
-    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) {
+    public PlayerActionResponse initializeRoundForGame(GameSession currentGame) throws PokerException {
+        manageEliminations(currentGame);
+
+        if (currentGame.getPlayers().size() == 1) {
+            throw new PokerException(PokerExceptionType.GAME_ENDED, String.format(
+                    PokerExceptionType.GAME_ENDED.getMessage(), currentGame.getPlayers().getFirst().getName()
+            ));
+        }
+
+        if (!currentGame.getRounds().isEmpty()){
+            currentGame.getPlayers().forEach(player -> player.setHand(new HashSet<>()));
+        }
+
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
+
+        wledService.resetPlayerLeds().subscribe();
 
         Level currentLevel = PokerUtils.getCurrentLevelByTime(currentGame);
         if (currentLevel != null && currentLevel.getRoundIndex().equals(0)) {
@@ -69,6 +88,17 @@ public class RoundService {
         playerActionResponse.setCurrentButtonUser(PokerUtils.getPlayerBySeatIndex(currentGame, round.getButtonSeatIndex()));
         playerActionResponse.setPlayersLastActions(PokerUtils.getRoundPlayersLastActionList(currentGame, round));
 
+        if(round.getRoundStep().equals(RoundStep.ACTION_NEEDED)){
+            ActionNeededInfos actionNeededInfos = new ActionNeededInfos();
+            actionNeededInfos.setCardMisreads(getCardMisreads(round, currentGame));
+            actionNeededInfos.setImpossibleCards(getImpossibleCards(round, currentGame));
+            playerActionResponse.setActionNeededInfos(actionNeededInfos);
+        }
+
+        if(!round.getWinners().isEmpty()){
+            playerActionResponse.setWinners(round.getWinners());
+        }
+
         return playerActionResponse;
     }
 
@@ -100,16 +130,63 @@ public class RoundService {
      */
     public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
         Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
-        roundValidationService.validatePayerActionRoundStep(playerActionRequest, gameSession, currentRound);
-        processPlayerAction(playerActionRequest, gameSession, currentRound);
-        manageRoundStepProgression(gameSession, currentRound);
+        roundValidationService.validatePlayerActionRoundStep(playerActionRequest, gameSession, currentRound);
 
-        if (currentRound.getRoundStep().equals(RoundStep.SHOWDOWN)) {
+        // action valide
+        wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), playerActionRequest.getAction().getSeatIndex());
+
+        processPlayerAction(playerActionRequest, gameSession, currentRound);
+        manageRoundStepProgression(gameSession, currentRound, playerActionRequest.getAction());
+
+        List<Player> playersWithoutFold = PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound);
+
+        if(playersWithoutFold.size() == 1){
+            Player winner = playersWithoutFold.get(0);
+            winner.setBalance(winner.getBalance() + currentRound.getPotAmount());
+            currentRound.setRoundStep(RoundStep.FINISHED);
+        } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED) && !areAllCardsReaded(currentRound, gameSession)){
+            currentRound.setRoundStep(RoundStep.ACTION_NEEDED);
+        } else if (currentRound.getRoundStep().equals(RoundStep.FINISHED)) {
             determineWinnerAndAllocatePot(gameSession, currentRound);
         }
 
         updateNextPlayerToPlay(gameSession, currentRound, playerActionRequest);
         return buildPlayerActionResponse(gameSession, currentRound, playerActionRequest.getAction());
+    }
+
+
+    public boolean areAllCardsReaded(Round currentRound, GameSession gameSession) {
+        List<CardMisread> cardMisreads = getCardMisreads(currentRound, gameSession);
+
+        return cardMisreads.isEmpty();
+    }
+
+    public List<CardMisread> getCardMisreads(Round currentRound, GameSession gameSession) {
+        List<CardMisread> cardMisreads = new ArrayList<>();
+        if(!(currentRound.getBoard().getCommunityCards().size() == 5)){
+            cardMisreads.add(PokerUtils.createBoardCardMisread(currentRound.getBoard().getCommunityCards()));
+        }
+
+        PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound).stream()
+                .filter(player -> player.getHand().size() != 2)
+                .forEach(player -> cardMisreads.add(PokerUtils.createPlayerCardMisread(player, player.getHand())));
+
+        return cardMisreads;
+    }
+
+    public List<Card> getImpossibleCards(Round currendRound, GameSession gameSession) {
+        List<Card> impossibleCards = new ArrayList<>();
+        if(!currendRound.getBoard().getCommunityCards().isEmpty()){
+            impossibleCards.addAll(currendRound.getBoard().getCommunityCards());
+        }
+
+        for(Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currendRound)){
+            if(!player.getHand().isEmpty()){
+                impossibleCards.addAll(player.getHand());
+            }
+        }
+
+        return impossibleCards;
     }
 
     /**
@@ -122,21 +199,21 @@ public class RoundService {
      * @param gameSession  The current game session containing the round and player information.
      * @param currentRound The current round where the showdown occurs.
      */
-    private void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
+    void determineWinnerAndAllocatePot(GameSession gameSession, Round currentRound) {
         HashSet<Card> communityCards = new HashSet<>(currentRound.getBoard().getCommunityCards());
-        Map<Player, Integer> playerScores = new HashMap<>();
+        Map<Player, Long> playerScores = new HashMap<>();
 
         // Evaluate the hand for each player
         for (Player player : PokerUtils.getPlayersWithoutFoldThisRound(gameSession, currentRound)) {
             HashSet<Card> playerHand = new HashSet<>(player.getHand());
-            int handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
+            Long handScore = pokerEvaluatorService.evaluateHand(playerHand, communityCards);
             playerScores.put(player, handScore);
         }
 
         // Find the highest score
-        int highestScore = playerScores.values().stream()
-                .max(Integer::compare)
-                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score"));
+        Long highestScore = (long) Math.toIntExact(playerScores.values().stream()
+                .max(Long::compare)
+                .orElseThrow(() -> new IllegalStateException("Unable to determine highest score")));
 
         // Identify all players with the highest score
         List<Player> winners = playerScores.entrySet().stream()
@@ -149,16 +226,41 @@ public class RoundService {
         int splitAmount = potAmount / winners.size();
         for (Player winner : winners) {
             winner.setBalance(winner.getBalance() + splitAmount);
+            Winner winnerInfo = new Winner(winner.getSeatIndex(), splitAmount);
+            currentRound.addWinner(winnerInfo);
         }
 
         // Handle remainder if pot doesn't split evenly
         int remainder = potAmount % winners.size();
         if (remainder > 0) {
-            winners.getFirst().setBalance(winners.getFirst().getBalance() + remainder);
+            Player remainderWinner = winners.getFirst();
+            remainderWinner.setBalance(winners.getFirst().getBalance() + remainder);
+            Winner winnerWithRemaind =  currentRound.getWinners().stream()
+                    .filter(winner -> winner.getSeatIndex().equals(remainderWinner.getSeatIndex()))
+                    .findFirst()
+                    .orElseThrow();
+            winnerWithRemaind.setAmount(winnerWithRemaind.getAmount() + remainder);
         }
+
+        for (var winner : winners) {
+            wledService.setPlayerLedColor(Action.ActionType.WIN, winner.getSeatIndex());
+        }
+
+        manageEliminations(gameSession);
 
         // Set round as finished
         currentRound.setRoundStep(RoundStep.FINISHED);
+    }
+
+    public void manageEliminations(GameSession gamesession) {
+        List<Player> players = gamesession.getPlayers();
+        List<Player> playersToEliminate = players.stream()
+                .filter(player -> player.getBalance() <= 0)
+                .toList();
+
+        for (Player player : playersToEliminate) {
+            players.remove(player);
+        }
     }
 
 
@@ -170,7 +272,7 @@ public class RoundService {
      * @return The found round.
      * @throws PokerException if the round is not found.
      */
-    private Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
+    Round findRoundById(String roundId, GameSession gameSession) throws PokerException {
         return gameSession.getRounds().stream()
                 .filter(round -> round.getId().equals(roundId))
                 .findFirst()
@@ -187,11 +289,12 @@ public class RoundService {
      */
     private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
         Action action = playerActionRequest.getAction();
+wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), action.getSeatIndex());
         switch (action.getActionType()) {
             case BET, RAISE ->
-                    playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+                    playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound, gameSession);
             case CALL ->
-                    playerMakeACall(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound);
+                    playerMakeACall(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound, gameSession);
             default -> currentRound.addAction(action);
         }
     }
@@ -261,7 +364,7 @@ public class RoundService {
                     smallBlindPlayer.get().getSeatIndex(),
                     RoundStep.PREFLOP);
 
-            playerMakeABet(smallBlindPlayer.get(), smallBlindAction, currentRound);
+            playerMakeABet(smallBlindPlayer.get(), smallBlindAction, currentRound, currentGame);
         }
 
         Player bigBlindPlayer = PokerUtils.getBigBlindPlayer(players, currentRound).orElseThrow();
@@ -272,7 +375,7 @@ public class RoundService {
                 bigBlindPlayer.getSeatIndex(),
                 RoundStep.PREFLOP);
 
-        playerMakeABet(bigBlindPlayer, bigBlindAction, currentRound);
+        playerMakeABet(bigBlindPlayer, bigBlindAction, currentRound, currentGame);
 
         return bigBlindAction;
     }
@@ -284,17 +387,17 @@ public class RoundService {
      * @param action The betting action.
      * @param round  The current round in which the bet is made.
      */
-    public void playerMakeABet(Player player, Action action, Round round) {
+    public void playerMakeABet(Player player, Action action, Round round, GameSession gameSession) {
         Integer betAmount = action.getAmount();
-        playerAction(player, action, round, betAmount);
+        playerAction(player, action, round, betAmount, gameSession);
     }
 
-    private void playerAction(Player player, Action action, Round round, Integer betAmount) {
-        if (player.getBalance() < betAmount) {
-            action.setAmount(player.getBalance());
-        }
+    private void playerAction(Player player, Action action, Round round, Integer betAmount, GameSession gameSession) {
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
+        if (player.getBalance() == 0) {
+            wledService.setPlayerLedColor(Action.ActionType.ALL_IN, player.getSeatIndex());
+        }
         round.addAction(action);
         round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
     }
@@ -326,7 +429,7 @@ public class RoundService {
      * @param action The calling action.
      * @param round  The current round in which the call is made.
      */
-    public void playerMakeACall(Player player, Action action, Round round) {
+    public void playerMakeACall(Player player, Action action, Round round, GameSession gameSession) {
         Integer callAmount = round.getActions()
                 .stream()
                 .filter(action1 -> action1.getActionType().equals(Action.ActionType.BET))
@@ -334,7 +437,7 @@ public class RoundService {
                 .max()
                 .orElseThrow();
 
-        playerAction(player, action, round, callAmount);
+        playerAction(player, action, round, callAmount, gameSession);
     }
 
     /**
@@ -345,8 +448,10 @@ public class RoundService {
      * @param currentGame The current game session.
      * @param round       The round whose progression is to be managed.
      */
-    public void manageRoundStepProgression(GameSession currentGame, Round round) {
-        if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame)) {
+    public void manageRoundStepProgression(GameSession currentGame, Round round, Action action) {
+        boolean isRoundAllIn = false;
+
+        if (PokerUtils.didAllPlayersPlayedThisRoundStep(round, currentGame, action)) {
             if (round.getRoundStep().equals(RoundStep.PREFLOP)) {
                 round.setRoundStep(RoundStep.FLOP);
             } else if (round.getRoundStep().equals(RoundStep.FLOP)) {
@@ -356,9 +461,11 @@ public class RoundService {
             } else if (round.getRoundStep().equals(RoundStep.RIVER)) {
                 round.setRoundStep(RoundStep.SHOWDOWN);
             }
+
+            isRoundAllIn = PokerUtils.isRoundAllIn(round, currentGame);
         }
 
-        if (isRoundFinished(currentGame, round)) {
+        if (isRoundFinished(currentGame, round) || isRoundAllIn) {
             round.setRoundStep(RoundStep.FINISHED);
         }
     }
@@ -374,6 +481,69 @@ public class RoundService {
     public boolean isRoundFinished(GameSession currentGame, Round round) {
         return round.getRoundStep().equals(RoundStep.SHOWDOWN) ||
                 PokerUtils.getPlayersWithoutFoldThisRound(currentGame, round).size() == 1;
+    }
+
+    public PlayerActionResponse handleCardMisread(CardMisreadRequest cardMisreadRequest, GameSession gameSession) throws PokerException {
+
+        Round currentRound = findRoundById(cardMisreadRequest.getRoundId(), gameSession);
+        if (currentRound == null) {
+            throw new PokerException(PokerExceptionType.ROUND_NOT_FOUND, PokerExceptionType.ROUND_NOT_FOUND.getMessage());
+        }
+
+        if (!currentRound.getRoundStep().equals(RoundStep.ACTION_NEEDED)) {
+            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_ALLOWED, PokerExceptionType.NO_CARD_MISREAD_ALLOWED.getMessage());
+        }
+
+        if (cardMisreadRequest.getCards().isEmpty()) {
+            throw new PokerException(PokerExceptionType.NO_CARD_MISREAD_PROVIDED, PokerExceptionType.NO_CARD_MISREAD_PROVIDED.getMessage());
+        }
+
+        if (cardMisreadRequest.getPlayerSeatId() == null) {
+            currentRound.setBoard(handleCommunityCardMisread(currentRound, cardMisreadRequest));
+        } else {
+            Player player = PokerUtils.getPlayerBySeatIndex(gameSession, cardMisreadRequest.getPlayerSeatId());
+            player.setHand(handlePlayerCardMisread(player, cardMisreadRequest));
+        }
+
+        if (getCardMisreads(currentRound, gameSession).isEmpty()) {
+            determineWinnerAndAllocatePot(gameSession, currentRound);
+        }
+
+        return buildPlayerActionResponse(gameSession, currentRound, null);
+    }
+
+    public Board handleCommunityCardMisread(Round currentRound, CardMisreadRequest cardMisreadRequest) throws PokerException {
+        Board board = currentRound.getBoard();
+        List<Card> cards = cardMisreadRequest.getCards();
+        for (Card card : cards) {
+            if (board.getCommunityCards().contains(card)) {
+                throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, String.format(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE.getMessage(), card));
+            }
+            CommunityCardType cardType = board.getLastAddedType();
+            CommunityCardType newCardType;
+            if (board.getCommunityCards().size() > 2) {
+                newCardType = switch (cardType) {
+                    case FLOP -> CommunityCardType.TURN;
+                    case TURN -> CommunityCardType.RIVER;
+                    case RIVER -> throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, "Cannot add more than 5 community cards.");
+                    default ->  CommunityCardType.FLOP;
+                };
+            } else {
+                newCardType = CommunityCardType.FLOP;
+            }
+
+            board.addCards(new HashSet<>(List.of(card)), newCardType);
+        }
+
+        return board;
+    }
+
+    public HashSet<Card> handlePlayerCardMisread(Player player, CardMisreadRequest cardMisreadRequest) throws PokerException {
+        List<Card> cards = cardMisreadRequest.getCards();
+        if (player.getHand().size() > 2) {
+            throw new PokerException(PokerExceptionType.IMPOSSIBLE_COMMUNITY_CARD_TYPE, "Cannot add more than 2 cards to a player's hand.");
+        }
+        return new HashSet<>(cards);
     }
 
 }

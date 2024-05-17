@@ -6,6 +6,7 @@ import fr.fettuccini.backend.mapper.PlayerChipsRequestMapper;
 import fr.fettuccini.backend.model.exception.PokerException;
 import fr.fettuccini.backend.model.poker.GameSession;
 import fr.fettuccini.backend.model.request.*;
+import fr.fettuccini.backend.model.response.ChipsCountResponse;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.model.response.PlayerBetResponse;
 import fr.fettuccini.backend.model.response.StartGameResponse;
@@ -37,12 +38,12 @@ public class PokerController {
     private final BoardCardsRequestMapper boardCardsRequestMapper;
 
     @PostMapping("/start")
-    public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException {
+    public StartGameResponse startGame(@RequestBody StartGameRequest startGameRequest) throws IOException, PokerException {
         return pokerService.startGame(startGameRequest);
     }
 
     @PostMapping("/playRound/{sessionId}")
-    public PlayerActionResponse playRound(@PathVariable String sessionId) {
+    public PlayerActionResponse playRound(@PathVariable String sessionId) throws PokerException {
         return pokerService.playRound(sessionId);
     }
 
@@ -66,7 +67,7 @@ public class PokerController {
     }
 
     @PostMapping("/playerBet")
-    public PlayerBetResponse setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) {
+    public PlayerBetResponse setPlayerChip(HttpServletRequest req, @RequestBody PlayerChipsRequest playerChipsRequest) throws PokerException {
         var ip = req.getRemoteAddr();
         var playerChips = playerChipsRequestMapper.map(playerChipsRequest, ip);
 
@@ -81,4 +82,21 @@ public class PokerController {
         updateBoardCardsService.updateBoardCards(boardCards, boardCardsRequest.getCommunityCardType());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/addPlayer/{sessionId}/{seatIndex}")
+    public ResponseEntity<HttpStatus> addPlayer(@PathVariable String sessionId, @PathVariable Integer seatIndex) throws PokerException {
+        pokerService.addPlayer(seatIndex, sessionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/cardMisread/{sessionId}")
+    public PlayerActionResponse cardMisread(@PathVariable String sessionId, @RequestBody CardMisreadRequest cardMisreadRequest) throws PokerException {
+        return pokerService.handleCardMisread(cardMisreadRequest, sessionId);
+    }
+
+    @PostMapping("chipsCount/{sessionId}")
+    public ChipsCountResponse getChipsCount(@PathVariable String sessionId, @RequestBody ChipsCountRequest chipsCountRequest) {
+        return pokerService.getChipsCount(sessionId, chipsCountRequest);
+    }
+
 }

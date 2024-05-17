@@ -4,4 +4,5 @@ export interface LevelInfosModel {
   ante: number
   duration: number
   levelIndex: number
+  label: string
 }

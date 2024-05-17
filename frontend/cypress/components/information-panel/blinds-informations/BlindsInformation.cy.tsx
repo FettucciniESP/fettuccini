@@ -7,7 +7,8 @@ describe('Blind informations', () => {
     bigBlind: 20,
     ante: 3,
     duration: 10,
-    levelIndex: 1
+    levelIndex: 1,
+    label: ""
   }
 
   beforeEach(() => {

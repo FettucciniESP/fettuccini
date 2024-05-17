@@ -1,9 +1,7 @@
 package fr.fettuccini.backend.model.response;
 
 import fr.fettuccini.backend.enums.RoundStep;
-import fr.fettuccini.backend.model.poker.ActionsByRoundStep;
-import fr.fettuccini.backend.model.poker.Player;
-import fr.fettuccini.backend.model.poker.PlayerLastAction;
+import fr.fettuccini.backend.model.poker.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,12 +12,14 @@ public class PlayerActionResponse {
     String sessionId;
     String roundId;
     LocalDateTime gameStartedDatetime;
+    RoundStep roundStep;
     Integer currentPotAmount;
     ActionsByRoundStep roundPlayersActionsHistory;
     Player currentPlayingUser;
     Player currentButtonUser;
-    RoundStep roundStep;
     List<PlayerLastAction> playersLastActions;
     boolean isBreakTime;
     String levelLabel;
+    ActionNeededInfos actionNeededInfos;
+    List<Winner> winners;
 }

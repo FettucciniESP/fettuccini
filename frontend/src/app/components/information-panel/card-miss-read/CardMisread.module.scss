@@ -1,0 +1,59 @@
+@import "src/app/assets/styles/variables.scss";
+
+.title {
+  font-size: 3vw;
+  font-weight: bold;
+  color: $white-color;
+  margin-bottom: 1vw;
+}
+
+.card {
+  padding: 0.5vw;
+  transition: all 0.3s ease;
+}
+
+.boardCard {
+  width: 6vw;
+}
+
+.playerCard {
+  width: 12vw;
+}
+
+.playerContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 1vw;
+  flex-direction: column;
+  text-align: center;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.missReadContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+
+.buttonsContainer button {
+  font-size: 2vw;
+  color: $white-color;
+  background-color: $black-color-medium-opacity;
+  border: none;
+  border-radius: 0.5vw;
+  cursor: pointer;
+}

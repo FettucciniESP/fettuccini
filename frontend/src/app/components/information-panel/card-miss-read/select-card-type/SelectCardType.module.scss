@@ -1,0 +1,58 @@
+@import "src/app/assets/styles/variables.scss";
+
+.selectCardTypeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 2vw;
+  color: $white-color;
+  margin-bottom: 1vw;
+}
+
+.redIcon {
+  color: $red-color !important;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1vw;
+}
+
+.buttonsContainer button {
+  font-size: 5vw;
+  width: auto;
+  height: auto;
+  padding: 5vh 1vw;
+  border: none;
+  border-radius: 0.5vw;
+  cursor: pointer;
+}
+
+.boxContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.backButton {
+  position: absolute !important;
+  left: 0;
+}
+
+.label {
+  font-size: 2vw;
+  font-weight: bold;
+  color: $white-color;
+  text-align: center;
+  flex: 1;
+}

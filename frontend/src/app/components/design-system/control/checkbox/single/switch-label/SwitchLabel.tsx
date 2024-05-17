@@ -1,6 +1,6 @@
 import { Box, Text, Switch, SwitchProps } from "@chakra-ui/react";
 import styles from "./SwitchLabel.module.scss";
-import { useRef } from "react";
+import {CSSProperties, useRef} from "react";
 
 interface SwitchLabelProps {
   // Required
@@ -22,7 +22,7 @@ function SwitchLabel(props: SwitchLabelProps) {
     handleChangeCurrentValue(event?.target?.checked);
   };
 
-  const customUpperStyle = {
+  const customUpperStyle: CSSProperties  = {
     textTransform: isUpperCase ? "uppercase" : "none",
   };
 
@@ -30,7 +30,7 @@ function SwitchLabel(props: SwitchLabelProps) {
     <Box className={styles.container}>
       <Box className={styles.inputLabelContainer}>
         <Text
-          id_cy="labelValue"
+          data-cy="labelValue"
           className={styles.inputLabel}
           style={customUpperStyle}
         >
@@ -39,9 +39,9 @@ function SwitchLabel(props: SwitchLabelProps) {
       </Box>
       <Box className={styles.inputContainer}>
         <Switch
-          id_cy="switchValue"
+          data-cy="switchValue"
           size="lg"
-          value={currentValue}
+          isChecked={currentValue}
           onChange={handleChange}
           isDisabled={disabled}
         />

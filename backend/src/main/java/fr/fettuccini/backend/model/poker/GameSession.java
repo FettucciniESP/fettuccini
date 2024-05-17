@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Data
@@ -23,6 +24,8 @@ public class GameSession {
     private GameState gameState;
     private List<HandType> roundResults = new ArrayList<>();
     private List<Level> levelsStructure;
+    private Integer startingStack;
+    private Integer authorizedReentryLevelIndex;
 
     public GameSession() {
         this.players = new ArrayList<>();
@@ -35,13 +38,6 @@ public class GameSession {
     public void startGame() {
         this.gameState = GameState.IN_PROGRESS;
         this.dateGameStarted = LocalDateTime.now();
-         for (int i = 1; i <= 6; i++) {
-             Player player = new Player();
-             player.setName("Seat " + i);
-             player.setSeatIndex(i);
-             player.setBalance(1000);
-             players.add(player);
-         }
     }
 
     public void endGame() {
