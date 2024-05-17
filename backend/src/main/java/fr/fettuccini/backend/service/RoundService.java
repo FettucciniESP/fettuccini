@@ -9,17 +9,20 @@ import fr.fettuccini.backend.model.request.CardMisreadRequest;
 import fr.fettuccini.backend.model.request.PlayerActionRequest;
 import fr.fettuccini.backend.model.response.PlayerActionResponse;
 import fr.fettuccini.backend.utils.PokerUtils;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RoundService {
     private final RoundValidationService roundValidationService;
 
     private final PokerEvaluatorService pokerEvaluatorService;
+
+    private final WledService wledService;
 
     /**
      * Initializes a new round for a given game session.
@@ -43,6 +46,8 @@ public class RoundService {
         String id = UUID.randomUUID().toString();
         String gameId = currentGame.getId();
         Integer buttonSeatIndex = PokerUtils.getButtonSeatIndex(currentGame);
+
+        wledService.resetPlayerLeds().subscribe();
 
         Level currentLevel = PokerUtils.getCurrentLevelByTime(currentGame);
         if (currentLevel != null && currentLevel.getRoundIndex().equals(0)) {
@@ -126,6 +131,10 @@ public class RoundService {
     public PlayerActionResponse setPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession) throws PokerException {
         Round currentRound = findRoundById(playerActionRequest.getRoundId(), gameSession);
         roundValidationService.validatePlayerActionRoundStep(playerActionRequest, gameSession, currentRound);
+
+        // action valide
+        wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), playerActionRequest.getAction().getSeatIndex());
+
         processPlayerAction(playerActionRequest, gameSession, currentRound);
         manageRoundStepProgression(gameSession, currentRound, playerActionRequest.getAction());
 
@@ -233,6 +242,12 @@ public class RoundService {
             winnerWithRemaind.setAmount(winnerWithRemaind.getAmount() + remainder);
         }
 
+        for (var winner : winners) {
+            wledService.setPlayerLedColor(Action.ActionType.WIN, winner.getSeatIndex());
+        }
+
+        manageEliminations(gameSession);
+
         // Set round as finished
         currentRound.setRoundStep(RoundStep.FINISHED);
     }
@@ -274,7 +289,7 @@ public class RoundService {
      */
     private void processPlayerAction(PlayerActionRequest playerActionRequest, GameSession gameSession, Round currentRound) {
         Action action = playerActionRequest.getAction();
-
+wledService.setPlayerLedColor(playerActionRequest.getAction().getActionType(), action.getSeatIndex());
         switch (action.getActionType()) {
             case BET, RAISE ->
                     playerMakeABet(PokerUtils.getPlayerBySeatIndex(gameSession, action.getSeatIndex()), action, currentRound, gameSession);
@@ -380,6 +395,9 @@ public class RoundService {
     private void playerAction(Player player, Action action, Round round, Integer betAmount, GameSession gameSession) {
         Integer amountToDecreaseFromPlayerBalance = getValueToDecreaseFromPlayerBalance(round, action);
         player.setBalance(player.getBalance() - amountToDecreaseFromPlayerBalance);
+        if (player.getBalance() == 0) {
+            wledService.setPlayerLedColor(Action.ActionType.ALL_IN, player.getSeatIndex());
+        }
         round.addAction(action);
         round.setPotAmount(round.getPotAmount() + amountToDecreaseFromPlayerBalance);
     }
