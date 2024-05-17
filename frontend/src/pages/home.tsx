@@ -20,6 +20,7 @@ export default function CroupierInterface() {
             title: errorValue,
             ...toastOptions,
           });
+          toastService.clearError();
         }
       });
       return () => {

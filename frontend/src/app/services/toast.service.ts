@@ -1,36 +1,40 @@
-import { BehaviorSubject } from "rxjs";
-import { useToast, UseToastOptions } from "@chakra-ui/react";
-import { throws } from "assert";
+import {BehaviorSubject} from "rxjs";
+import {useToast, UseToastOptions} from "@chakra-ui/react";
+import {throws} from "assert";
 
 const defaultOptions: UseToastOptions = {
-  status: "error",
-  position: "top",
-  duration: 5000,
-  isClosable: true,
-  id: "error-toast",
+    status: "error",
+    position: "top",
+    duration: 5000,
+    isClosable: true,
+    id: "error-toast",
 };
 
 class ToastService {
-  private errorValue = new BehaviorSubject<String>("");
-  errorValue$ = this.errorValue.asObservable();
+    private errorValue = new BehaviorSubject<String>("");
+    errorValue$ = this.errorValue.asObservable();
 
-  pushError(errorValue: String): void {
-    if (!!errorValue) {
-      throw this.errorValue.next(errorValue);
+    pushError(errorValue: String): void {
+        if (!!errorValue) {
+            throw this.errorValue.next(errorValue);
+        }
     }
-  }
 
-  setToastOptions(
-    customOptions?: UseToastOptions
-  ): UseToastOptions | undefined {
-    const toastOptions: UseToastOptions = {
-      ...defaultOptions,
-      ...customOptions,
-    };
+    clearError(): void {
+        this.errorValue.next("");
+    }
 
-    return toastOptions;
-  }
+    setToastOptions(
+        customOptions?: UseToastOptions
+    ): UseToastOptions | undefined {
+        const toastOptions: UseToastOptions = {
+            ...defaultOptions,
+            ...customOptions,
+        };
+
+        return toastOptions;
+    }
 }
 
 const toastService = new ToastService();
-export { toastService, defaultOptions };
+export {toastService, defaultOptions};

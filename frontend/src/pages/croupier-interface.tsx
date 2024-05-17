@@ -29,6 +29,10 @@ export default function CroupierInterface() {
   let [roundInfos, setRoundInfos] = useState<RoundInfosModel>();
 
   useEffect(() => {
+    if (!croupierLoadingService.getSessionId()) {
+      router.push('/home');
+    }
+
     const currentLevel_subscribe: Subscription =
       levelsService.currentLevel$.subscribe((currentLevel: LevelInfosModel) => {
         setCurrentLevelInfos(currentLevel);
@@ -57,6 +61,7 @@ export default function CroupierInterface() {
             title: errorValue,
             ...toastOptions,
           });
+          toastService.clearError();
         }
       });
 
@@ -72,24 +77,6 @@ export default function CroupierInterface() {
   const closeModal = () => {
     setIsModalOpen(false);
   }
-
-  useEffect(() => {
-    if (!croupierLoadingService.getSessionId()) {
-      router.push('/home');
-    }
-    const errorValue_subscribe: Subscription =
-      toastService.errorValue$.subscribe((errorValue: String | undefined) => {
-        if (!!errorValue && !!toastOptions && !toast.isActive("error-toast")) {
-          toast({
-            title: errorValue,
-            ...toastOptions,
-          });
-        }
-      });
-      return () => {
-        errorValue_subscribe.unsubscribe();
-      };
-  }, [router, toast, toastOptions]);
 
   return (
     <ChakraProvider>
