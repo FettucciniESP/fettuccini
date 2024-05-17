@@ -48,7 +48,7 @@ export default function CardMisread({
         return completeCards.map((cardModel, index) => {
             const cardType = cardModel ? CardTypeEnum[cardModel.type] : null;
             const cardValue = cardModel ? CardValueEnum[cardModel.value] : null;
-            const imageFile = cardModel ? `${cardValue + cardType}.gif` : "isNull.gif";
+            const imageFile = cardValue && cardType ? `${cardValue + cardType}.gif` : "isNull.gif";
             const cardImage = require(`../../../assets/images/cards/${imageFile}`);
             return <Image key={index} src={cardImage} alt={`card ${index + 1}`}
                           onClick={() => handleActiveCardType(index)}
@@ -144,7 +144,6 @@ export default function CardMisread({
                                               handleActiveCardValue={handleActiveCardValue}/>)}
             {cardValueView && (<SelectCardValue playerOrStreetLabel={playerOrStreetLabel()!} cardType={cardTypeValue!}
                                                 backFunction={() => backToCardType()}
-                                                cardIndex={cardIndex}
                                                 setCard={setCard!}/>)}
         </FettucciniModal>
     );

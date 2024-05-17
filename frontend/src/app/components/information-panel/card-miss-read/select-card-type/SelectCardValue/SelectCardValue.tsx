@@ -13,7 +13,7 @@ export default function SelectCardValue({
                                         }: {
     playerOrStreetLabel: string,
     cardType: CardTypeEnum,
-    setCard: (cardType: CardTypeEnum, cardValue: string) => void,
+    setCard: (cardValue: string) => void,
     backFunction: () => void,
 }) {
 

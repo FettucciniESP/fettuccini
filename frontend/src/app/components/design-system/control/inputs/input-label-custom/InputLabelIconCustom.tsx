@@ -2,7 +2,7 @@ import { Box, Text, Input, InputProps } from "@chakra-ui/react";
 import { GoPencil } from "react-icons/go";
 import styles from "./InputLabelIconCustom.module.scss";
 import commonStyles from "../styles/InputCommonStyle.module.scss";
-import { useRef } from "react";
+import { CSSProperties, useRef } from "react";
 
 const icons = {
   PEN: "PEN",
@@ -124,48 +124,48 @@ function InputLabelIconCustom(props: InputLabelIconCustomProps) {
     return currentIcon;
   };
 
-  const customUpperStyle = {
+  const customUpperStyle: CSSProperties = {
     textTransform: isUpperCase ? "uppercase" : "none",
   };
 
   return (
-    <Box className={commonStyles.container}>
-      <Box className={styles.inputLabelContainer}>
-        {displayLabelIcon()}
-        <Input
-          id_cy="labelValue"
-          ref={ref}
-          value={labelValue}
-          onChange={handleChangeLabel}
-          textAlign={"left"}
-          className={styles.inputText}
-          variant="unstyled"
-          isDisabled={disabled}
-          type={"text"}
-          {...customInputProps}
-          {...customUpperStyle}
-        />
+      <Box className={commonStyles.container}>
+        <Box className={styles.inputLabelContainer}>
+          {displayLabelIcon()}
+          <Input
+              data-cy="labelValue"
+              ref={ref}
+              value={labelValue}
+              onChange={handleChangeLabel}
+              textAlign={"left"}
+              className={styles.inputText}
+              variant="unstyled"
+              isDisabled={disabled}
+              type={"text"}
+              sx={customUpperStyle}
+              {...customInputProps}
+          />
+        </Box>
+        <Box className={styles.inputContainer}>
+          <Input
+              data-cy="inputValue"
+              ref={ref}
+              isChecked={currentValue}
+              onChange={handleChangeValue}
+              textAlign={"right"}
+              className={styles.inputText}
+              variant="unstyled"
+              isDisabled={disabled}
+              type={type}
+              sx={customUpperStyle}
+              {...customInputProps}
+          />
+          <Text data-cy="customTextValue" className={commonStyles.addCustomText}>
+            {customAddToText}
+          </Text>
+          {displayValueIcon()}
+        </Box>
       </Box>
-      <Box className={styles.inputContainer}>
-        <Input
-          id_cy="inputValue"
-          ref={ref}
-          value={currentValue}
-          onChange={handleChangeValue}
-          textAlign={"right"}
-          className={styles.inputText}
-          variant="unstyled"
-          isDisabled={disabled}
-          type={type}
-          {...customInputProps}
-          {...customUpperStyle}
-        />
-        <Text id_cy="customTextValue" className={commonStyles.addCustomText}>
-          {customAddToText}
-        </Text>
-        {displayValueIcon()}
-      </Box>
-    </Box>
   );
 }
 
