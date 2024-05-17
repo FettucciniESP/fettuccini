@@ -25,7 +25,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/poker")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin
 @RequiredArgsConstructor
 public class PokerController {
 
